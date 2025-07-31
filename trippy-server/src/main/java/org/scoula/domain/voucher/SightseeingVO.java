@@ -1,4 +1,6 @@
-package org.scoula.domain.account;
+package org.scoula.domain.voucher;
+
+import java.time.LocalDateTime;
 
 import org.scoula.domain.BaseTime;
 
@@ -15,13 +17,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AccountVO extends BaseTime {
+public class SightseeingVO extends BaseTime {
+	private Long voucherId;
 	private Long userId;
-	private String accountId;
-	private String accountName;
-	private AccountType accountType;
-	private Long createdBy;
-	private Long balance;
-	private AccountForeign accountForeign;
-	private DeletedStatus isDeleted;
+	private String voucherImage;
+	private String voucherName;
+	private LocalDateTime voucherDate;
 }

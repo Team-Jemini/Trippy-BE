@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.mapper.exchange.ExchangeRateMapper">
+
+    <resultMap id="exchangeRateMap" type="org.scoula.domain.exchange.ExchangeRateVO">
+        <id property="exchangeRateId" column="exchange_rate_id"/>
+        <result property="currencyCode" column="currency_code"/>
+        <result property="baseExchangeRate" column="base_exchange_rate"/>
+        <result property="exchangeRateBuy" column="exchange_rate_buy"/>
+        <result property="exchangeRateSell" column="exchange_rate_sell"/>
+        <result property="exchangeRateDate" column="exchange_rate_date"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+</mapper>

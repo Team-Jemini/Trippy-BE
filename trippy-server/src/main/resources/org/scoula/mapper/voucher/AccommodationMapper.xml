@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.mapper.voucher.AccommodationMapper">
+
+    <resultMap id="accommodationMap" type="org.scoula.domain.voucher.AccommodationVO">
+        <id property="reservationCode" column="reservation_code"/>
+        <result property="userId" column="user_id"/>
+        <result property="reservationName" column="reservation_name"/>
+        <result property="roomName" column="room_name"/>
+        <result property="reservationStartDate" column="reservation_start_date"/>
+        <result property="reservationEndDate" column="reservation_end_date"/>
+        <result property="checkIn" column="check_in"/>
+        <result property="checkOut" column="check_out"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+</mapper>

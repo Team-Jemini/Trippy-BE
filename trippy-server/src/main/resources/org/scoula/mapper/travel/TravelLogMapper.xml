@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.mapper.travel.TravelLogMapper">
+
+    <resultMap id="travelLogMap" type="org.scoula.domain.travel.TravelLogVO">
+        <id property="travelId" column="travel_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="travelName" column="travel_name"/>
+        <result property="travelBegin" column="travel_begin"/>
+        <result property="travelEnd" column="travel_end"/>
+        <result property="travelDestination" column="travel_destination"/>
+        <result property="reportGenerated" column="report_generated"/>
+        <result property="travelImg" column="travel_img"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+</mapper>

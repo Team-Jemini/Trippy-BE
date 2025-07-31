@@ -1,8 +1,10 @@
-package org.scoula.domain.user;
+package org.scoula.domain.identification;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.scoula.domain.BaseTime;
+import org.scoula.domain.user.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,12 +19,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class UserVO extends BaseTime {
+public class PassportVO extends BaseTime {
 	private Long userId;
-	private String username;
-	private String password;
-	private String phone;
-	private LocalDate birth;
+	private String passportNumber;
+	private String nameKr;
+	private String nameEn;
+	private LocalDate birthDate;
 	private Gender gender;
-	private String email;
+	private String countryCode;
+	private LocalDateTime passportExpireDate;
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.mapper.notification.NotificationMapper">
+
+    <resultMap id="notificationMap" type="org.scoula.domain.notification.NotificationVO">
+        <id property="notiId" column="noti_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="notiName" column="noti_name"/>
+        <result property="notiContent" column="noti_content"/>
+        <result property="notiType" column="noti_type"/>
+        <result property="notiAmount" column="noti_amount"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+</mapper>

@@ -1,4 +1,4 @@
-package org.scoula.domain.account;
+package org.scoula.domain.card;
 
 import org.scoula.domain.BaseTime;
 
@@ -15,13 +15,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AccountVO extends BaseTime {
+public class CardVO extends BaseTime {
 	private Long userId;
+	private Long id;
 	private String accountId;
-	private String accountName;
-	private AccountType accountType;
-	private Long createdBy;
-	private Long balance;
-	private AccountForeign accountForeign;
-	private DeletedStatus isDeleted;
+	private String cardNumber;
+	private String cardName;
+	private String cardNickname;
+	private Integer field; //카드 식별번호
+	private Boolean isMainCard;
+	private String cardImg;
 }

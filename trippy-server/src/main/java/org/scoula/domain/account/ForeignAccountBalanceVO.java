@@ -15,13 +15,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AccountVO extends BaseTime {
-	private Long userId;
-	private String accountId;
-	private String accountName;
-	private AccountType accountType;
-	private Long createdBy;
+public class ForeignAccountBalanceVO extends BaseTime {
+	private Long accountId;
+	private Long balanceId;
+	private String currencyCode;
 	private Long balance;
-	private AccountForeign accountForeign;
-	private DeletedStatus isDeleted;
 }
