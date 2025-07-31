@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class CardVO extends BaseTime {
+	private Long cardId;
 	private Long userId;
-	private Long id;
 	private String accountId;
 	private String cardNumber;
 	private String cardName;

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class SightseeingVO extends BaseTime {
 	private Long voucherId;
 	private Long userId;
-	private String voucherImage;
-	private String voucherName;
-	private LocalDateTime voucherDate;
+	private String voucherImg;
+	private String name;
+	private LocalDateTime viewingDate;
 }

@@ -12,7 +12,7 @@
         <result property="birthDate" column="birth_date"/>
         <result property="gender" column="gender"/>
         <result property="countryCode" column="country_code"/>
-        <result property="passportExpireDate" column="passport_expire_date"/>
+        <result property="expireDate" column="expire_date"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>

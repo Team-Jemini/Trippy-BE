@@ -10,7 +10,7 @@
         <result property="userId" column="user_id"/>
         <result property="transactionType" column="transaction_type"/>
         <result property="amount" column="amount"/>
-        <result property="transactionName" column="transaction_name"/>
+        <result property="title" column="title"/>
         <result property="category" column="category"/>
         <result property="latitude" column="latitude"/>
         <result property="longitude" column="longitude"/>

@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
 public class TravelLogVO extends BaseTime {
 	private Long travelId;
 	private Long userId;
-	private String travelName;
-	private LocalDateTime travelBegin;
-	private LocalDateTime travelEnd;
-	private String travelDestination;
-	private Boolean reportGenerated;
+	private String title;
+	private LocalDateTime travelBeginDate;
+	private LocalDateTime travelEndDate;
+	private String destination;
+	private Boolean isGenerated;
 	private String travelImg;
 }

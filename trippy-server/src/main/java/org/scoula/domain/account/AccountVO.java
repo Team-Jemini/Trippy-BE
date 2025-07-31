@@ -20,7 +20,7 @@ public class AccountVO extends BaseTime {
 	private String accountId;
 	private String accountName;
 	private AccountType accountType;
-	private Long createdBy;
+	private Long ownerId;
 	private Long balance;
 	private AccountForeign accountForeign;
 	private DeletedStatus isDeleted;

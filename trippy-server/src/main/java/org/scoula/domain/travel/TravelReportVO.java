@@ -1,7 +1,5 @@
 package org.scoula.domain.travel;
 
-import java.time.LocalDateTime;
-
 import org.scoula.domain.BaseTime;
 
 import lombok.AllArgsConstructor;
@@ -22,8 +20,6 @@ public class TravelReportVO extends BaseTime {
 	private Long userId;
 	private Long settlementId;
 	private Long travelId;
-	private LocalDateTime travelBegin;
-	private LocalDateTime travelEnd;
 	private Integer totalExpense;
 	private Integer totalFood;
 	private Integer totalActivity;

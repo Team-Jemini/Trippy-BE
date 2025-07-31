@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 public class NotificationVO extends BaseTime {
 	private Long userId;
 	private Long notiId;
-	private String notiName;
-	private String notiContent;
+	private String title;
+	private String content;
 	private NotiType notiType;
-	private Long notiAmount;
+	private Long amount;
 }
