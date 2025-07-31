@@ -2,9 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.scoula.mapper.user.UserMapper">
+    <resultMap id="userMap" type="org.scoula.domain.user.UserVO">
+        <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="birth" column="birth"/>
+        <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
 
-<!--    예시입니다~ 아래꺼 삭제 해줘요.. 처음 하는 사람이-->
-<!--    <select id="findById" resultType="org.scoula.domain.UserVO">-->
-<!--        SELECT * FROM users WHERE id = #{id}-->
-<!--    </select>-->
+
+    <!--    예시임..-->
+    <select id="findById" resultMap="userMap">
+        SELECT *
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

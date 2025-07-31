@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.mapper.voucher.SightseeingMapper">
+
+    <resultMap id="sightseeingMap" type="org.scoula.domain.voucher.SightseeingVO">
+        <id property="voucherId" column="voucher_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="voucherImage" column="voucher_image"/>
+        <result property="voucherName" column="voucher_name"/>
+        <result property="voucherDate" column="voucher_date"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+</mapper>

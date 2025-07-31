@@ -1,4 +1,4 @@
-package org.scoula.domain.account;
+package org.scoula.domain.notification;
 
 import org.scoula.domain.BaseTime;
 
@@ -15,13 +15,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AccountVO extends BaseTime {
+public class NotificationVO extends BaseTime {
 	private Long userId;
-	private String accountId;
-	private String accountName;
-	private AccountType accountType;
-	private Long createdBy;
-	private Long balance;
-	private AccountForeign accountForeign;
-	private DeletedStatus isDeleted;
+	private Long notiId;
+	private String notiName;
+	private String notiContent;
+	private NotiType notiType;
+	private Long notiAmount;
 }

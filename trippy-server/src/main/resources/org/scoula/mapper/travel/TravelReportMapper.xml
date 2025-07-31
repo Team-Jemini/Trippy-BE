@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.mapper.travel.TravelReportMapper">
+
+    <resultMap id="travelReportMap" type="org.scoula.domain.travel.TravelReportVO">
+        <id property="settlementId" column="settlement_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="travelId" column="travel_id"/>
+        <result property="travelBegin" column="travel_begin"/>
+        <result property="travelEnd" column="travel_end"/>
+        <result property="totalExpense" column="total_expense"/>
+        <result property="totalFood" column="total_food"/>
+        <result property="totalActivity" column="total_activity"/>
+        <result property="totalAcc" column="total_acc"/>
+        <result property="totalTransport" column="total_transport"/>
+        <result property="totalShop" column="total_shop"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+</mapper>

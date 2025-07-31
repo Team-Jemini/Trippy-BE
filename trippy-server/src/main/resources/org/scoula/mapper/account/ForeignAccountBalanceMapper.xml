@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.mapper.account.ForeignAccountBalanceMapper">
+
+    <resultMap id="foreignAccountBalanceMap" type="org.scoula.domain.account.ForeignAccountBalanceVO">
+        <id property="balanceId" column="balance_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="currencyCode" column="currency_code"/>
+        <result property="balance" column="balance"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+</mapper>
