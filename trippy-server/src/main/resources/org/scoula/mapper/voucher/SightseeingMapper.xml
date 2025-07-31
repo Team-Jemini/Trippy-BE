@@ -7,9 +7,9 @@
     <resultMap id="sightseeingMap" type="org.scoula.domain.voucher.SightseeingVO">
         <id property="voucherId" column="voucher_id"/>
         <result property="userId" column="user_id"/>
-        <result property="voucherImage" column="voucher_image"/>
-        <result property="voucherName" column="voucher_name"/>
-        <result property="voucherDate" column="voucher_date"/>
+        <result property="voucherImg" column="voucher_img"/>
+        <result property="name" column="name"/>
+        <result property="viewingDate" column="viewing_date"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>

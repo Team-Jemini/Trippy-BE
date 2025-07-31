@@ -23,9 +23,9 @@
         <result property="seat" column="seat"/>
         <result property="baggage" column="baggage"/>
         <result property="passengerName" column="passenger_name"/>
-        <result property="qrUrl" column="qr_url"/>
+        <result property="qrImg" column="qr_img"/>
         <result property="used" column="is_used"/>
-        <result property="ticketUrl" column="ticket_url"/>
+        <result property="ticketImg" column="ticket_img"/>
         <result property="seatClass" column="seat_class"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>

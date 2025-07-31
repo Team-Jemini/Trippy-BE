@@ -19,5 +19,5 @@ public class IdCardVO extends BaseTime {
 	private Long userId;
 	private String idCardNum;
 	private String idCardDate;
-	private String idName;
+	private String name;
 }

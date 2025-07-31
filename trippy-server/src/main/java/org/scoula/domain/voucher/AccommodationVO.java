@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class AccommodationVO extends BaseTime {
 	private String reservationCode;
 	private Long userId;
-	private String reservationName;
+	private String accommodationName;
 	private String roomName;
 	private LocalDate reservationStartDate;
 	private LocalDate reservationEndDate;

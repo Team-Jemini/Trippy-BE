@@ -5,13 +5,13 @@
 <mapper namespace="org.scoula.mapper.card.CardMapper">
 
     <resultMap id="cardMap" type="org.scoula.domain.card.CardVO">
-        <id property="id" column="id"/>
+        <id property="cardId" column="card_id"/>
         <result property="userId" column="user_id"/>
         <result property="accountId" column="account_id"/>
         <result property="cardNumber" column="card_number"/>
         <result property="cardName" column="card_name"/>
         <result property="cardNickname" column="card_nickname"/>
-        <result property="field" column="Field"/>
+        <result property="field" column="field"/>
         <result property="isMainCard" column="is_main_card"/>
         <result property="cardImg" column="card_img"/>
         <!-- BaseTime -->

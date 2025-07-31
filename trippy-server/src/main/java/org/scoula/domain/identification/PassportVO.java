@@ -27,5 +27,5 @@ public class PassportVO extends BaseTime {
 	private LocalDate birthDate;
 	private Gender gender;
 	private String countryCode;
-	private LocalDateTime passportExpireDate;
+	private LocalDateTime expireDate;
 }

@@ -9,7 +9,7 @@
         <result property="userId" column="user_id"/>
         <result property="accountName" column="account_name"/>
         <result property="accountType" column="account_type"/>
-        <result property="createdBy" column="created_by"/>
+        <result property="ownerId" column="owner_id"/>
         <result property="balance" column="balance"/>
         <result property="accountForeign" column="account_foreign"/>
         <result property="isDeleted" column="is_deleted"/>

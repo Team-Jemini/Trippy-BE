@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class UserVO extends BaseTime {
 	private Long userId;
-	private String username;
+	private String name;
 	private String password;
 	private String phone;
 	private LocalDate birth;

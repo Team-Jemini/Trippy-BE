@@ -8,7 +8,7 @@
         <id property="userId" column="user_id"/>
         <result property="idCardNum" column="id_card_num"/>
         <result property="idCardDate" column="id_card_date"/>
-        <result property="idName" column="id_name"/>
+        <result property="name" column="name"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>

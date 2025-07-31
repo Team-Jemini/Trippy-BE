@@ -6,13 +6,12 @@
     <resultMap id="exchangeLogMap" type="org.scoula.domain.exchange.ExchangeLogVO">
         <id property="exchangeId" column="exchange_id"/>
         <result property="accountId" column="account_id"/>
-        <result property="exchangeAmountKrw" column="exchange_amount_krw"/>
-        <result property="exchangeAmountForeign" column="exchange_amount_foreign"/>
-        <result property="exchangeRateExchanged" column="exchange_rate_exchanged"/>
-        <result property="exchangeNation" column="exchange_nation"/>
+        <result property="amountKRW" column="amount_krw"/>
+        <result property="amountForeign" column="amount_foreign"/>
+        <result property="appliedExchangeRate" column="applied_exchange_rate"/>
+        <result property="nation" column="nation"/>
         <result property="currencyCode" column="currency_code"/>
         <result property="exchangeType" column="exchange_type"/>
-        <result property="exchangeAt" column="exchange_at"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>

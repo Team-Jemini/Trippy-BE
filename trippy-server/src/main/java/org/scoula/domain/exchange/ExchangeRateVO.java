@@ -21,7 +21,7 @@ public class ExchangeRateVO extends BaseTime {
 	private Long exchangeRateId;
 	private String currencyCode;
 	private Integer baseExchangeRate;
-	private Integer exchangeRateBuy;
-	private Integer exchangeRateSell;
-	private LocalDateTime exchangeRateDate;
+	private Integer rateBuy;
+	private Integer rateSell;
+	private LocalDateTime exchangeRateDate; //환율 고시날짜?
 }

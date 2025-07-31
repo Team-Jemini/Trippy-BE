@@ -7,10 +7,10 @@
     <resultMap id="notificationMap" type="org.scoula.domain.notification.NotificationVO">
         <id property="notiId" column="noti_id"/>
         <result property="userId" column="user_id"/>
-        <result property="notiName" column="noti_name"/>
-        <result property="notiContent" column="noti_content"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
         <result property="notiType" column="noti_type"/>
-        <result property="notiAmount" column="noti_amount"/>
+        <result property="amount" column="amount"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>

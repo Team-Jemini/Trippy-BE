@@ -7,7 +7,7 @@
     <resultMap id="accommodationMap" type="org.scoula.domain.voucher.AccommodationVO">
         <id property="reservationCode" column="reservation_code"/>
         <result property="userId" column="user_id"/>
-        <result property="reservationName" column="reservation_name"/>
+        <result property="accommodationName" column="accommodation_name"/>
         <result property="roomName" column="room_name"/>
         <result property="reservationStartDate" column="reservation_start_date"/>
         <result property="reservationEndDate" column="reservation_end_date"/>

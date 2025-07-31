@@ -8,8 +8,8 @@
         <id property="exchangeRateId" column="exchange_rate_id"/>
         <result property="currencyCode" column="currency_code"/>
         <result property="baseExchangeRate" column="base_exchange_rate"/>
-        <result property="exchangeRateBuy" column="exchange_rate_buy"/>
-        <result property="exchangeRateSell" column="exchange_rate_sell"/>
+        <result property="rateBuy" column="rate_buy"/>
+        <result property="rateSell" column="rate_sell"/>
         <result property="exchangeRateDate" column="exchange_rate_date"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
