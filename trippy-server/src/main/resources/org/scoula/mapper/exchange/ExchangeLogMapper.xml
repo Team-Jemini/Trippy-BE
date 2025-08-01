@@ -11,7 +11,8 @@
         <result property="appliedExchangeRate" column="applied_exchange_rate"/>
         <result property="nation" column="nation"/>
         <result property="currencyCode" column="currency_code"/>
-        <result property="exchangeType" column="exchange_type"/>
+        <result property="exchangeType" column="exchange_type"
+                typeHandler="org.scoula.common.typehandler.exchange.ExchangeTypeTypeHandler"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>

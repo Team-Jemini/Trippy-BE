@@ -8,11 +8,14 @@
         <id property="accountId" column="account_id"/>
         <result property="userId" column="user_id"/>
         <result property="accountName" column="account_name"/>
-        <result property="accountType" column="account_type"/>
+        <result property="accountType" column="account_type"
+                typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
         <result property="ownerId" column="owner_id"/>
         <result property="balance" column="balance"/>
-        <result property="accountForeign" column="account_foreign"/>
-        <result property="isDeleted" column="is_deleted"/>
+        <result property="accountForeign" column="account_foreign"
+                typeHandler="org.scoula.common.typehandler.account.AccountForeignTypeHandler"/>
+        <result property="isDeleted" column="is_deleted"
+                typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>

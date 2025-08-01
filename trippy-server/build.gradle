@@ -10,6 +10,14 @@ repositories {
     mavenCentral()
 }
 
+tasks.named('processResources') {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from('src/main/resources') {
+        include '**/*.xml'
+        include '**/*.properties'
+    }
+}
+
 ext {
     junitVersion = '5.10.2'
     springVersion = '5.3.37'

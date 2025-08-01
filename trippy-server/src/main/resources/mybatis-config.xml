@@ -7,8 +7,45 @@
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
-    
+
     <typeAliases>
         <package name="org.scoula.security.account.domain"/>
     </typeAliases>
+
+    <typeHandlers>
+        <!-- account -->
+        <typeHandler handler="org.scoula.common.typehandler.account.AccountForeignTypeHandler"
+                     javaType="org.scoula.domain.account.AccountForeign"/>
+        <typeHandler handler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"
+                     javaType="org.scoula.domain.account.AccountType"/>
+        <typeHandler handler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"
+                     javaType="org.scoula.domain.account.DeletedStatus"/>
+        <typeHandler handler="org.scoula.common.typehandler.account.member.RoleTypeHandler"
+                     javaType="org.scoula.domain.account.member.Role"/>
+
+        <!-- exchange -->
+        <typeHandler handler="org.scoula.common.typehandler.exchange.ExchangeTypeTypeHandler"
+                     javaType="org.scoula.domain.exchange.ExchangeType"/>
+
+        <!-- notification -->
+        <typeHandler handler="org.scoula.common.typehandler.notification.NotiTypeTypeHandler"
+                     javaType="org.scoula.domain.notification.NotiType"/>
+
+        <!-- transaction -->
+        <typeHandler handler="org.scoula.common.typehandler.transaction.TransactionStatusTypeHandler"
+                     javaType="org.scoula.domain.transaction.TransactionStatus"/>
+        <typeHandler handler="org.scoula.common.typehandler.transaction.TransactionTypeTypeHandler"
+                     javaType="org.scoula.domain.transaction.TransactionType"/>
+        <typeHandler handler="org.scoula.common.typehandler.transaction.TransactionCategoryTypeHandler"
+                     javaType="org.scoula.domain.transaction.TransactionCategory"/>
+
+        <!-- user -->
+        <typeHandler handler="org.scoula.common.typehandler.user.GenderTypeHandler"
+                     javaType="org.scoula.domain.user.Gender"/>
+
+        <!-- voucher -->
+        <typeHandler handler="org.scoula.common.typehandler.voucher.SeatClassTypeHandler"
+                     javaType="org.scoula.domain.voucher.SeatClass"/>
+    </typeHandlers>
 </configuration>
+

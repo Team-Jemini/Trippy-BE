@@ -8,7 +8,8 @@
         <result property="password" column="password"/>
         <result property="phone" column="phone"/>
         <result property="birth" column="birth"/>
-        <result property="gender" column="gender"/>
+        <result property="gender" column="gender"
+                typeHandler="org.scoula.common.typehandler.user.GenderTypeHandler"/>
         <result property="email" column="email"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>

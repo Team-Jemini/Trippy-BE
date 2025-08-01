@@ -9,7 +9,8 @@
         <result property="userId" column="user_id"/>
         <result property="title" column="title"/>
         <result property="content" column="content"/>
-        <result property="notiType" column="noti_type"/>
+        <result property="notiType" column="noti_type"
+                typeHandler="org.scoula.common.typehandler.notification.NotiTypeTypeHandler"/>
         <result property="amount" column="amount"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
