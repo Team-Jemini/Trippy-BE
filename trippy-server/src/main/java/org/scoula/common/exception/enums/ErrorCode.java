@@ -2,11 +2,9 @@ package org.scoula.common.exception.enums;
 
 import org.springframework.http.HttpStatus;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public enum ErrorCode {
 	//400 BAD REQUEST
 
@@ -25,4 +23,17 @@ public enum ErrorCode {
 
 	private final HttpStatus httpStatus;
 	private final String message;
+
+	ErrorCode(HttpStatus httpStatus, String message) {
+		this.httpStatus = httpStatus;
+		this.message = message;
+	}
+
+	public HttpStatus getHttpStatus() {
+		return httpStatus;
+	}
+
+	public String getMessage() {
+		return message;
+	}
 }
