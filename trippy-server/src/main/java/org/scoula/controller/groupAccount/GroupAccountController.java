@@ -4,7 +4,7 @@ import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
-import org.scoula.service.groupAccount.GroupAccountService;
+import org.scoula.service.groupaccount.GroupAccountService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +25,13 @@ public class GroupAccountController {
 	@PostMapping("/create")
 	public SuccessResponse<GroupAccountCreateResponseDTO> createGroupAccount(
 		@RequestBody GroupAccountCreateRequestDTO requestDTO) {
-		Long userId = 123L;// 토큰에서 userId 구하기
+		log.info("Received Request: {}", requestDTO); // 요청 값 제대로 들어오는지 체크
+		Long userId = 1L;// 토큰에서 userId 구하기
 		GroupAccountCreateResponseDTO response = service.createGroupAccount(requestDTO, userId);
 
 		return SuccessResponse.success(SuccessCode.CREATE_GROUP_ACCOUNT_SUCCESS, response);
 	}
-	//모임계좌 멤버
+	//모임계좌 멤버 조회
 
 	//모임계좌 멤버 초대
 

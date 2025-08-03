@@ -3,7 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.scoula.mapper.account.group.GroupAccountMapper">
-
+    <resultMap id="accountMap" type="org.scoula.domain.account.AccountVO">
+        <id property="accountId" column="account_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="accountName" column="account_name"/>
+        <result property="accountType" column="account_type"
+                typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
+        <result property="ownerId" column="owner_id"/>
+        <result property="balance" column="balance"/>
+        <result property="accountForeign" column="account_foreign"
+                typeHandler="org.scoula.common.typehandler.account.AccountForeignTypeHandler"/>
+        <result property="isDeleted" column="is_deleted"
+                typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
     <insert id="createGroupAccount">
         INSERT into account(account_id, user_id, account_name, account_type, owner_id, balance, account_foreign,
                             is_deleted)
@@ -27,8 +42,18 @@
         FROM account
         WHERE account_id = #{account_id};
     </select>
-    <select id="selectGroupAccountById" resultType="org.scoula.domain.account.AccountVO">
-        SELECT account_id, account_name, created_at
+
+    <select id="selectGroupAccountById" resultMap="accountMap">
+        SELECT account_id,
+               user_id,
+               account_name,
+               account_type,
+               owner_id,
+               balance,
+               account_foreign,
+               is_deleted,
+               created_at,
+               updated_at
         FROM account
         WHERE account_id = #{accountId}
     </select>

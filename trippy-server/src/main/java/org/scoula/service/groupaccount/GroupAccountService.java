@@ -1,4 +1,4 @@
-package org.scoula.service.groupAccount;
+package org.scoula.service.groupaccount;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class GroupAccountService {
 
-	final private GroupAccountMapper mapper;
+	private final GroupAccountMapper mapper;
 
 	// 모임계좌 생성
 	@Transactional
@@ -35,17 +35,18 @@ public class GroupAccountService {
 
 				// 모임주 등록
 				mapper.createGroupAccountMember(
-					AccountConverter.toAccountMemberVO(accountId, userId, accountId, Role.leader));
+					AccountConverter.toAccountMemberVO(accountId, userId, request.mainAccountId(), Role.leader));
 
+				// 모임계좌 정보(생성날짜, 계좌번호, 계좌이름) 불러오기
 				AccountVO account = mapper.selectGroupAccountById(accountId);
 
-				return new GroupAccountCreateResponseDTO(account.getAccountId(), account.getAccountName(),
+				return new GroupAccountCreateResponseDTO(
+					account.getAccountId(),
+					account.getAccountName(),
 					account.getCreatedAt());
 
 			} catch (DuplicateKeyException e) {
 				log.error("중복된 계좌번호 발생! {}", e.getMessage());
-				// 동시성 Race Condition 발생 시 재시도
-				continue;
 			}
 		}
 	}

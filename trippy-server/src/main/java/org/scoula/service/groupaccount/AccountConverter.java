@@ -1,4 +1,4 @@
-package org.scoula.service.groupAccount;
+package org.scoula.service.groupaccount;
 
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.domain.account.AccountForeign;
