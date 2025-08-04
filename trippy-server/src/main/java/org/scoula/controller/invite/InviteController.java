@@ -7,15 +7,15 @@ import org.scoula.controller.invite.dto.response.InviteResponseDTO;
 import org.scoula.service.invite.InviteService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "모임계좌 초대 API")
+@Api(tags = "Group Account")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/invite")
@@ -27,9 +27,8 @@ public class InviteController {
 	@ApiOperation(value = "초대링크 발급", notes = "모임 계좌의 초대 초대 링크를 생성합니다.")
 	@PostMapping("/reissue")
 	public SuccessResponse<InviteResponseDTO> reissueInviteTokenURL(
-		@RequestHeader("Authorization") String assesToken,
+		@RequestParam Long userId,
 		@RequestBody InviteRequestDTO request) {
-		Long userId = 1L; // 토큰에서 userId 구하기
 		String inviteTokenURL =
 			BASE_URL + inviteService.createInviteTokenURL(userId, request.accountId(), request.accountName());
 		InviteResponseDTO inviteResponse = new InviteResponseDTO(inviteTokenURL);
