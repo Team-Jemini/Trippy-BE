@@ -1,5 +1,6 @@
 package org.scoula.controller.groupAccount;
 
+import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
@@ -34,7 +35,7 @@ public class GroupAccountController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "모임계좌 생성이 완료되었습니다", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다")
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@ApiImplicitParam(name = "Authorization", value = "Access Token",
 		required = true, dataType = "string", paramType = "header")
@@ -51,7 +52,7 @@ public class GroupAccountController {
 	}
 
 	//모임계좌 멤버 초대
-
+	
 	//모임계좌 초대링크 생성
 
 	//모임계좌 멤버 조회
