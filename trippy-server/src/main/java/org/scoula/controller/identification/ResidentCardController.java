@@ -16,7 +16,6 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@Log4j2
 @Api(tags = "신분증 관리")
 public class ResidentCardController {
 
