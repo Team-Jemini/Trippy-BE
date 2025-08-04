@@ -1,5 +1,10 @@
 package org.scoula.external.codef.accounts.dto;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class AccountDTO {
     private String resAccount; // 계좌번호
     private String resAccountBalance; // 잔액
