@@ -39,21 +39,26 @@ public class OcrService {
     @Value("${codef.client-secret}")
     private String clientSecret;
 
+
+    /***
+     * 1. 엑세스 토큰 발급
+     * 2. 이미지 → Base64 인코딩 문자열로 변환
+     * 3. OCR 요청 JSON BODY 작성
+     * 4. HTTP 헤더 설정
+     * 5. OCR API 호출
+     * 6. 응답 디코딩
+     * 7. DTO 생성
+     */
     public ResidentCardInquiryDTO callOCRApi(MultipartFile file) {
 
-        // 1. 엑세스 토큰 발급
         String token = getAccessToken();
-        // 2. 이미지 → Base64 인코딩 문자열로 변환
+
         String base64Img = EncodingImageToBase64(file);
-        // 3. OCR 요청 JSON BODY 작성
         Map<String, Object> param = createJsonBody(base64Img);
-        // 4. HTTP 헤더 설정
         HttpHeaders headers = createJsonHeader(token);
-        // 5. OCR API 호출
         ResponseEntity<byte[]> resp = callOcrApi(param, headers);
-        // 6. 응답 디코딩
+
         String decodedJson = decodeResponse(resp);
-        // 7. DTO 생성
         OcrResponseDTO OcrDto = getOcrResponse(decodedJson);
 
         return new ResidentCardInquiryDTO(
