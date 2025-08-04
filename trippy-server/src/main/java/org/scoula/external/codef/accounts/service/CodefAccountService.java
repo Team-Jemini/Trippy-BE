@@ -1,6 +1,8 @@
 package org.scoula.external.codef.accounts.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.scoula.external.codef.accounts.dto.ConnectedIdRequestDTO;
+import org.scoula.external.codef.accounts.dto.ConnectedIdRequestDTOList;
 import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.log4j.Log4j2;
@@ -12,7 +14,9 @@ import org.springframework.web.server.ServerErrorException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
+import java.net.URLDecoder;
 
 @Log4j2
 @Service
@@ -32,6 +36,12 @@ public class CodefAccountService {
 
     @Value("${codef.account.endpoint}")
     private String getAccountUrl;
+
+    @Value("${codef.account.kbBankID}")
+    private String kbBankID;
+
+    @Value("${codef.account.kbBankPW}")
+    private String kbBankPW;
 
     public String getAccessToken() {
 
@@ -61,6 +71,62 @@ public class CodefAccountService {
             return json.get("access_token").toString();
         } catch (Exception e) {
             throw new ServerErrorException("파싱 실패 오류입니다."); // 병현님이 추가해주신 error 메세지 머지되면 수정할 예정입니다.
+        }
+    }
+
+    public String getConnectedId() {
+
+        // HTTP 헤더 설정
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Bearer Access Token 전달
+        String accessToken = getAccessToken();
+        headers.set("Authorization", "Bearer " + accessToken);
+
+        ConnectedIdRequestDTO accountInfo = new ConnectedIdRequestDTO(
+                "KR",
+                "BK",
+                "P",
+                "0004",
+                "1",
+                kbBankID,
+                kbBankPW
+        );
+
+        ConnectedIdRequestDTOList requestDTOList = new ConnectedIdRequestDTOList(List.of(accountInfo));
+
+        try {
+            HttpEntity<ConnectedIdRequestDTOList> request = new HttpEntity<>(requestDTOList, headers);
+            ResponseEntity<String> response = restTemplate.exchange(
+              connectedIdUrl, HttpMethod.POST, request, String.class
+            );
+
+            // URL 인코딩된 Codef 응답을 디코딩
+            String decodedBody = URLDecoder.decode(response.getBody(), StandardCharsets.UTF_8);
+
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> responseBody = mapper.readValue(decodedBody, Map.class);
+
+            Map<String, Object> result = (Map<String, Object>) responseBody.get("result");
+            String code = (String) result.get("code");
+
+//            if ("CF-04003".equals(code)) {
+//                throw new RuntimeException("이미 등록된 계정입니다.");
+//            }
+
+            if (!"CF-00000".equals(code)) {
+                throw new RuntimeException("Connected ID 요청 실패: " + result.get("message"));
+            }
+
+            Map<String, Object> data = (Map<String, Object>) responseBody.get("data");
+            return data != null && data.get("connectedId") != null
+                    ? data.get("connectedId").toString()
+                    : null;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Connected ID 요청 실패", e); // Todo 병현냥 코드 머지되면 에러 로그 교체해두겠습니다!
         }
     }
 }

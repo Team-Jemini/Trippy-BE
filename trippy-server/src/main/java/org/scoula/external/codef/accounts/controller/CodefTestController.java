@@ -19,4 +19,11 @@ public class CodefTestController {
         log.info("컨트롤러에서 받은 AccessToken: {}", accessToken);
         return accessToken;
     }
+
+    @GetMapping("/test/connectedId")
+    public String testConnectedId() {
+        String connectedId = codefAccountService.getConnectedId();
+        log.info("컨트롤러에서 받은 ConnectedId: {}", connectedId);
+        return connectedId;
+    }
 }
