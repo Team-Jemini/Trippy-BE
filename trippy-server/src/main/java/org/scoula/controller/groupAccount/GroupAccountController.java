@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-@Api(tags = "모임계좌 API")
+@Api(tags = "Group Account")
 @RestController
 @RequiredArgsConstructor
 @Log4j2
@@ -52,7 +52,7 @@ public class GroupAccountController {
 	}
 
 	//모임계좌 멤버 초대
-	
+
 	//모임계좌 초대링크 생성
 
 	//모임계좌 멤버 조회
