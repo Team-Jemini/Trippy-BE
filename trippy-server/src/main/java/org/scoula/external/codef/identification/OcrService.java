@@ -54,7 +54,7 @@ public class OcrService {
         // 6. 응답 디코딩
         String decodedJson = decodeResponse(resp);
         // 7. DTO 생성
-        OcrResponseDTO OcrDto = getOcrResponseDTO(decodedJson);
+        OcrResponseDTO OcrDto = getOcrResponse(decodedJson);
 
         return new ResidentCardInquiryDTO(
                 OcrDto.getResUserName(),
@@ -65,7 +65,7 @@ public class OcrService {
         );
     }
 
-    private static OcrResponseDTO getOcrResponseDTO(String decodedJson) {
+    private static OcrResponseDTO getOcrResponse(String decodedJson) {
         // JSON 파싱 후 "data"만 추출
         try {
             ObjectMapper mapper = new ObjectMapper();
