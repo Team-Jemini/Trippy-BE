@@ -2,7 +2,6 @@ package org.scoula.controller.identification;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.scoula.external.codef.identification.OcrService;
 import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
