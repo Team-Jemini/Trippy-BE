@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum SuccessCode {
 
+	FIND_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 전체조회 성공"),
 	REFRESH_SUCCESS(HttpStatus.OK, "토큰 갱신 성공입니다.");
 
 	private final HttpStatus httpStatus;
