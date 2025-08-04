@@ -1,16 +1,9 @@
 package org.scoula.external.codef.identification.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class OcrResponseDTO {
-    private String resIdCardType;
-    private String resUserName;
-    private String resIdCard;
-    private String resIssueDate;
-    private String resUserIdentity;
-}
+public record OcrResponseDTO(
+        String resIdCardType,
+        String resUserName,
+        String resIdCard,
+        String resIssueDate,
+        String resUserIdentity
+) {}
