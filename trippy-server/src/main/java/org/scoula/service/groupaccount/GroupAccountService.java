@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.domain.account.AccountType;
@@ -48,14 +49,14 @@ public class GroupAccountService {
 					account.getCreatedAt());
 
 			} catch (DuplicateKeyException e) {
-				log.warn("중복된 계좌번호 발생! {}", e.getMessage());
+				log.warn(ErrorCode.DUPLICATE_ACCOUNT_ID_EXCEPTION.getMessage());
 			}
 		}
-		throw new RuntimeException("모임계좌 생성 실패: 시도 5회 초과");
+		throw new RuntimeException(ErrorCode.ACCOUNT_CREATION_FAILED.getMessage());
 	}
 
 	// 계좌번호 중복 없을때까지 생성
-	public String checkedCreateGroupId(Long userId) {
+	private String checkedCreateGroupId(Long userId) {
 		int tryCount = 0;
 		while (tryCount++ < 5) {
 			String groupId = createGroupId(userId);
@@ -64,11 +65,11 @@ public class GroupAccountService {
 				return groupId;
 			}
 		}
-		throw new RuntimeException("계좌 번호 중복: 시도 5회 초과");
+		throw new RuntimeException(ErrorCode.ACCOUNT_CREATION_FAILED.getMessage());
 	}
 
 	//모임계좌 id생성(계좌번호) 17자리
-	public String createGroupId(Long userId) {
+	private String createGroupId(Long userId) {
 		String prePix = "0707"; //고유 번호
 
 		// 오늘 날짜 기준 생성된 계좌 수를 카운트해서 사용
