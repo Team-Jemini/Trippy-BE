@@ -1,4 +1,4 @@
-package org.scoula.common.util;
+package org.scoula.common.exception;
 
 import org.scoula.common.exception.enums.ErrorCode;
 import org.springframework.http.ResponseEntity;
