@@ -26,7 +26,8 @@ public class GroupAccountService {
 	// 모임계좌 생성
 	@Transactional
 	public GroupAccountCreateResponseDTO createGroupAccount(GroupAccountCreateRequestDTO request, Long userId) {
-		while (true) {
+		int tryCount = 0;
+		while (tryCount++ < 5) {
 			String accountId = checkedCreateGroupId(userId);
 			try {
 				// 모임계좌 등록
@@ -49,17 +50,20 @@ public class GroupAccountService {
 				log.error("중복된 계좌번호 발생! {}", e.getMessage());
 			}
 		}
+		throw new RuntimeException("모임계좌 생성 실패: 시도 5회 초과");
 	}
 
 	// 계좌번호 중복 없을때까지 생성
 	public String checkedCreateGroupId(Long userId) {
-		while (true) {
+		int tryCount = 0;
+		while (tryCount++ < 5) {
 			String groupId = createGroupId(userId);
 			int count = mapper.existsGroupId(groupId);
 			if (count == 0) {
 				return groupId;
 			}
 		}
+		throw new RuntimeException("계좌 번호 중복: 시도 5회 초과");
 	}
 
 	//모임계좌 id생성(계좌번호) 17자리
