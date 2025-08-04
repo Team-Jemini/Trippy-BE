@@ -20,8 +20,9 @@ import lombok.NoArgsConstructor;
 public class ExchangeRateVO extends BaseTime {
 	private Long exchangeRateId;
 	private String currencyCode;
-	private Integer baseExchangeRate;
-	private Integer rateBuy;
-	private Integer rateSell;
+	private String currencyName;
+	private Double baseExchangeRate;
+	private Double rateBuy;
+	private Double rateSell;
 	private LocalDateTime exchangeRateDate; //환율 고시날짜?
 }
