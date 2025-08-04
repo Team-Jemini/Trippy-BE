@@ -18,13 +18,13 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "신분증 관리")
+@Api(tags = "Resident Card")
 public class ResidentCardController {
 
     @Autowired
     private final OcrService ocrService;
 
-    @ApiOperation(value = "주민등록증 OCR", notes = "주민등록증 OCR을 하는 API")
+    @ApiOperation(value = "[JWT] 주민등록증 OCR", notes = "주민등록증 OCR을 하는 API")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "주민등록증 OCR 성공했습니다.", response = ResidentCardInquiryDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청입니다."),
