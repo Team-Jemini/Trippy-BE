@@ -1,4 +1,4 @@
-package org.scoula.external.codef.dto;
+package org.scoula.external.codef.identification.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

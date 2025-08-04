@@ -1,10 +1,11 @@
-package org.scoula.external.codef;
+package org.scoula.external.codef.identification;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
+import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
-import org.scoula.external.codef.dto.OcrResponseDTO;
+import org.scoula.external.codef.identification.dto.OcrResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.scoula.common.exception.enums.ErrorCode.*;
 
 @Log4j2
 @Service
@@ -36,7 +39,7 @@ public class OcrService {
     @Value("${codef.client-secret}")
     private String clientSecret;
 
-    public ResidentCardInquiryDTO callOCRApi(MultipartFile file) throws IOException {
+    public ResidentCardInquiryDTO callOCRApi(MultipartFile file) {
 
         // 1. 엑세스 토큰 발급
         String token = getAccessToken();
@@ -58,17 +61,19 @@ public class OcrService {
                 OcrDto.getResIssueDate(),
                 OcrDto.getResUserIdentity(),
                 "인천 광역시 중구 일이삼3로 12, 102동 1302호(오류동, 둠칫빰칫2단지)", // 임시
-                Base64.getEncoder().encodeToString(file.getBytes()) // 임시
+                Base64.getEncoder().encodeToString(readByteByFile(file)) // 임시
         );
     }
 
-    private static OcrResponseDTO getOcrResponseDTO(String decodedJson) throws IOException {
+    private static OcrResponseDTO getOcrResponseDTO(String decodedJson) {
         // JSON 파싱 후 "data"만 추출
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode dataNode = mapper.readTree(decodedJson).get("data");
-        // data → DTO 매핑
-        OcrResponseDTO OcrDto = mapper.treeToValue(dataNode, OcrResponseDTO.class);
-        return OcrDto;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode dataNode = mapper.readTree(decodedJson).get("data");
+            return mapper.treeToValue(dataNode, OcrResponseDTO.class);
+        } catch(Exception e){
+            throw new ServerErrorException(PARSING_FAIL_EXCEPTION);
+        }
     }
 
     private static String decodeResponse(ResponseEntity<byte[]> resp) {
@@ -103,10 +108,20 @@ public class OcrService {
         return headers;
     }
 
-    private static String EncodingImageToBase64(MultipartFile file) throws IOException {
-        byte[] imgBytes   = file.getBytes();
-        String base64Img  = Base64.getEncoder().encodeToString(imgBytes);
+    private static String EncodingImageToBase64(MultipartFile file) {
+
+        byte[] imgBytes = readByteByFile(file);
+        String base64Img = Base64.getEncoder().encodeToString(imgBytes);
         return base64Img;
+
+    }
+
+    private static byte[] readByteByFile(MultipartFile file) {
+        try {
+            return file.getBytes();
+        } catch (IOException e) {
+            throw new ServerErrorException(FILE_PROCESSING_EXCEPTION);
+        }
     }
 
     public String getAccessToken(){
@@ -136,7 +151,7 @@ public class OcrService {
             Map<String, Object> json = mapper.readValue(response.getBody(), Map.class);
             return json.get("access_token").toString();
         } catch (Exception e) {
-            throw new RuntimeException("토큰 파싱 실패: " + response.getBody(), e);
+            throw new ServerErrorException(PARSING_FAIL_EXCEPTION);
         }
     }
 }
