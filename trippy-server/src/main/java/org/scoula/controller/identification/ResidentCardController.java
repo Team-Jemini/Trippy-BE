@@ -30,7 +30,7 @@ public class ResidentCardController {
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
     @GetMapping("/ocr")
-    public ResponseEntity<ResidentCardInquiryDTO> requestOcr(
+    public ResponseEntity<ResidentCardInquiryDTO> extractResidentCardInfo(
             @ApiParam(value = "신분증", required = true)
             @RequestParam("file") MultipartFile file) throws IOException {
         ResidentCardInquiryDTO residentCardInquiryDTO = ocrService.callOCRApi(file);
