@@ -24,4 +24,10 @@
         WHERE user_id = #{userId}
     </select>
 
+    <select id="existsById" resultType="boolean" parameterType="long">
+        SELECT COUNT(*) > 0
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>
