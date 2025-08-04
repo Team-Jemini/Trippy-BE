@@ -2,6 +2,7 @@ package org.scoula.service.groupaccount;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
@@ -47,7 +48,7 @@ public class GroupAccountService {
 					account.getCreatedAt());
 
 			} catch (DuplicateKeyException e) {
-				log.error("중복된 계좌번호 발생! {}", e.getMessage());
+				log.warn("중복된 계좌번호 발생! {}", e.getMessage());
 			}
 		}
 		throw new RuntimeException("모임계좌 생성 실패: 시도 5회 초과");
@@ -76,7 +77,7 @@ public class GroupAccountService {
 		String sequencePart = String.format("%05d", todayCount + 1); //계산된 계좌 수 +1 하여 중복처리
 
 		String userIdStr = String.format("%04d", userId % 10000); //userId 나눈 후 4자리로 변환
-		String randomPart = String.format("%04d", (int)(Math.random() * 10000)); //random 4자리
+		String randomPart = String.format("%04d", ThreadLocalRandom.current().nextInt(0, 10000));
 
 		return prePix + "-" + sequencePart + userIdStr + "-" + randomPart;
 	}
