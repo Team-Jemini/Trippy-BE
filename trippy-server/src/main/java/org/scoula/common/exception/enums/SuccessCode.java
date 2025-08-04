@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum SuccessCode {
 
 	REFRESH_SUCCESS(HttpStatus.OK, "토큰 갱신 성공입니다."),
-	CREATE_GROUP_ACCOUNT_SUCCESS(HttpStatus.CREATED, "모임 계좌가 성공적으로 생성되었습니다.");
+	CREATE_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임 계좌가 성공적으로 생성되었습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;
