@@ -112,10 +112,6 @@ public class CodefAccountService {
             Map<String, Object> result = (Map<String, Object>) responseBody.get("result");
             String code = (String) result.get("code");
 
-//            if ("CF-04003".equals(code)) {
-//                throw new RuntimeException("이미 등록된 계정입니다.");
-//            }
-
             if (!"CF-00000".equals(code)) {
                 throw new RuntimeException("Connected ID 요청 실패: " + result.get("message"));
             }
@@ -127,6 +123,43 @@ public class CodefAccountService {
 
         } catch (Exception e) {
             throw new RuntimeException("Connected ID 요청 실패", e); // Todo 병현냥 코드 머지되면 에러 로그 교체해두겠습니다!
+        }
+    }
+
+    public String getAccountList() {
+
+        // HTTP 헤더 설정
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Bearer Access Token 전달
+        String accessToken = getAccessToken();
+        headers.set("Authorization", "Bearer " + accessToken);
+
+        String connectedId = getConnectedId();
+
+        // Body 설정: organization은 임시로 0004(국민은행)으로 지정
+        Map<String, String> requestBody = Map.of(
+                "organization", "0004",
+                "connectedId", connectedId
+        );
+
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    getAccountUrl,
+                    HttpMethod.POST,
+                    request,
+                    String.class
+            );
+
+            String decodedBody = URLDecoder.decode(response.getBody(), StandardCharsets.UTF_8);
+            return decodedBody;
+
+        } catch (Exception e) {
+            throw new RuntimeException("계좌 목록 조회 실패", e);
         }
     }
 }

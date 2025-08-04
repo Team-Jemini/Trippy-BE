@@ -26,4 +26,11 @@ public class CodefTestController {
         log.info("컨트롤러에서 받은 ConnectedId: {}", connectedId);
         return connectedId;
     }
+
+    @GetMapping("/test/accountList")
+    public String testAccountList() {
+        String accountList = codefAccountService.getAccountList();
+        log.info("컨트롤러에서 받은 ConnectedId: {}", accountList);
+        return accountList;
+    }
 }
