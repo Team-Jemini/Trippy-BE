@@ -2,14 +2,25 @@ package org.scoula.common.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
+import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.controller.invite.dto.response.AcceptInviteResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -32,10 +43,49 @@ public class JwtTokenUtil {
 			.claim("accountId", accountId)
 			.claim("userId", userId)
 			.claim("accountName", accountName)
+			.claim("expiryDate", Long.valueOf(expiryDate.getTime()))
 			.setIssuedAt(now)
 			.setExpiration(expiryDate)
 			.signWith(secretKey, SignatureAlgorithm.HS256)
 			.compact();
 	}
 
+	public AcceptInviteResponseDTO parseInviteToken(String token) {
+		try {
+			Jws<Claims> climsJws = Jwts.parserBuilder()
+				.setSigningKey(secretKey)
+				.build()
+				.parseClaimsJws(token);
+
+			Claims claims = climsJws.getBody();
+
+			String accountId = claims.get("accountId", String.class);
+			String accountName = claims.get("accountName", String.class);
+
+			// userId를 안전하게 Number로 받아서 Long 변환 (Integer일 수도 있기 때문)
+			Number userIdNumber = claims.get("userId", Number.class);
+			Long userId = userIdNumber.longValue();
+
+			// expiryDate는 밀리초(Long) -> LocalDateTime으로 변환
+			Number expiryDateNumber = claims.get("expiryDate", Number.class);
+			if (expiryDateNumber == null) {
+				throw new RuntimeException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+			}
+			Long expiryDateMillis = expiryDateNumber.longValue();
+			LocalDateTime expiryDate = LocalDateTime.ofEpochSecond(expiryDateMillis / 1000, 0, ZoneOffset.UTC);
+
+			return new AcceptInviteResponseDTO(accountId, accountName, userId, expiryDate);
+
+		} catch (ExpiredJwtException e) {
+			throw new RuntimeException(ErrorCode.EXPIRED_INVITE_TOKEN.getMessage());
+		} catch (SignatureException e) {
+			throw new SignatureException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+		} catch (MalformedJwtException | UnsupportedJwtException e) {
+			throw new MalformedJwtException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException(ErrorCode.INVALID_REQUEST_PARAMETER.getMessage());
+		} catch (JwtException e) {
+			throw new JwtException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+		}
+	}
 }

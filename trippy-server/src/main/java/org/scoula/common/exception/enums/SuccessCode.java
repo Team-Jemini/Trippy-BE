@@ -9,7 +9,9 @@ public enum SuccessCode {
 
 	REFRESH_SUCCESS(HttpStatus.OK, "토큰 갱신 성공입니다."),
 	CREATE_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임 계좌가 성공적으로 생성되었습니다."),
-	CREATE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 링크가 성공적으로 생성 되었습니다.");
+	CREATE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 링크가 성공적으로 생성 되었습니다."),
+	PARSE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 토큰을 성공적으로 파싱했습니다."),
+	;
 
 	private final HttpStatus httpStatus;
 	private final String message;

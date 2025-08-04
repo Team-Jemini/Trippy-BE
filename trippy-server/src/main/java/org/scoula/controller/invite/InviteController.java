@@ -3,8 +3,10 @@ package org.scoula.controller.invite;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.invite.dto.request.InviteRequestDTO;
+import org.scoula.controller.invite.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.invite.dto.response.InviteResponseDTO;
 import org.scoula.service.invite.InviteService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,5 +35,12 @@ public class InviteController {
 			BASE_URL + inviteService.createInviteTokenURL(userId, request.accountId(), request.accountName());
 		InviteResponseDTO inviteResponse = new InviteResponseDTO(inviteTokenURL);
 		return SuccessResponse.success(SuccessCode.CREATE_INVITE_TOKEN_SUCCESS, inviteResponse);
+	}
+
+	@GetMapping("/token-info")
+	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
+		@RequestParam String token) {
+
+		return SuccessResponse.success(SuccessCode.PARSE_INVITE_TOKEN_SUCCESS, inviteService.parseInviteToken(token));
 	}
 }
