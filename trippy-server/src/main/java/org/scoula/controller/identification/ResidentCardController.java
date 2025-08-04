@@ -2,9 +2,12 @@ package org.scoula.controller.identification;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.scoula.common.dto.SuccessResponse;
+import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.external.codef.identification.OcrService;
 import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,11 +31,10 @@ public class ResidentCardController {
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
     @GetMapping("/ocr")
-    public ResponseEntity<ResidentCardInquiryDTO> extractResidentCardInfo(
+    public SuccessResponse<ResidentCardInquiryDTO> extractResidentCardInfo(
             @ApiParam(value = "주민등록증", required = true)
             @RequestParam("file") MultipartFile file) throws IOException {
-        ResidentCardInquiryDTO residentCardInquiryDTO = ocrService.callOCRApi(file);
 
-        return ResponseEntity.ok(residentCardInquiryDTO);
+        return SuccessResponse.success(SuccessCode.RESIDENT_CARD_OCR_SUCCESS, ocrService.callOCRApi(file));
     }
 }
