@@ -1,7 +1,5 @@
 package org.scoula.domain.voucher;
 
-import java.time.LocalTime;
-
 import org.scoula.domain.BaseTime;
 
 import lombok.AllArgsConstructor;
@@ -28,9 +26,9 @@ public class AirTicketVO extends BaseTime {
 	private String departureCity;
 	private String arrivalCity;
 	private String departureDate;
-	private LocalTime departureTime;
-	private LocalTime boardingTime;
-	private LocalTime arrivalTime;
+	private String departureTime;
+	private String boardingTime;
+	private String arrivalTime;
 	private String terminal;
 	private String gate;
 	private String seat;
