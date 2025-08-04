@@ -74,6 +74,6 @@ public class GroupAccountService {
 		String userIdStr = String.format("%04d", userId % 10000); //userId 나눈 후 4자리로 변환
 		String randomPart = String.format("%04d", (int)(Math.random() * 10000)); //random 4자리
 
-		return prePix + sequencePart + userIdStr + randomPart;
+		return prePix + "-" + sequencePart + userIdStr + "-" + randomPart;
 	}
 }

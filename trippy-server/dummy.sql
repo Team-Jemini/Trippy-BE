@@ -5,4 +5,4 @@ INSERT INTO users (name, password, phone, birth, gender, email, created_at, upda
 VALUES ('강예성', '123456', '010-1234-5678', '1995-08-03', 'M', 'yesung.kang@example.com', NOW(), NOW());
 -- airTicket
 
--- voucher 
+-- voucher
