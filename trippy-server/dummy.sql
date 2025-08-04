@@ -6,3 +6,7 @@ VALUES ('강예성', '123456', '010-1234-5678', '1995-08-03', 'M', 'yesung.kang@
 -- airTicket
 
 -- voucher
+
+delete
+from account_member
+where user_id = 1;

@@ -52,8 +52,6 @@ public class GroupAccountController {
 	}
 
 	//모임계좌 멤버 초대
-	
-	//모임계좌 초대링크 생성
 
 	//모임계좌 멤버 조회
 
