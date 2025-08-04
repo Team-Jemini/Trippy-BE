@@ -7,4 +7,6 @@ import org.scoula.domain.user.UserVO;
 public interface UserMapper {
 
 	UserVO findById(Long userId);
+
+	Boolean existsById(Long userId);
 }
