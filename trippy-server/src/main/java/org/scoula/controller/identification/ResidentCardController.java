@@ -22,15 +22,15 @@ public class ResidentCardController {
     @Autowired
     private final OcrService ocrService;
 
-    @ApiOperation(value = "신분증 OCR", notes = "신분증 OCR을 하는 API")
+    @ApiOperation(value = "주민등록증 OCR", notes = "주민등록증 OCR을 하는 API")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "성공적으로 요청이 처리되었습니다.", response = ResidentCardInquiryDTO.class),
+            @ApiResponse(code = 200, message = "주민등록증 OCR 성공했습니다.", response = ResidentCardInquiryDTO.class),
             @ApiResponse(code = 400, message = "잘못된 요청입니다."),
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
     @GetMapping("/ocr")
     public ResponseEntity<ResidentCardInquiryDTO> extractResidentCardInfo(
-            @ApiParam(value = "신분증", required = true)
+            @ApiParam(value = "주민등록증", required = true)
             @RequestParam("file") MultipartFile file) throws IOException {
         ResidentCardInquiryDTO residentCardInquiryDTO = ocrService.callOCRApi(file);
 
