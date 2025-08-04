@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.scoula.controller.exchange.dto.ExchangeRateApiDTO;
 import org.scoula.controller.exchange.dto.ExchangeRateDTO;
-import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.mapper.exchange.ExchangeRateApiMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -40,7 +37,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     /* 환율 API로 환율 데이터 가져오는 함수 */
     @Override
-//    @Scheduled(cron = " 0 5 11 * * * ") // 11시 5분 스케쥴러 코드 실행
+    @Scheduled(cron = " 0 5 11 * * * ") // 11시 5분 스케쥴러 코드 실행
     @Transactional
     public void fetchAndSaveExchangeRates() {
 
@@ -67,8 +64,6 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
             for (ExchangeRateApiDTO dto : apiDtoList) {
 
                 ExchangeRateDTO entity = new ExchangeRateDTO();
-
-                log.info("dto {}", dto);
 
                 // 통화코드, 국가명 및 통화이름
                 entity.setCurrencyCode(dto.getCurrencyCode());
@@ -98,7 +93,5 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }
