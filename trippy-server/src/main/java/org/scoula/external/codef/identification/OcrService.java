@@ -60,8 +60,7 @@ public class OcrService {
                 OcrDto.getResUserName(),
                 OcrDto.getResIssueDate(),
                 OcrDto.getResUserIdentity(),
-                "인천 광역시 중구 일이삼3로 12, 102동 1302호(오류동, 둠칫빰칫2단지)", // 임시
-                Base64.getEncoder().encodeToString(readByteByFile(file)) // 임시
+                "인천 광역시 중구 일이삼3로 12, 102동 1302호(오류동, 둠칫빰칫2단지)" // 임시
         );
     }
 

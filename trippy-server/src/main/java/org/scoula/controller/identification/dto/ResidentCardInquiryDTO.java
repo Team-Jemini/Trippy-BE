@@ -13,7 +13,5 @@ public record ResidentCardInquiryDTO(
         @ApiModelProperty(value = "주민 등록 번호")
         String resUserIdentity,
         @ApiModelProperty(value = "거주지 주소")
-        String address,
-        @ApiModelProperty(value = "신분증 사진")
-        String photo
+        String address
 ) {}
