@@ -20,7 +20,9 @@ public enum ErrorCode {
 	//409 CONFLICT
 
 	//500
-	INTERNAL_SERVER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다.");
+	INTERNAL_SERVER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
+	FILE_PROCESSING_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "파일 처리 오류입니다."),
+	PARSING_FAIL_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "파싱 실패 오류입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;
