@@ -57,9 +57,9 @@ public class OcrService {
         OcrResponseDTO OcrDto = getOcrResponse(decodedJson);
 
         return new ResidentCardInquiryDTO(
-                OcrDto.getResUserName(),
-                OcrDto.getResIssueDate(),
-                OcrDto.getResUserIdentity(),
+                OcrDto.resUserName(),
+                OcrDto.resIssueDate(),
+                OcrDto.resUserIdentity(),
                 "인천 광역시 중구 일이삼3로 12, 102동 1302호(오류동, 둠칫빰칫2단지)" // 임시
         );
     }
