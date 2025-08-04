@@ -103,6 +103,21 @@ dependencies {
     //Swagger
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    // HTTP 요청을 위한 라이브러리
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    // JSON 처리
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+
+    // Base64 인코딩
+    implementation 'commons-codec:commons-codec:1.15'
+
+    // RSA 암호화에 필요한 것들
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+
+    // JSON 사용을 위한 의존성 추가
+    implementation 'org.json:json:20240303'
 }
 
 
