@@ -27,4 +27,37 @@
                  )
     </insert>
 
+    <select id="findByUserId" resultMap="cardMap">
+        SELECT * FROM card WHERE user_id = #{userId}
+    </select>
+
+    <!-- 카드 요약 정보 조회 -->
+    <select id="getCardSummaries" resultType="org.scoula.controller.card.dto.response.CardSummaryResponseDTO">
+        SELECT
+            card_id AS cardId,
+            user_id AS userId,
+            account_id AS accountId,
+            card_name AS cardName,
+            card_img AS cardImg,
+            is_main_card AS isMainCard,
+            card_nickname AS cardNickname
+        FROM card
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 카드 상세 정보 조회 -->
+    <select id="getCardDetails" resultType="org.scoula.controller.card.dto.response.CardDetailResponseDTO">
+        SELECT
+            card_id AS cardId,
+            user_id AS userId,
+            account_id AS accountId,
+            card_number AS cardNumber,
+            card_name AS cardName,
+            card_nickname AS cardNickname,
+            field,
+            is_main_card AS isMainCard
+        FROM card
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>
