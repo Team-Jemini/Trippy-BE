@@ -19,10 +19,10 @@ public class InviteService {
 
 	private final JwtTokenUtil jwtTokenUtil;
 	private final String BASE_URL = "http://localhost:5173/?token=";
-	private final GroupAccountMapper mapper;
+	private final GroupAccountMapper groupAccountmapper;
 
 	public InviteResponseDTO createInviteTokenURL(Long userId, String accountId, String accountName) {
-		String userName = mapper.selectUserName(userId);
+		String userName = groupAccountmapper.selectUserName(userId);
 		return new InviteResponseDTO(
 			BASE_URL + jwtTokenUtil.createInviteToken(userId, userName, accountId, accountName));
 	}
@@ -30,7 +30,7 @@ public class InviteService {
 	public AcceptInviteResponseDTO parseInviteToken(Long userId, String token) {
 
 		AcceptInviteResponseDTO response = jwtTokenUtil.parseInviteToken(token);
-		int count = mapper.searchJoinUser(userId, response.accountId());
+		int count = groupAccountmapper.searchJoinUser(userId, response.accountId());
 		if (count > 0) {
 			throw new TrippyException(ErrorCode.ALREADY_INVITED);
 		}

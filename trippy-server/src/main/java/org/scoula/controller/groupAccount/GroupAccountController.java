@@ -60,7 +60,7 @@ public class GroupAccountController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "초대링크 생성 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다")
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
 	})
 	@PostMapping("/invite/reissue")
 	public SuccessResponse<InviteResponseDTO> reissueInviteTokenURL(
@@ -71,11 +71,11 @@ public class GroupAccountController {
 			inviteService.createInviteTokenURL(userId, request.accountId(), request.accountName()));
 	}
 
-	@ApiOperation(value = "초대 토큰 파싱", notes = "초대 링크의 토큰을 파싱하여 모임 정보를 반환합니다.")
+	@ApiOperation(value = "[JWT] 초대 토큰 파싱", notes = "초대 링크의 토큰을 파싱하여 모임 정보를 반환합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "초대 토큰 파싱 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다")
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
 	})
 	@GetMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
