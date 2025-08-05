@@ -17,5 +17,20 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+    
+    <select id="getAllTravelLogs" resultType="org.scoula.domain.travel.TravelLogVO">
+        SELECT
+            travel_id AS travelId,
+            user_id AS userId,
+            title,
+            travel_begin_date AS travelBeginDate,
+            travel_end_date AS travelEndDate,
+            destination,
+            is_generated AS isGenerated,
+            travel_img AS travelImg,
+            created_date,
+            modified_date
+        FROM travel_log
+    </select>
 
 </mapper>
