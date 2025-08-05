@@ -5,7 +5,7 @@
 <mapper namespace="org.scoula.mapper.voucher.AccommodationMapper">
 
     <resultMap id="accommodationMap" type="org.scoula.domain.voucher.AccommodationVO">
-        <id property="reservationCode" column="reservation_code"/>
+        <id property="accommodationId" column="reservation_code"/>
         <result property="userId" column="user_id"/>
         <result property="accommodationName" column="accommodation_name"/>
         <result property="roomName" column="room_name"/>
@@ -13,6 +13,8 @@
         <result property="reservationEndDate" column="reservation_end_date"/>
         <result property="checkIn" column="check_in"/>
         <result property="checkOut" column="check_out"/>
+        <result property="address" column="address"/>
+        <result property="contact" column="contact"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
@@ -23,6 +25,12 @@
         FROM accommodation
         WHERE user_id = #{userId}
         ORDER BY check_out DESC
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="accommodationMap">
+        SELECT *
+        FROM accommodation
+        WHERE reservation_code = #{accommodationId}
     </select>
 
 </mapper>
