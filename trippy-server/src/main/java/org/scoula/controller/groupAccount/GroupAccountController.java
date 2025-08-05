@@ -1,9 +1,11 @@
 package org.scoula.controller.groupAccount;
 
 import org.scoula.common.dto.ErrorResponse;
+import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
+import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
@@ -12,6 +14,7 @@ import org.scoula.service.groupaccount.GroupAccountService;
 import org.scoula.service.groupaccount.InviteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,7 +83,14 @@ public class GroupAccountController {
 		return SuccessResponse.success(SuccessCode.PARSE_INVITE_TOKEN_SUCCESS, inviteService.parseInviteToken(token));
 	}
 
-	//모임계좌 멤버 조회
+	@PutMapping("/join")
+	public SuccessNonDataResponse joinGroupAccount(
+		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@ApiParam(value = "모임계좌 ID", required = true) @RequestBody GroupAccountJoinRequestDTO request
+	) {
+		inviteService.joinGroupAccount(userId, request);
+		return SuccessNonDataResponse.success(SuccessCode.JOIN_GROUP_ACCOUNT_SUCCESS);
+	}
 
 	//모임계좌 상세보기
 

@@ -1,6 +1,7 @@
 package org.scoula.service.groupaccount;
 
 import org.scoula.common.util.JwtTokenUtil;
+import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
 import org.scoula.mapper.account.group.GroupAccountMapper;
@@ -26,5 +27,10 @@ public class InviteService {
 
 	public AcceptInviteResponseDTO parseInviteToken(String token) {
 		return jwtTokenUtil.parseInviteToken(token);
+	}
+
+	public void joinGroupAccount(Long userId, GroupAccountJoinRequestDTO request) {
+		mapper.groupAccountJoin(
+			AccountConverter.toAccountMemberVO(request.joinAccountId(), userId, request.mainAccountId()));
 	}
 }

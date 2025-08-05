@@ -23,4 +23,6 @@ public interface GroupAccountMapper {
 	AccountVO selectGroupAccountById(String accountId);
 
 	String selectUserName(Long accountId);
+
+	void groupAccountJoin(AccountMemberVO member);
 }
