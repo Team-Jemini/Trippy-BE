@@ -6,7 +6,9 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
+
 	//400 BAD REQUEST
+	SIGHTSEEING_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "관광바우처 정보가 잘못되었습니다."),
 
 	//401 UNAUTHORIZED _인증
 	TOKEN_NOT_CONTAINED_EXCEPTION(HttpStatus.UNAUTHORIZED, "Access Token이 필요합니다."),
@@ -15,7 +17,7 @@ public enum ErrorCode {
 	//404 NOT FOUND
 	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
 	AIR_TICKET_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 항공권Id가 존재하지 않습니다."),
-	ACCOMMODATION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 숙소가 존재하지 않습니다."),
+	ACCOMMODATION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 숙소가 존재하지 않습니다."), //관광 바우처 이미지가 잘못되었습니다
 
 	//405 METHOD_NOT_ALLOWED
 
