@@ -18,14 +18,13 @@ public class CodefAccountController {
 
     @ApiOperation(value = "개인 계좌 조회", notes = "Codef 개인 계좌 조회 API입니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Codef 계좌가 조회되었습니다.", response = SuccessResponse.class),
+            @ApiResponse(code = 200, message = "Codef 계좌가 성공적으로 조회되었습니다.", response = SuccessResponse.class),
             @ApiResponse(code = 400, message = "잘못된 요청입니다."),
             @ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
     })
     @PostMapping("/sync")
     public SuccessResponse<AccountVO> saveCodefAccount(@RequestParam Long userId) {
         codefAccountService.saveAccountsToDB(userId);
-        // Todo 여기 성공 메세지 수정해야함
-        return SuccessResponse.success(SuccessCode.REFRESH_SUCCESS, null);
+        return SuccessResponse.success(SuccessCode.GET_CODEF_DATA_SUCCESS, null);
     }
 }
