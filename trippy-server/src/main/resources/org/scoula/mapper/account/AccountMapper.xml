@@ -30,4 +30,11 @@
             SELECT 1 FROM account WHERE account_id = #{accountId}
         )
     </select>
+
+    <select id="findAllByUserIdOrderByUpdatedAt" resultMap="accountMap" parameterType="long">
+        SELECT *
+        FROM account
+        WHERE user_id = #{userId}
+        ORDER BY updated_at DESC
+    </select>
 </mapper>
