@@ -17,8 +17,8 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
-    
-    <select id="getAllTravelLogs" resultType="org.scoula.domain.travel.TravelLogVO">
+
+    <select id="getAllTravelLogs" parameterType="long" resultType="org.scoula.domain.travel.TravelLogVO">
         SELECT
             travel_id AS travelId,
             user_id AS userId,
@@ -28,9 +28,12 @@
             destination,
             is_generated AS isGenerated,
             travel_img AS travelImg,
-            created_date,
-            modified_date
+            created_at AS createdAt,
+            updated_at AS updatedAt
         FROM travel_log
+        WHERE user_id = #{userId}
+        ORDER BY travel_begin_date DESC
     </select>
+
 
 </mapper>

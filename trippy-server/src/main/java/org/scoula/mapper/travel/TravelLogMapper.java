@@ -6,5 +6,5 @@ import org.scoula.domain.travel.TravelLogVO;
 
 @Mapper
 public interface TravelLogMapper {
-    List<TravelLogVO> getAllTravelLogs();
+    List<TravelLogVO> getAllTravelLogs(Long userID);
 }
