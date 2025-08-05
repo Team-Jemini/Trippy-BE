@@ -3,7 +3,6 @@ package org.scoula.domain.identification;
 import lombok.*;
 import org.scoula.domain.BaseTime;
 
-@Data
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
