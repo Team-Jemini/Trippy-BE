@@ -8,4 +8,6 @@ import org.scoula.domain.voucher.SightseeingVO;
 @Mapper
 public interface SightseeingMapper {
 	List<SightseeingVO> findAllByUserIdOrderByViewingDateDesc(Long userId);
+
+	void save(SightseeingVO sightseeingVO);
 }

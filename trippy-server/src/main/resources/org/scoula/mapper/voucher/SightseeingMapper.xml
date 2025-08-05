@@ -22,4 +22,10 @@
         ORDER BY viewing_date DESC
     </select>
 
+    <insert id="save" parameterType="org.scoula.domain.voucher.SightseeingVO" useGeneratedKeys="true"
+            keyProperty="voucherId">
+        INSERT INTO sightseeing (user_id, name, viewing_date, voucher_img, created_at, updated_at)
+        VALUES (#{userId}, #{name}, #{viewingDate}, #{voucherImg}, NOW(), NOW())
+    </insert>
+
 </mapper>
