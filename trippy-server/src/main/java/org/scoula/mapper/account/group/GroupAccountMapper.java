@@ -28,4 +28,8 @@ public interface GroupAccountMapper {
 	int searchJoinUser(@Param("userId") Long userId, @Param("accountId") String accountId);
 
 	void groupAccountJoin(AccountMemberVO member);
+
+	int validateAccountIsGroupAccount(String accountId);
+
+	int existsAccountById(String accountId);
 }

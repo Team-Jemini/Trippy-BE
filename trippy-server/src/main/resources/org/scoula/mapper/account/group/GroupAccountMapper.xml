@@ -74,4 +74,15 @@
         where user_id = #{userId}
           and account_id = #{accountId};
     </select>
+    <select id="validateAccountIsGroupAccount" resultType="java.lang.Integer">
+        select count(*)
+        from account
+        where account_id = #{accountId}
+          and account_type = "group";
+    </select>
+    <select id="existsAccountById" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM account
+        WHERE account_id = #{account_id};
+    </select>
 </mapper>

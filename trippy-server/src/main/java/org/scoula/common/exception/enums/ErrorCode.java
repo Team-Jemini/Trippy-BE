@@ -10,6 +10,7 @@ public enum ErrorCode {
 	INVALID_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 	INVALID_INVITE_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 초대 링크입니다."),
 	EXPIRED_INVITE_TOKEN(HttpStatus.BAD_REQUEST, "초대 수락 가능 기간이 지났습니다."),
+	NOT_GROUP_ACCOUNT(HttpStatus.BAD_REQUEST, "모임계좌가 아닌 계좌입니다."),
 
 	//401 UNAUTHORIZED _인증
 	TOKEN_NOT_CONTAINED_EXCEPTION(HttpStatus.UNAUTHORIZED, "Access Token이 필요합니다."),
