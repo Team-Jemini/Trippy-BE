@@ -10,8 +10,9 @@ import org.scoula.domain.BaseTime;
 @EqualsAndHashCode(callSuper = true)
 public class IdCardVO extends BaseTime {
 	private Long userId;
-	private String idCardNum;
-	private String idCardDate;
 	private String name;
+	private String idCardNum;
 	private String address;
+	private String idCardDate;
+	private String imgUrl;
 }
