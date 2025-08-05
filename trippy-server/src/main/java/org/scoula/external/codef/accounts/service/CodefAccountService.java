@@ -189,6 +189,12 @@ public class CodefAccountService {
                     ((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
 
             for (Map<String, Object> account : accountList) {
+                String accountId = (String) account.get("resAccount");
+                if (accountMapper.existsByAccountId(accountId)) {
+                    log.info("중복 계좌 건너뜀: {}", accountId);
+                    continue;
+                }
+
                 String balanceStr = (String) account.get("resAccountBalance");
                 Long balance = 0L;
                 if (balanceStr != null && !balanceStr.isEmpty()) {

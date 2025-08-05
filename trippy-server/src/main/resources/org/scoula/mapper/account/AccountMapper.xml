@@ -24,4 +24,10 @@
         INSERT INTO account (account_id, user_id, account_name, account_type, owner_id, balance, account_currency, is_deleted)
         VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountCurrency}, #{isDeleted})
     </insert>
+
+    <select id="existsByAccountId" resultType="boolean" parameterType="string">
+        SELECT EXISTS (
+            SELECT 1 FROM account WHERE account_id = #{accountId}
+        )
+    </select>
 </mapper>
