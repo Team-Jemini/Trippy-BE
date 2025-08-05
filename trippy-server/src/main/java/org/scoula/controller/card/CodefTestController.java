@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/test/codef")
-@Api(tags = "CODEF 카드 API")
+@Api(tags = "Payment")
 public class CodefTestController {
 
 	private final CodefCardService cardService;
