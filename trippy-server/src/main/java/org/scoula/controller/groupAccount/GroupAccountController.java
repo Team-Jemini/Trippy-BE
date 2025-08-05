@@ -1,5 +1,7 @@
 package org.scoula.controller.groupAccount;
 
+import java.util.List;
+
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
@@ -8,9 +10,11 @@ import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestD
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountMemberResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
 import org.scoula.service.groupaccount.GroupAccountService;
 import org.scoula.service.groupaccount.InviteService;
+import org.scoula.service.groupaccount.MemberService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +38,7 @@ public class GroupAccountController {
 
 	private final GroupAccountService service;
 	private final InviteService inviteService;
+	private final MemberService memberService;
 
 	@ApiOperation(value = "[JWT] 모임계좌 생성", notes = "모임계좌 생성 및 모임주를 등록하는 API입니다.")
 	@ApiResponses(value = {
@@ -85,6 +90,12 @@ public class GroupAccountController {
 
 	//모임계좌 멤버 조회
 
+	@GetMapping("/members")
+	public List<GroupAccountMemberResponseDTO> getGroupAccountMembers(
+		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId
+	) {
+		return memberService.getGroupAccountMembers(accountId);
+	}
 	//모임계좌 상세보기
 
 	//정산 요청하기
