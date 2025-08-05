@@ -1,16 +1,11 @@
 package org.scoula.common.util;
 
-import org.springframework.web.server.ServerErrorException;
+import org.scoula.common.exception.model.ServerErrorException;
+import static org.scoula.common.exception.enums.ErrorCode.*;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
 import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
@@ -24,7 +19,7 @@ public class CodefRsaUtil {
             String encrypted = encryptRSA(plainText, base64PublicKey);
             return encrypted;
         } catch (Exception e) {
-            throw new ServerErrorException("비밀번호 암호화 실패", e);
+            throw new ServerErrorException(PASSWORD_ENCRYPTION_FAILED);
         }
     }
 

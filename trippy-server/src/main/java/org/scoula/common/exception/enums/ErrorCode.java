@@ -29,6 +29,7 @@ public enum ErrorCode {
 	CREATE_CONNECTED_ID_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "은행 인증 ID 생성에 실패했습니다."),
 	GET_ACCOUNTS_LIST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 목록 조회에 실패했습니다."),
 	SAVE_ACCOUNTS_LIST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 목록 저장에 실패했습니다."),
+	PASSWORD_ENCRYPTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 암호화 실패"),
 	;
 
 	private final HttpStatus httpStatus;
