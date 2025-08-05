@@ -105,6 +105,7 @@ CREATE TABLE id_card
     id_card_num  VARCHAR(100),
     id_card_date VARCHAR(20),
     name         VARCHAR(100),
+    address      VARCHAR(100),
     created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id)

@@ -1,13 +1,7 @@
 package org.scoula.domain.identification;
 
+import lombok.*;
 import org.scoula.domain.BaseTime;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Data
 @Getter
@@ -20,4 +14,5 @@ public class IdCardVO extends BaseTime {
 	private String idCardNum;
 	private String idCardDate;
 	private String name;
+	private String address;
 }
