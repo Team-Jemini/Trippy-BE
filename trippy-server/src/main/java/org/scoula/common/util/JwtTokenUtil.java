@@ -7,6 +7,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -68,7 +69,7 @@ public class JwtTokenUtil {
 
 			Number expiryDateNumber = claims.get("expiryDate", Number.class);
 			if (expiryDateNumber == null) {
-				throw new RuntimeException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+				throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
 			}
 			Long expiryDateMillis = expiryDateNumber.longValue();
 			LocalDateTime expiryDate = LocalDateTime.ofEpochSecond(expiryDateMillis / 1000, 0, ZoneOffset.UTC);
@@ -76,15 +77,15 @@ public class JwtTokenUtil {
 			return new AcceptInviteResponseDTO(accountId, accountName, userId, userName, expiryDate);
 
 		} catch (ExpiredJwtException e) {
-			throw new RuntimeException(ErrorCode.EXPIRED_INVITE_TOKEN.getMessage());
+			throw new TrippyException(ErrorCode.EXPIRED_INVITE_TOKEN);
 		} catch (SignatureException e) {
-			throw new SignatureException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+			throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
 		} catch (MalformedJwtException | UnsupportedJwtException e) {
-			throw new MalformedJwtException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+			throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException(ErrorCode.INVALID_REQUEST_PARAMETER.getMessage());
+			throw new TrippyException(ErrorCode.INVALID_REQUEST_PARAMETER);
 		} catch (JwtException e) {
-			throw new JwtException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
+			throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
 		}
 	}
 }
