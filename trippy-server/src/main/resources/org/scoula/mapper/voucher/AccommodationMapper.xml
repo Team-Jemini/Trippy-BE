@@ -17,4 +17,12 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <select id="findAllByUserIdOrderByCheckOutDesc" parameterType="long" resultMap="accommodationMap">
+        SELECT *
+        FROM accommodation
+        WHERE user_id = #{userId}
+        ORDER BY check_out DESC
+    </select>
+
 </mapper>
