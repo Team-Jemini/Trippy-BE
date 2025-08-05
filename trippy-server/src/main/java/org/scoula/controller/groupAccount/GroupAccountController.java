@@ -87,7 +87,7 @@ public class GroupAccountController {
 
 	@ApiOperation(value = "[JWT]모임계좌 참여", notes = "모임계좌에 참여합니다.")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "모암계좌에 가입 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 200, message = "모임계좌에 가입 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
