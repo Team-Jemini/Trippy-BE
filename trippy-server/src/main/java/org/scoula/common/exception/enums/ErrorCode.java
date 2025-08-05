@@ -13,6 +13,7 @@ public enum ErrorCode {
 	TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다. 다시 로그인 해주세요."),
 
 	//404 NOT FOUND
+	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
 	EXCHANGE_RATE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "환율 API 호출 중 오류 발생했습니다."),
 
 	//405 METHOD_NOT_ALLOWED
@@ -21,8 +22,12 @@ public enum ErrorCode {
 
 	//500
 	INTERNAL_SERVER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
-	EXCHANGE_RATE_SAVE_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "환율 저장 중 오류 발생했습니다.");
-
+	FILE_PROCESSING_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "파일 처리 오류입니다."),
+	PARSING_FAIL_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "파싱 실패 오류입니다."),
+	ACCOUNT_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "모임계좌 생성 실패: 시도 5회 초과"),
+	ACCOUNT_ID_DUPLICATION(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 번호 중복: 시도 5회 초과"),
+	DUPLICATE_ACCOUNT_ID_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 계좌번호입니다."),
+	;
 	private final HttpStatus httpStatus;
 	private final String message;
 
