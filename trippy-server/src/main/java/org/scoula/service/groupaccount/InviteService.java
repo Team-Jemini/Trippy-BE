@@ -59,6 +59,13 @@ public class InviteService {
 			AccountConverter.toAccountMemberVO(response.accountId(), userId, request.mainAccountId()));
 	}
 
+	private void validateAccountExistence(String accountId) {
+		int accountCheckedCount = groupAccountmapper.existsAccountById(accountId);
+		if (accountCheckedCount == 0) {
+			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
+		}
+	}
+
 	private void validateAccountIsGroupAccount(String accountId) {
 		int accountCheckedCount = groupAccountmapper.validateAccountIsGroupAccount(accountId);
 		if (accountCheckedCount == 0) {
@@ -73,10 +80,4 @@ public class InviteService {
 		}
 	}
 
-	private void validateAccountExistence(String accountId) {
-		int accountCheckedCount = groupAccountmapper.existsAccountById(accountId);
-		if (accountCheckedCount == 0) {
-			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
-		}
-	}
 }
