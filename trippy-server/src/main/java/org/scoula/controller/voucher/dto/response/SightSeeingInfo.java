@@ -4,12 +4,14 @@ import org.scoula.common.util.DateFormatUtil;
 import org.scoula.domain.voucher.SightseeingVO;
 
 public record SightSeeingInfo(
+	Long sightseeingId,
 	String name,
 	String viewingDate,
 	String voucherImg
 ) {
 	public static SightSeeingInfo from(SightseeingVO vo) {
 		return new SightSeeingInfo(
+			vo.getSightseeingId(),
 			vo.getName(),
 			DateFormatUtil.formatDateTime(vo.getViewingDate()),
 			vo.getVoucherImg()
