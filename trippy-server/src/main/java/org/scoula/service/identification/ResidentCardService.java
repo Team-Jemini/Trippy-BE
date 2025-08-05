@@ -27,6 +27,7 @@ public class ResidentCardService {
                 residentCardInfo.getIdCardDate(),
                 residentCardInfo.getIdCardNum(),
                 residentCardInfo.getAddress(),
+                residentCardInfo.getImgUrl(),
                 qrUrl
         );
     }
