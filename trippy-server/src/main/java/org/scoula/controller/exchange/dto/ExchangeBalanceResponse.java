@@ -1,8 +1,7 @@
-package org.scoula.service.exchange;
-
-import org.scoula.controller.exchange.dto.ExchRateAneBalanceResponse;
+package org.scoula.controller.exchange.dto;
 
 public class ExchangeBalanceResponse extends ExchRateAneBalanceResponse {
     public ExchangeBalanceResponse(String currencyCode, Double rate, Long krwBalance, Double foreignBalance) {
+
     }
 }

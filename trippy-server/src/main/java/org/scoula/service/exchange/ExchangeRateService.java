@@ -3,6 +3,7 @@ package org.scoula.service.exchange;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.scoula.controller.exchange.dto.ExchRateAneBalanceResponse;
+import org.scoula.controller.exchange.dto.ExchangeBalanceResponse;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.mapper.exchange.ExchangeRateMapper;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class ExchangeRateService {
         return mapper.getExchangeRateList();
     }
 
-    /* 환전 기능 ( 작성 중 )*/
+    /* 환전 기능 (작성 중) */
     public ExchRateAneBalanceResponse getRatesAndBalance(String currencyCode, Long accountId) {
         Double rate = mapper.findTodayRateByCurrencyCode(currencyCode);
         Long krwBalance = mapper.findKrwBalanceByAccountId(accountId);

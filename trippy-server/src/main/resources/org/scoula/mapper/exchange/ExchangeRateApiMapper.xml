@@ -16,7 +16,7 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
-    <insert id="saveDataToVO" useGeneratedKeys="true" keyProperty="exchangeRateId">
+    <insert id="save" useGeneratedKeys="true" keyProperty="exchangeRateId">
         insert into exchange_rate ( currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date, created_at, updated_at)
         values ( #{currencyCode}, #{currencyName}, #{baseExchangeRate}, #{rateBuy}, #{rateSell}, #{exchangeRateDate}, #{createdAt}, #{updatedAt})
     </insert>

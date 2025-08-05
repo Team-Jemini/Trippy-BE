@@ -23,13 +23,5 @@ public class ExchangeRateVO extends BaseTime {
 	private Double baseExchangeRate;
 	private Double rateBuy;
 	private Double rateSell;
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime exchangeRateDate; //환율 고시날짜?
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime createdAt;
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime updatedAt;
+	private LocalDateTime exchangeRateDate; //환율 고시날짜
 }
