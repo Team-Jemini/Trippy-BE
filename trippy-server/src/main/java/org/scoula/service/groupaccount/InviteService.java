@@ -45,7 +45,7 @@ public class InviteService {
 	 * 계좌가 있는지 체크
 	 * 해지된 계좌인지 체크
 	 * 계좌가 모임계좌이지 체크
-	 * 사용자가 참여한 계좌이지 체크
+	 * 사용자가 참여한 계좌인지 체크
 	 */
 	public void joinGroupAccount(Long userId, GroupAccountJoinRequestDTO request) {
 
