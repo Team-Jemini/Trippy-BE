@@ -2,6 +2,9 @@ package org.scoula.service.voucher;
 
 import java.util.List;
 
+import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.NotFoundException;
+import org.scoula.controller.voucher.dto.response.AccommodationDetailDto;
 import org.scoula.controller.voucher.dto.response.AccommodationInfo;
 import org.scoula.controller.voucher.dto.response.SightSeeingInfo;
 import org.scoula.controller.voucher.dto.response.VoucherDto;
@@ -44,6 +47,21 @@ public class VoucherService {
 			.toList();
 
 		return new VoucherDto(accommodationInfos, sightseeingInfos);
+	}
+
+	/***
+	 * 숙소 예약 상세 조회
+	 * @param userId
+	 * @param accommodationId
+	 * @return AccommodationDetailDto
+	 */
+	public AccommodationDetailDto getDetailAccommodation(final Long userId, final String accommodationId) {
+		AccommodationVO accommodationVO = accommodationMapper.findById(accommodationId);
+		if (accommodationVO == null) {
+			throw new NotFoundException(ErrorCode.ACCOMMODATION_NOT_FOUND_EXCEPTION);
+		}
+
+		return AccommodationDetailDto.from(accommodationVO, userService.geteUserName(userId));
 	}
 
 }
