@@ -9,7 +9,7 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.scoula.controller.exchange.dto.ExchRateAneBalanceResponse;
+import org.scoula.controller.exchange.dto.ExchRateAndBalanceResponse;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.external.exchange.ExchangeRateAPIService;
 import org.scoula.service.exchange.ExchangeRateService;
@@ -53,9 +53,14 @@ public class ExchangeController {
      * @return
      */
     @GetMapping("/getBalance")
-    public ResponseEntity<ExchRateAneBalanceResponse> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam Long accountId) {
-        ExchRateAneBalanceResponse response = ExchangeRateservice.getRatesAndBalance(currencyCode, accountId);
+    public ResponseEntity<ExchRateAndBalanceResponse> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam Long accountId) {
+        ExchRateAndBalanceResponse response = ExchangeRateservice.getRatesAndBalance(currencyCode, accountId);
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/doExchange")
+    public ResponseEntity<ExchRateAndBalanceResponse> doExchange(@RequestBody ExchRateAndBalanceResponse exchRateAndBalanceResponse) {
+        ExchRateAndBalanceResponse response = ExchangeRateservice.doExchange(exchRateAndBalanceResponse);
+        return ResponseEntity.ok(response);
+    }
 }
