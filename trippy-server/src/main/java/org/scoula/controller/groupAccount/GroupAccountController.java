@@ -88,13 +88,18 @@ public class GroupAccountController {
 			inviteService.parseInviteToken(userId, token.token()));
 	}
 
-	//모임계좌 멤버 조회
-
+	@ApiOperation(value = "모임 계좌 멤버조회", notes = "모임 계좌 멤버조회.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "모임 계좌 멤버조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
+	})
 	@GetMapping("/members")
-	public List<GroupAccountMemberResponseDTO> getGroupAccountMembers(
+	public SuccessResponse<List<GroupAccountMemberResponseDTO>> getGroupAccountMembers(
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId
 	) {
-		return memberService.getGroupAccountMembers(accountId);
+		return SuccessResponse.success(SuccessCode.FIND_GROUP_ACCOUNT_MEMBER_SUCCESS,
+			memberService.getGroupAccountMembers(accountId));
 	}
 	//모임계좌 상세보기
 
