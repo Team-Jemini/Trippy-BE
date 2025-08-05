@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
 import org.scoula.mapper.travel.TravelLogMapper;
 import org.scoula.service.user.UserService;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -19,17 +19,7 @@
     </resultMap>
 
     <select id="getAllTravelLogs" parameterType="long" resultType="org.scoula.domain.travel.TravelLogVO">
-        SELECT
-            travel_id AS travelId,
-            user_id AS userId,
-            title,
-            travel_begin_date AS travelBeginDate,
-            travel_end_date AS travelEndDate,
-            destination,
-            is_generated AS isGenerated,
-            travel_img AS travelImg,
-            created_at AS createdAt,
-            updated_at AS updatedAt
+        SELECT *
         FROM travel_log
         WHERE user_id = #{userId}
         ORDER BY travel_begin_date DESC

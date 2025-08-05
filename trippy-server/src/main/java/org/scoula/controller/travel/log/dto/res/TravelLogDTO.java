@@ -1,6 +1,8 @@
 package org.scoula.controller.travel.log.dto.res;
 
 
+import org.scoula.domain.travel.TravelLogVO;
+
 import java.time.LocalDateTime;
 
 public record TravelLogDTO(
@@ -15,7 +17,7 @@ public record TravelLogDTO(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
-    public static TravelLogDTO from(org.scoula.domain.travel.TravelLogVO vo) {
+    public static TravelLogDTO from(TravelLogVO vo) {
         return new TravelLogDTO(
                 vo.getTravelId(),
                 vo.getUserId(),
