@@ -46,10 +46,6 @@ public class GroupAccountController {
 			service.createGroupAccount(request, userId));
 	}
 
-	//모임계좌 멤버 초대
-
-	//모임계좌 초대링크 생성
-
 	//모임계좌 멤버 조회
 
 	//모임계좌 상세보기
