@@ -10,6 +10,7 @@ import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.identification.dto.PassportDTO;
 import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
 import org.scoula.service.identification.PassportService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class PassportController {
             @ApiResponse(code = 400, message = "잘못된 요청입니다."),
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
-    @PostMapping("/passport")
+    @GetMapping("/passport")
     public SuccessResponse<PassportDTO> getPassport(@RequestHeader("X-USER-ID") Long userId){
         return SuccessResponse.success(SuccessCode.PASSPORT_GET_SUCCESS, passportService.getPassport(userId));
     }
