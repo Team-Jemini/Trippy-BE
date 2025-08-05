@@ -4,16 +4,20 @@ import java.util.List;
 
 import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.NotFoundException;
+import org.scoula.controller.voucher.dto.request.SightSeeingDto;
 import org.scoula.controller.voucher.dto.response.AccommodationDetailDto;
 import org.scoula.controller.voucher.dto.response.AccommodationInfo;
 import org.scoula.controller.voucher.dto.response.SightSeeingInfo;
 import org.scoula.controller.voucher.dto.response.VoucherDto;
 import org.scoula.domain.voucher.AccommodationVO;
 import org.scoula.domain.voucher.SightseeingVO;
+import org.scoula.external.s3.S3Service;
 import org.scoula.mapper.voucher.AccommodationMapper;
 import org.scoula.mapper.voucher.SightseeingMapper;
 import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +28,7 @@ public class VoucherService {
 	private final AccommodationMapper accommodationMapper;
 	private final SightseeingMapper sightseeingMapper;
 	private final UserService userService;
+	private final S3Service s3Service;
 
 	/***
 	 * 바우처 전체 조회
@@ -64,4 +69,25 @@ public class VoucherService {
 		return AccommodationDetailDto.from(accommodationVO, userService.geteUserName(userId));
 	}
 
+	/***
+	 * 관광 예약 바우처 생성
+	 * @param userId
+	 * @param sightSeeingDto
+	 * @param sightSeeingVoucherImg
+	 */
+	@Transactional
+	public void createSightseeing(final Long userId, final SightSeeingDto sightSeeingDto, final MultipartFile sightSeeingVoucherImg) {
+		userService.validateUserExists(userId);
+
+		String uploadedUrl = s3Service.uploadSightSeeingImage(sightSeeingVoucherImg);
+
+		SightseeingVO sightseeingVO = SightseeingVO.builder()
+			.userId(userId)
+			.name(sightSeeingDto.name())
+			.viewingDate(sightSeeingDto.viewingDate())
+			.voucherImg(uploadedUrl)
+			.build();
+
+		sightseeingMapper.save(sightseeingVO);
+	}
 }
