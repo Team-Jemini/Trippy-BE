@@ -79,17 +79,7 @@ public class ExchangeRateAPIService {
              * API DTO -> 환율 VO로 변환
              * */
             for (ExchangeRateApiDTO dto : apiDtoList) {
-                Double doubleBaseExchangeRate = dto.getExchangeRateDouble(dto.baseExchangeRate());
-
-                ExchangeRateVO exchangeRateVO = new ExchangeRateVO(
-                        dto.exchangeRateId(),
-                        dto.currencyCode(),
-                        dto.currencyName(),
-                        doubleBaseExchangeRate,
-                        doubleBaseExchangeRate, // rateBuy
-                        doubleBaseExchangeRate, // rateSell
-                        dto.exchangeRateDate()
-                );
+                ExchangeRateVO exchangeRateVO = dto.toExchangeRateVO(dto.baseExchangeRate());
                 exchangeRateApiMapper.save(exchangeRateVO);
             }
         } catch (Exception e) {

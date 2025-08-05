@@ -2,6 +2,7 @@ package org.scoula.external.exchange.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.scoula.domain.exchange.ExchangeRateVO;
 
 import java.time.LocalDateTime;
 
@@ -22,9 +23,22 @@ public record ExchangeRateApiDTO (
     Double rateSell,
     LocalDateTime exchangeRateDate
 ) {
+
     public double getExchangeRateDouble(String baseExchangeRate) {
         String withoutComma = baseExchangeRate.replace(",", "");
         return Double.parseDouble(withoutComma);
+    }
+
+    public ExchangeRateVO toExchangeRateVO(String baseExchangeRate) {
+        return ExchangeRateVO.builder()
+            .exchangeRateId(exchangeRateId)
+            .currencyCode(currencyCode)
+            .currencyName(currencyName)
+            .baseExchangeRate(getExchangeRateDouble(baseExchangeRate))
+            .rateBuy(getExchangeRateDouble(baseExchangeRate))
+            .rateSell(getExchangeRateDouble(baseExchangeRate))
+            .exchangeRateDate(exchangeRateDate)
+            .build();
     }
 
 }
