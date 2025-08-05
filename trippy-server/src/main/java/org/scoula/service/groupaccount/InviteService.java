@@ -30,10 +30,9 @@ public class InviteService {
 	public AcceptInviteResponseDTO parseInviteToken(Long userId, String token) {
 
 		AcceptInviteResponseDTO response = jwtTokenUtil.parseInviteToken(token);
-		int count = groupAccountmapper.searchJoinUser(userId, response.accountId());
-		if (count > 0) {
-			throw new TrippyException(ErrorCode.ALREADY_INVITED);
-		}
+
+		validateUserNotAlreadyJoined(userId, response.accountId());
+
 		return response;
 	}
 
@@ -42,7 +41,6 @@ public class InviteService {
 	 * @param userId
 	 * @param request
 	 * 토큰 분해
-	 *
 	 * 계좌가 있는지 체크
 	 * 계좌가 모임계좌이지 체크
 	 * 사용자가 참여한 계좌이지 체크
