@@ -15,7 +15,8 @@ public record TravelLogDTO(
         Boolean isGenerated,
         String travelImg,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        Integer memberCount
 ) {
     public static TravelLogDTO from(TravelLogVO vo) {
         return new TravelLogDTO(
@@ -28,7 +29,8 @@ public record TravelLogDTO(
                 vo.getIsGenerated(),
                 vo.getTravelImg(),
                 vo.getCreatedAt(),
-                vo.getUpdatedAt()
+                vo.getUpdatedAt(),
+                vo.getMemberCount()
         );
     }
 }
