@@ -25,22 +25,24 @@ public class GroupAccountService {
 
 	private final GroupAccountMapper mapper;
 
-	// 모임계좌 생성
+	/****
+	 * 모임계좌 생성
+	 * @param request
+	 * @param userId
+	 * @return
+	 */
 	@Transactional
 	public GroupAccountCreateResponseDTO createGroupAccount(GroupAccountCreateRequestDTO request, Long userId) {
 		int tryCount = 0;
 		while (tryCount++ < 5) {
 			String accountId = checkedCreateGroupId(userId);
 			try {
-				// 모임계좌 등록
 				mapper.createGroupAccount(
 					AccountConverter.toAccountVO(accountId, userId, AccountType.group, request));
 
-				// 모임주 등록
 				mapper.createGroupAccountMember(
 					AccountConverter.toAccountMemberVO(accountId, userId, request.mainAccountId(), Role.leader));
 
-				// 모임계좌 정보(생성날짜, 계좌번호, 계좌이름) 불러오기
 				AccountVO account = mapper.selectGroupAccountById(accountId);
 
 				return new GroupAccountCreateResponseDTO(
@@ -55,7 +57,11 @@ public class GroupAccountService {
 		throw new RuntimeException(ErrorCode.ACCOUNT_CREATION_FAILED.getMessage());
 	}
 
-	// 계좌번호 중복 없을때까지 생성
+	/****
+	 * 모임계좌 id생성(계좌번호) 17자리
+	 * @param userId
+	 * @return
+	 */
 	private String checkedCreateGroupId(Long userId) {
 		int tryCount = 0;
 		while (tryCount++ < 5) {
@@ -68,16 +74,17 @@ public class GroupAccountService {
 		throw new RuntimeException(ErrorCode.ACCOUNT_CREATION_FAILED.getMessage());
 	}
 
-	//모임계좌 id생성(계좌번호) 17자리
+	/****
+	 * 모임계좌번호 생성
+	 * @param userId
+	 * @return
+	 */
 	private String createGroupId(Long userId) {
-		String prePix = "0707"; //고유 번호
-
-		// 오늘 날짜 기준 생성된 계좌 수를 카운트해서 사용
-		String datePart = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE); // yyyyMMdd
+		String prePix = "0707";
+		String datePart = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
 		Long todayCount = mapper.countGroupAccountsByDate(datePart);
-		String sequencePart = String.format("%05d", todayCount + 1); //계산된 계좌 수 +1 하여 중복처리
-
-		String userIdStr = String.format("%04d", userId % 10000); //userId 나눈 후 4자리로 변환
+		String sequencePart = String.format("%05d", todayCount + 1);
+		String userIdStr = String.format("%04d", userId % 10000);
 		String randomPart = String.format("%04d", ThreadLocalRandom.current().nextInt(0, 10000));
 
 		return prePix + "-" + sequencePart + userIdStr + "-" + randomPart;

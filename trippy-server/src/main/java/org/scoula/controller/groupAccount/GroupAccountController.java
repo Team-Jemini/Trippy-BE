@@ -23,12 +23,11 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = "Group Account")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/group-account")
+@RequestMapping("/group-account")
 public class GroupAccountController {
 
 	final GroupAccountService service;
 
-	//모임계좌 생성 및 모임주 저장
 	@ApiOperation(value = "[JWT] 모임계좌 생성", notes = "모임계좌 생성 및 모임주를 등록하는 API입니다.")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "모임계좌 생성이 완료되었습니다", response = SuccessResponse.class),
@@ -48,6 +47,8 @@ public class GroupAccountController {
 	}
 
 	//모임계좌 멤버 초대
+
+	//모임계좌 초대링크 생성
 
 	//모임계좌 멤버 조회
 
