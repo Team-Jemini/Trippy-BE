@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = "Group Account")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/group-account")
+@RequestMapping("/group-account")
 public class GroupAccountController {
 
 	final GroupAccountService service;
