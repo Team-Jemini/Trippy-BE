@@ -1,7 +1,5 @@
 package org.scoula.controller.card;
 
-import java.util.List;
-
 import org.scoula.external.codef.card.CodefCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +15,18 @@ public class CodefTestController {
 		this.cardService = cardService;
 	}
 
-	@PostMapping("/cards")
-	public List<String> getAllCards() {
+	// 💡 userId와 accountId를 입력받아 카드 저장
+	@PostMapping(value = "/cards", produces = "application/json; charset=UTF-8")
+	public String getAllCardsAndSave(
+		@RequestParam Long userId,
+		@RequestParam String accountId
+	) {
 		try {
-			return cardService.getAllMyCards();
+			cardService.getAllMyCardsAndSave(userId, accountId);
+			return "카드 정보 저장 완료";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return List.of("에러 발생: " + e.getMessage());
+			return "❌ 에러 발생: " + e.getMessage();
 		}
 	}
 }
-
