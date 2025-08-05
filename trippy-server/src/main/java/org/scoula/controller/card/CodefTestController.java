@@ -1,5 +1,7 @@
 package org.scoula.controller.card;
 
+import java.util.List;
+
 import org.scoula.external.codef.card.CodefCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +18,13 @@ public class CodefTestController {
 	}
 
 	@PostMapping("/cards")
-	public String getMyCards() {
+	public List<String> getAllCards() {
 		try {
-			return cardService.getMyCards();
+			return cardService.getAllMyCards();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "에러 발생: " + e.getMessage();
+			return List.of("에러 발생: " + e.getMessage());
 		}
 	}
 }
+
