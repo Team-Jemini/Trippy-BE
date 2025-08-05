@@ -22,14 +22,14 @@ public class ResidentCardService {
 
         // TODO: 유저 유효성 검사
 
-        IdCardVO residentCardInfo = ResidentCardMapper.findById(userId);
+        IdCardVO idCardVO = ResidentCardMapper.findById(userId);
 
         return new ResidentCardDTO(
-                residentCardInfo.getName(),
-                residentCardInfo.getIdCardDate(),
-                residentCardInfo.getIdCardNum(),
-                residentCardInfo.getAddress(),
-                residentCardInfo.getImgUrl(),
+                idCardVO.getName(),
+                idCardVO.getIdCardDate(),
+                idCardVO.getIdCardNum(),
+                idCardVO.getAddress(),
+                idCardVO.getImgUrl(),
                 qrUrl
         );
     }
