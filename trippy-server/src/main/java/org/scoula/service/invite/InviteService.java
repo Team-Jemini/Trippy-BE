@@ -14,7 +14,6 @@ public class InviteService {
 
 	private final JwtTokenUtil jwtTokenUtil;
 
-	// 토큰 발급
 	public String createInviteTokenURL(Long userId, String accountId, String accountName) {
 		return jwtTokenUtil.createInviteToken(userId, accountId, accountName);
 	}

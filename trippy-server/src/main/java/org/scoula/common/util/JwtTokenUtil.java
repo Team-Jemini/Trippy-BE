@@ -62,11 +62,9 @@ public class JwtTokenUtil {
 			String accountId = claims.get("accountId", String.class);
 			String accountName = claims.get("accountName", String.class);
 
-			// userId를 안전하게 Number로 받아서 Long 변환 (Integer일 수도 있기 때문)
 			Number userIdNumber = claims.get("userId", Number.class);
 			Long userId = userIdNumber.longValue();
 
-			// expiryDate는 밀리초(Long) -> LocalDateTime으로 변환
 			Number expiryDateNumber = claims.get("expiryDate", Number.class);
 			if (expiryDateNumber == null) {
 				throw new RuntimeException(ErrorCode.INVALID_INVITE_TOKEN.getMessage());
