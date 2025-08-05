@@ -178,7 +178,7 @@ public class CodefAccountService {
         }
     }
 
-    public void saveAccountsToDB(AccountVO request) {
+    public void saveAccountsToDB(final Long userId) {
         try {
             String accountListJson = getAccountList();
 
@@ -196,11 +196,11 @@ public class CodefAccountService {
                 }
 
                 AccountVO vo = AccountVO.builder()
-                        .userId(request.getUserId())
+                        .userId(userId)
                         .accountId((String) account.get("resAccount"))
                         .accountName((String) account.get("resAccountName"))
                         .accountType(AccountType.valueOf("person"))
-                        .ownerId(request.getUserId())
+                        .ownerId(userId)
                         .balance(balance)
                         .accountCurrency((String) account.get("resAccountCurrency"))
                         .isDeleted(DeletedStatus.N)
