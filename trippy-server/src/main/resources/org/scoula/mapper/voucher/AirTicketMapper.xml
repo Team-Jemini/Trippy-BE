@@ -5,9 +5,9 @@
 <mapper namespace="org.scoula.mapper.voucher.AirTicketMapper">
 
     <resultMap id="airTicketMap" type="org.scoula.domain.voucher.AirTicketVO">
-        <id property="reservationCode" column="reservation_code"/>
+        <id property="airlineId" column="airline_id"/>
         <result property="userId" column="user_id"/>
-        <result property="airlineId" column="airline_id"/>
+        <result property="reservationCode" column="reservation_code"/>
         <result property="airline" column="airline"/>
         <result property="flightNumber" column="flight_number"/>
         <result property="departureAirport" column="departure_airport"/>
@@ -32,4 +32,11 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <select id="findAllByUserIdOrderByDepartureDateDesc" resultMap="airTicketMap" parameterType="long">
+        SELECT *
+        FROM air_ticket
+        WHERE user_id = #{userId}
+        ORDER BY departure_date DESC
+    </select>
 </mapper>

@@ -13,6 +13,7 @@ public enum ErrorCode {
 	TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다. 다시 로그인 해주세요."),
 
 	//404 NOT FOUND
+	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
 
 	//405 METHOD_NOT_ALLOWED
 
