@@ -38,6 +38,8 @@ public class InviteService {
 	}
 
 	public void joinGroupAccount(Long userId, GroupAccountJoinRequestDTO request) {
+		log.info("userId{}", userId);
+		log.info("joinGroupAccount{}", request);
 		mapper.groupAccountJoin(
 			AccountConverter.toAccountMemberVO(request.joinAccountId(), userId, request.mainAccountId()));
 	}
