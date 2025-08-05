@@ -1,21 +1,15 @@
 package org.scoula.controller.groupAccount.dto.response;
 
-import org.scoula.domain.transaction.TransactionCategory;
-import org.scoula.domain.transaction.TransactionType;
-import org.springframework.transaction.TransactionStatus;
+import java.time.LocalDateTime;
 
 public record AccountTransactionResponseDTO(
-	String accountId,
-	Long userId,
 	Long transactionId,
-	TransactionType transactionType,
+	String transactionType,
 	Long amount,
 	String title,
-	TransactionCategory category,
-	String latitude,
-	String longitude,
-	Long balanceAfter,
-	TransactionStatus status,
-	String currencyCode
+	String category,
+	String status,
+	String currencyCode,
+	LocalDateTime createdAt
 ) {
 }

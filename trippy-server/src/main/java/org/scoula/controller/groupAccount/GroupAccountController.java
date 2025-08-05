@@ -101,12 +101,13 @@ public class GroupAccountController {
 		return SuccessNonDataResponse.success(SuccessCode.JOIN_GROUP_ACCOUNT_SUCCESS);
 	}
 
-	//모임계좌 상세보기
-
-	public GroupAccountDetailResponseDTO getGroupAccountDetail(
-		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String groupAccountId
+	@GetMapping("/detail")
+	public SuccessResponse<GroupAccountDetailResponseDTO> getGroupAccountDetail(
+		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId,
+		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId
 	) {
-
+		return SuccessResponse.success(SuccessCode.GET_GROUP_ACCOUNT_DETAIL_SUCCESS,
+			groupAccountservice.getGroupAccountDetail(accountId, userId));
 	}
 
 	//정산 요청하기

@@ -9,14 +9,14 @@ import org.scoula.domain.account.member.Role;
 
 public record GroupAccountDetailResponseDTO(
 	Long userId,
-	String accountName,
 	String accountId,
+	String accountName,
 	AccountType accountType,
 	Long ownerId,
 	Long balance,
 	AccountForeign accountForeign,
 	DeletedStatus isDeleted,
 	Role role,
-	List<AccountTransactionResponseDTO> accountTransactions
+	List<AccountTransactionResponseDTO> transactions
 ) {
 }
