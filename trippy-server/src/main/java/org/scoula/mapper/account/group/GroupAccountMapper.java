@@ -32,4 +32,6 @@ public interface GroupAccountMapper {
 	int validateAccountIsGroupAccount(String accountId);
 
 	int existsAccountById(String accountId);
+
+	int checkAccountDeletionStatus(String accountId);
 }

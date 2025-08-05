@@ -41,7 +41,9 @@ public class InviteService {
 	 * @param userId
 	 * @param request
 	 * 토큰 분해
+	 *
 	 * 계좌가 있는지 체크
+	 * 해지된 계좌인지 체크
 	 * 계좌가 모임계좌이지 체크
 	 * 사용자가 참여한 계좌이지 체크
 	 */
@@ -50,6 +52,8 @@ public class InviteService {
 		AcceptInviteResponseDTO response = jwtTokenUtil.parseInviteToken(request.token());
 
 		validateAccountExistence(response.accountId());
+
+		checkAccountDeletionStatus(response.accountId());
 
 		validateAccountIsGroupAccount(response.accountId());
 
@@ -70,6 +74,13 @@ public class InviteService {
 		int accountCheckedCount = groupAccountmapper.validateAccountIsGroupAccount(accountId);
 		if (accountCheckedCount == 0) {
 			throw new TrippyException(ErrorCode.NOT_GROUP_ACCOUNT);
+		}
+	}
+
+	private void checkAccountDeletionStatus(String accountId) {
+		int accountCheckedCount = groupAccountmapper.checkAccountDeletionStatus(accountId);
+		if (accountCheckedCount == 0) {
+			throw new TrippyException(ErrorCode.ACCOUNT_ALREADY_DELETED);
 		}
 	}
 
