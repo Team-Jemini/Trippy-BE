@@ -3,9 +3,15 @@ package org.scoula.external.codef.card;
 import okhttp3.*;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class CardListService {
+	@Value("${codef.api.card-list.url}")
+	private String cardListUrl;
+
+	@Value("${codef.api.content-type}")
+	private String contentType;
 
 	public String getCardList(String accessToken, String connectedId, String organization, String birthDate) throws Exception {
 		OkHttpClient client = new OkHttpClient();
@@ -19,12 +25,12 @@ public class CardListService {
 		bodyJson.put("loginType", "1");
 		bodyJson.put("inquiryType", "1");
 
-		RequestBody requestBody = RequestBody.create(bodyJson.toString(), MediaType.parse("application/json"));
+		RequestBody requestBody = RequestBody.create(bodyJson.toString(), MediaType.parse(contentType));
 
 		Request request = new Request.Builder()
-			.url("https://development.codef.io/v1/kr/card/p/account/card-list")
+			.url(cardListUrl)
 			.addHeader("Authorization", "Bearer " + accessToken)
-			.addHeader("Content-Type", "application/json")
+			.addHeader("Content-Type",contentType)
 			.post(requestBody)
 			.build();
 
