@@ -14,15 +14,17 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
+
+
 @Service
+@RequiredArgsConstructor
 public class CodefCardService {
+	private final AccessTokenService accessTokenService;
+	private final ConnectedIdService connectedIdService;
+	private final CardListService cardListService;
+	private final CardSaveService cardSaveService;
 
-	private final AccessTokenService accessTokenService = new AccessTokenService();
-	private final ConnectedIdService connectedIdService = new ConnectedIdService();
-	private final CardListService cardListService = new CardListService();
-
-	@Autowired
-	private CardSaveService cardSaveService;
 
 	@Value("${codef.client-id}")
 	private String clientId;
