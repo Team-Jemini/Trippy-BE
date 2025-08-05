@@ -6,5 +6,5 @@ import org.scoula.domain.identification.IdCardVO;
 
 @Mapper
 public interface IdCardMapper {
-    IdCardVO getResidentCardInfo(Long userId);
+    IdCardVO findById(Long userId);
 }

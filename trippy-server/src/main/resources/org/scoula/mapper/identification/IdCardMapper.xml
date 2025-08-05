@@ -15,7 +15,7 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <select id="getResidentCardInfo" resultMap="idCardMap">
+    <select id="findById" resultMap="idCardMap">
         SELECT *
         FROM id_card
         WHERE user_id=#{userId}
