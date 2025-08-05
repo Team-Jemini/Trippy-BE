@@ -32,7 +32,7 @@ public class ResidentCardController {
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
     @PostMapping("/ocr")
-    public SuccessResponse<ResidentCardOcrDTO> extractResidentCardInfo(
+    public SuccessResponse<ResidentCardOcrDTO> extractResidentCardOcrInfo(
             @ApiParam(value = "주민등록증", required = true)
             @RequestParam("file") MultipartFile file) throws IOException {
 
@@ -47,7 +47,8 @@ public class ResidentCardController {
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
     @GetMapping("/residentCard")
-    public SuccessResponse<ResidentCardDTO> extractResidentCardInfo(Long userId){
+    public SuccessResponse<ResidentCardDTO> getResidentCardInfo(@RequestParam("userId") Long userId){
+
         return SuccessResponse.success(SuccessCode.RESIDENT_CARD_SUCCESS, residentCardService.getResidentCardInfo(userId));
     }
 }
