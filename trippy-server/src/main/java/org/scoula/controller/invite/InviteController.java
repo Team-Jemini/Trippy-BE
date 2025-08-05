@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class InviteController {
 
 	private final InviteService inviteService;
-	private final String BASE_URL = "http://localhost:5173/?token=";
 
 	@ApiOperation(value = "초대링크 발급", notes = "모임 계좌의 초대 링크를 생성합니다.")
 	@ApiResponses(value = {
@@ -40,11 +39,8 @@ public class InviteController {
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
 		@ApiParam(value = "초대 요청 정보", required = true) @RequestBody InviteRequestDTO request) {
 
-		String inviteTokenURL =
-			BASE_URL + inviteService.createInviteTokenURL(userId, request.accountId(), request.accountName());
-		InviteResponseDTO inviteResponse = new InviteResponseDTO(inviteTokenURL);
-
-		return SuccessResponse.success(SuccessCode.CREATE_INVITE_TOKEN_SUCCESS, inviteResponse);
+		return SuccessResponse.success(SuccessCode.CREATE_INVITE_TOKEN_SUCCESS,
+			inviteService.createInviteTokenURL(userId, request.accountId(), request.accountName()));
 	}
 
 	@ApiOperation(value = "초대 토큰 파싱", notes = "초대 링크의 토큰을 파싱하여 모임 정보를 반환합니다.")
