@@ -101,6 +101,12 @@ public class GroupAccountController {
 		return SuccessNonDataResponse.success(SuccessCode.JOIN_GROUP_ACCOUNT_SUCCESS);
 	}
 
+	@ApiOperation(value = "[JWT]계좌 상세 조회", notes = "계좌 상세 조회.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "계좌 상세 조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
+	})
 	@GetMapping("/detail")
 	public SuccessResponse<GroupAccountDetailResponseDTO> getGroupAccountDetail(
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId,
