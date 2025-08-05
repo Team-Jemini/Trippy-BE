@@ -1,10 +1,14 @@
 package org.scoula.external.codef.accounts.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.scoula.external.codef.accounts.service.CodefAccountService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -28,9 +32,17 @@ public class CodefTestController {
     }
 
     @GetMapping("/test/accountList")
-    public String testAccountList() {
+    public List<Map<String, Object>> testAccountList() throws Exception {
         String accountList = codefAccountService.getAccountList();
-        log.info("컨트롤러에서 받은 ConnectedId: {}", accountList);
-        return accountList;
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> responseMap = mapper.readValue(accountList, Map.class);
+
+        List<Map<String, Object>> parsedAccountList = (List<Map<String, Object>>)
+                ((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
+
+        log.info("컨트롤러에서 받은 parsedAccountList: {}", parsedAccountList);
+        return parsedAccountList;
     }
+
 }

@@ -1,8 +1,13 @@
 package org.scoula.external.codef.accounts.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.scoula.domain.account.AccountType;
+import org.scoula.domain.account.AccountVO;
+import org.scoula.domain.account.DeletedStatus;
 import org.scoula.external.codef.accounts.dto.ConnectedIdRequestDTO;
 import org.scoula.external.codef.accounts.dto.ConnectedIdRequestDTOList;
+import org.scoula.mapper.account.AccountMapper;
 import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +27,7 @@ import org.scoula.common.util.CodefRsaUtil;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class CodefAccountService {
 
     @Value("${codef.account.clientID}")
@@ -47,6 +53,8 @@ public class CodefAccountService {
 
     @Value("${codef.account.publicKey}")
     private String publicKey;
+
+    private final AccountMapper accountMapper;
 
     public String getAccessToken() {
 
@@ -167,6 +175,42 @@ public class CodefAccountService {
 
         } catch (Exception e) {
             throw new RuntimeException("계좌 목록 조회 실패", e);
+        }
+    }
+
+    public void saveAccountsToDB(AccountVO request) {
+        try {
+            String accountListJson = getAccountList();
+
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> responseMap = mapper.readValue(accountListJson, Map.class);
+
+            List<Map<String, Object>> accountList = (List<Map<String, Object>>)
+                    ((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
+
+            for (Map<String, Object> account : accountList) {
+                String balanceStr = (String) account.get("resAccountBalance");
+                Long balance = 0L;
+                if (balanceStr != null && !balanceStr.isEmpty()) {
+                    balance = Long.parseLong(balanceStr);
+                }
+
+                AccountVO vo = AccountVO.builder()
+                        .userId(request.getUserId())
+                        .accountId((String) account.get("resAccount"))
+                        .accountName((String) account.get("resAccountName"))
+                        .accountType(AccountType.valueOf("person"))
+                        .ownerId(request.getUserId())
+                        .balance(balance)
+                        .accountCurrency((String) account.get("resAccountCurrency"))
+                        .isDeleted(DeletedStatus.N)
+                        .build();
+
+                accountMapper.insertAccount(vo);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("계좌 목록 저장 실패", e);
         }
     }
 }
