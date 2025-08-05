@@ -38,9 +38,13 @@ public class InviteService {
 	}
 
 	public void joinGroupAccount(Long userId, GroupAccountJoinRequestDTO request) {
-		log.info("userId{}", userId);
-		log.info("joinGroupAccount{}", request);
-		mapper.groupAccountJoin(
-			AccountConverter.toAccountMemberVO(request.joinAccountId(), userId, request.mainAccountId()));
+
+		AcceptInviteResponseDTO response = jwtTokenUtil.parseInviteToken(request.token());
+		int count = groupAccountmapper.searchJoinUser(userId, response.accountId());
+		if (count > 0) {
+			throw new TrippyException(ErrorCode.ALREADY_INVITED);
+		}
+		groupAccountmapper.groupAccountJoin(
+			AccountConverter.toAccountMemberVO(response.accountId(), userId, request.mainAccountId()));
 	}
 }
