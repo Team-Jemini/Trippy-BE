@@ -10,6 +10,7 @@ import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
 import org.scoula.service.groupaccount.GroupAccountService;
 import org.scoula.service.groupaccount.InviteService;
@@ -34,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/group-account")
 public class GroupAccountController {
 
-	private final GroupAccountService service;
+	private final GroupAccountService groupAccountservice;
 	private final InviteService inviteService;
 
 	@ApiOperation(value = "[JWT] 모임계좌 생성", notes = "모임계좌 생성 및 모임주를 등록하는 API입니다.")
@@ -52,7 +53,7 @@ public class GroupAccountController {
 		@RequestBody GroupAccountCreateRequestDTO request) {
 
 		return SuccessResponse.success(SuccessCode.CREATE_GROUP_ACCOUNT_SUCCESS,
-			service.createGroupAccount(request, userId));
+			groupAccountservice.createGroupAccount(request, userId));
 	}
 
 	@ApiOperation(value = "[JWT] 초대링크 발급", notes = "모임 계좌의 초대 링크를 생성합니다.")
@@ -101,6 +102,12 @@ public class GroupAccountController {
 	}
 
 	//모임계좌 상세보기
+
+	public GroupAccountDetailResponseDTO getGroupAccountDetail(
+		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String groupAccountId
+	) {
+
+	}
 
 	//정산 요청하기
 
