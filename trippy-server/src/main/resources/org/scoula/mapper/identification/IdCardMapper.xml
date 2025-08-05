@@ -20,4 +20,25 @@
         FROM id_card
         WHERE user_id=#{userId}
     </select>
+
+    <insert id="addResidentCardInfo" parameterType="org.scoula.domain.identification.IdCardVO">
+        INSERT INTO id_card (
+            user_id,
+            name,
+            id_card_num,
+            address,
+            id_card_date,
+            img_url
+        )
+        VALUES (
+                #{userId},
+                #{name},
+                #{idCardNum},
+                #{address},
+                #{idCardDate},
+                #{imgUrl}
+               )
+    </insert>
+
+
 </mapper>
