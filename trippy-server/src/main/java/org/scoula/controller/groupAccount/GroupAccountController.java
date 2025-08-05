@@ -4,6 +4,7 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.controller.groupAccount.dto.request.AcceptInviteTokenRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
@@ -78,9 +79,11 @@ public class GroupAccountController {
 	})
 	@GetMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
-		@ApiParam(value = "초대 토큰", required = true) @RequestParam String token) {
+		@ApiParam(value = "초대 토큰", required = true) @RequestParam Long userId,
+		@ApiParam(value = "초대 토큰", required = true) @RequestBody AcceptInviteTokenRequestDTO token) {
 
-		return SuccessResponse.success(SuccessCode.PARSE_INVITE_TOKEN_SUCCESS, inviteService.parseInviteToken(token));
+		return SuccessResponse.success(SuccessCode.PARSE_INVITE_TOKEN_SUCCESS,
+			inviteService.parseInviteToken(userId, token.token()));
 	}
 
 	@PutMapping("/join")

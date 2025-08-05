@@ -1,5 +1,7 @@
 package org.scoula.service.groupaccount;
 
+import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.TrippyException;
 import org.scoula.common.util.JwtTokenUtil;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
@@ -25,8 +27,14 @@ public class InviteService {
 			BASE_URL + jwtTokenUtil.createInviteToken(userId, userName, accountId, accountName));
 	}
 
-	public AcceptInviteResponseDTO parseInviteToken(String token) {
-		return jwtTokenUtil.parseInviteToken(token);
+	public AcceptInviteResponseDTO parseInviteToken(Long userId, String token) {
+
+		AcceptInviteResponseDTO response = jwtTokenUtil.parseInviteToken(token);
+		int count = mapper.searchJoinUser(userId, response.accountId());
+		if (count > 0) {
+			throw new TrippyException(ErrorCode.ALREADY_INVITED);
+		}
+		return response;
 	}
 
 	public void joinGroupAccount(Long userId, GroupAccountJoinRequestDTO request) {
