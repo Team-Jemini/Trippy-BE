@@ -7,9 +7,8 @@ import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.external.codef.identification.OcrService;
 import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,11 +25,11 @@ public class ResidentCardController {
 
     @ApiOperation(value = "[JWT] 주민등록증 OCR", notes = "주민등록증 OCR을 하는 API")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "주민등록증 OCR 성공했습니다.", response = ResidentCardInquiryDTO.class),
+            @ApiResponse(code = 200, message = "주민등록증 OCR 성공했습니다.", response = SuccessResponse.class),
             @ApiResponse(code = 400, message = "잘못된 요청입니다."),
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
-    @GetMapping("/ocr")
+    @PostMapping("/ocr")
     public SuccessResponse<ResidentCardInquiryDTO> extractResidentCardInfo(
             @ApiParam(value = "주민등록증", required = true)
             @RequestParam("file") MultipartFile file) throws IOException {
