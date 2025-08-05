@@ -1,4 +1,4 @@
-package org.scoula.controller.invite.dto.request;
+package org.scoula.controller.groupAccount.dto.request;
 
 public record InviteRequestDTO(
 	String accountId,

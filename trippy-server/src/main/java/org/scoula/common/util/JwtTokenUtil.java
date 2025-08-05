@@ -7,7 +7,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 import org.scoula.common.exception.enums.ErrorCode;
-import org.scoula.controller.invite.dto.response.AcceptInviteResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +34,7 @@ public class JwtTokenUtil {
 		this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 	}
 
-	public String createInviteToken(Long userId, String accountId, String accountName) {
+	public String createInviteToken(Long userId, String userName, String accountId, String accountName) {
 		Date now = new Date();
 		Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
 
@@ -42,6 +42,7 @@ public class JwtTokenUtil {
 			.setSubject("invite")
 			.claim("accountId", accountId)
 			.claim("userId", userId)
+			.claim("userName", userName)
 			.claim("accountName", accountName)
 			.claim("expiryDate", Long.valueOf(expiryDate.getTime()))
 			.setIssuedAt(now)
@@ -61,7 +62,7 @@ public class JwtTokenUtil {
 
 			String accountId = claims.get("accountId", String.class);
 			String accountName = claims.get("accountName", String.class);
-
+			String userName = claims.get("userName", String.class);
 			Number userIdNumber = claims.get("userId", Number.class);
 			Long userId = userIdNumber.longValue();
 
@@ -72,7 +73,7 @@ public class JwtTokenUtil {
 			Long expiryDateMillis = expiryDateNumber.longValue();
 			LocalDateTime expiryDate = LocalDateTime.ofEpochSecond(expiryDateMillis / 1000, 0, ZoneOffset.UTC);
 
-			return new AcceptInviteResponseDTO(accountId, accountName, userId, expiryDate);
+			return new AcceptInviteResponseDTO(accountId, accountName, userId, userName, expiryDate);
 
 		} catch (ExpiredJwtException e) {
 			throw new RuntimeException(ErrorCode.EXPIRED_INVITE_TOKEN.getMessage());

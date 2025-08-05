@@ -1,4 +1,4 @@
-package org.scoula.controller.invite.dto.response;
+package org.scoula.controller.groupAccount.dto.response;
 
 public record InviteResponseDTO(
 	String inviteTokenURL

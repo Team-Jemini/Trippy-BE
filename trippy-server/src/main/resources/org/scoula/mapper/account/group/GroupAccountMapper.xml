@@ -57,4 +57,10 @@
         FROM account
         WHERE account_id = #{accountId}
     </select>
+
+    <select id="selectUserName" resultType="java.lang.String">
+        SELECT name
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
 </mapper>

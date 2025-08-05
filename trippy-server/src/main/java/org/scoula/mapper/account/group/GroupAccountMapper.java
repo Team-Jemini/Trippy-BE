@@ -21,4 +21,6 @@ public interface GroupAccountMapper {
 
 	//생성된 계좌 정보(생성날짜, 계좌번호, 계좌이름) 불러오기
 	AccountVO selectGroupAccountById(String accountId);
+
+	String selectUserName(Long accountId);
 }

@@ -1,8 +1,9 @@
-package org.scoula.service.invite;
+package org.scoula.service.groupaccount;
 
 import org.scoula.common.util.JwtTokenUtil;
-import org.scoula.controller.invite.dto.response.AcceptInviteResponseDTO;
-import org.scoula.controller.invite.dto.response.InviteResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
+import org.scoula.mapper.account.group.GroupAccountMapper;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,12 @@ public class InviteService {
 
 	private final JwtTokenUtil jwtTokenUtil;
 	private final String BASE_URL = "http://localhost:5173/?token=";
+	private final GroupAccountMapper mapper;
 
 	public InviteResponseDTO createInviteTokenURL(Long userId, String accountId, String accountName) {
-		return new InviteResponseDTO(BASE_URL + jwtTokenUtil.createInviteToken(userId, accountId, accountName));
+		String userName = mapper.selectUserName(userId);
+		return new InviteResponseDTO(
+			BASE_URL + jwtTokenUtil.createInviteToken(userId, userName, accountId, accountName));
 	}
 
 	public AcceptInviteResponseDTO parseInviteToken(String token) {
