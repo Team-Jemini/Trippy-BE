@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.net.URLDecoder;
 
+import org.scoula.common.util.CodefRsaUtil;
+
 @Log4j2
 @Service
 public class CodefAccountService {
@@ -42,6 +44,9 @@ public class CodefAccountService {
 
     @Value("${codef.account.kbBankPW}")
     private String kbBankPW;
+
+    @Value("${codef.account.publicKey}")
+    private String publicKey;
 
     public String getAccessToken() {
 
@@ -85,6 +90,8 @@ public class CodefAccountService {
         String accessToken = getAccessToken();
         headers.set("Authorization", "Bearer " + accessToken);
 
+        String rsaPassword = CodefRsaUtil.runEncryption(publicKey, kbBankPW);
+
         ConnectedIdRequestDTO accountInfo = new ConnectedIdRequestDTO(
                 "KR",
                 "BK",
@@ -92,7 +99,7 @@ public class CodefAccountService {
                 "0004",
                 "1",
                 kbBankID,
-                kbBankPW
+                rsaPassword
         );
 
         ConnectedIdRequestDTOList requestDTOList = new ConnectedIdRequestDTOList(List.of(accountInfo));
