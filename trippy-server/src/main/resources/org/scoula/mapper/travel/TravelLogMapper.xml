@@ -18,4 +18,12 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <select id="getAllTravelLogs" parameterType="long" resultType="org.scoula.domain.travel.TravelLogVO">
+        SELECT *
+        FROM travel_log
+        WHERE user_id = #{userId}
+        ORDER BY travel_begin_date DESC
+    </select>
+
+
 </mapper>
