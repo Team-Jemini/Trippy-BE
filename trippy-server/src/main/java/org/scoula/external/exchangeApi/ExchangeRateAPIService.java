@@ -1,9 +1,10 @@
-package org.scoula.service.exchange;
+package org.scoula.external.exchangeApi;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.controller.exchange.dto.ExchangeRateApiDTO;
 import org.scoula.controller.exchange.dto.ExchangeRateDTO;
 import org.scoula.mapper.exchange.ExchangeRateApiMapper;
@@ -20,24 +21,19 @@ import java.util.List;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class ExchangeRateServiceImpl implements ExchangeRateService {
+public class ExchangeRateAPIService {
 
-    /* 생성자 주입 (3개) */
     private final ExchangeRateApiMapper apiMapper;
-    /* 환율 API 호출을 위한 RestTemplate */
     private final RestTemplate restTemplate = new RestTemplate();
-    /* Json 데이터를 Java 객체로 변환을 위한 ObjectMapper */
     private final ObjectMapper objectMapper = new ObjectMapper();
-
 
     /* 환율 API 연결을 위한 인증키 */
     @Value("${exchange.api.key}")
     private String API_KEY;
-
+    final String BASE_URL = "https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=";
 
     /* 환율 API로 환율 데이터 가져오는 함수 */
-    @Override
-    @Scheduled(cron = " 0 5 11 * * * ") // 11시 5분 스케쥴러 코드 실행
+    @Scheduled(cron = " 0 5 11 * * * ") // 오전 11시 5분 스케쥴러 실행
     @Transactional
     public void fetchAndSaveExchangeRates() {
 
@@ -54,18 +50,16 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
         String formattedDate = exchangeRateDate.toLocalDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         // 환율 API
-        String url = "https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=" + API_KEY + "&searchdate="+ formattedDate +"&data=AP01";
+        String url = BASE_URL + API_KEY + "&searchdate="+ formattedDate +"&data=AP01";
 
         try {
             String json = restTemplate.getForObject(url, String.class);
             List<ExchangeRateApiDTO> apiDtoList = objectMapper.readValue(json, new TypeReference<List<ExchangeRateApiDTO>>() {});
 
-            // API DTO를 환율 DTO로 변환
+            // API DTO -> 환율 DTO로 변환
             for (ExchangeRateApiDTO dto : apiDtoList) {
-
                 ExchangeRateDTO entity = new ExchangeRateDTO();
 
-                // 통화코드, 국가명 및 통화이름
                 entity.setCurrencyCode(dto.getCurrencyCode());
                 entity.setCurrencyName(dto.getCurrencyName());
 
@@ -77,9 +71,6 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
                 // 환율날짜
                 entity.setExchangeRateDate(exchangeRateDate);
-
-                // 살 떄 환율, 팔 때 환율
-                // -> 매매 기준율에서 가공해서 사용?
                 entity.setRateBuy(doubleBaseExchangeRate);
                 entity.setRateSell(doubleBaseExchangeRate);
 
@@ -88,10 +79,10 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
                 entity.setUpdatedAt(LocalDateTime.now());
 
                 // DB에 저장
-                apiMapper.insertDataToVO(entity);
+                apiMapper.saveDataToVO(entity);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+        log.error( ErrorCode.EXCHANGE_RATE_NOT_FOUND_EXCEPTION + " : {}", e.getMessage());
         }
     }
 }

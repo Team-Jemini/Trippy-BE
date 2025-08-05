@@ -5,5 +5,5 @@ import org.scoula.controller.exchange.dto.ExchangeRateDTO;
 
 @Mapper
 public interface ExchangeRateApiMapper {
-    void insertDataToVO(ExchangeRateDTO exchangeRateDTO);
+    void saveDataToVO(ExchangeRateDTO exchangeRateDTO);
 }

@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true) // 필요없는 json 데이터 제외
 public class ExchangeRateApiDTO {
-
     private Long exchangeRateId;
 
     @JsonProperty("cur_unit")

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class ExchangeRateDTO {
-    private Long exchangeRateId;
     private String currencyCode;
     private String currencyName;
     private Double baseExchangeRate;

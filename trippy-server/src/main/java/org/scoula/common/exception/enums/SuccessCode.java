@@ -7,9 +7,11 @@ import lombok.Getter;
 @Getter
 public enum SuccessCode {
 
-	REFRESH_SUCCESS(HttpStatus.OK, "토큰 갱신 성공입니다.");
+	REFRESH_SUCCESS(HttpStatus.OK, "토큰 갱신 성공입니다."),
+    // 환율 정보 저장
+	SAVE_EXCHANGE_RATE_SUCCESS(HttpStatus.OK, "환율 정보 저장 성공입니다.");
 
-	private final HttpStatus httpStatus;
+    private final HttpStatus httpStatus;
 	private final String message;
 
 	SuccessCode(HttpStatus httpStatus, String message) {
