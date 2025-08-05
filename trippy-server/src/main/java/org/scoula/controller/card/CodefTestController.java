@@ -10,20 +10,15 @@ public class CodefTestController {
 
 	private final CodefCardService cardService;
 
-	@Autowired  // ✅ 또는 생성자에 @Autowired 생략 가능
+	@Autowired
 	public CodefTestController(CodefCardService cardService) {
 		this.cardService = cardService;
 	}
 
 	@PostMapping("/cards")
-	public String getMyCards(
-		@RequestParam String loginId,
-		@RequestParam String password,
-		@RequestParam String birthDate,
-		@RequestParam String organization
-	) {
+	public String getMyCards() {
 		try {
-			return cardService.getMyCards(loginId, password, birthDate, organization);
+			return cardService.getMyCards();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "에러 발생: " + e.getMessage();

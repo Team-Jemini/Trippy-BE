@@ -5,7 +5,7 @@ import org.scoula.common.util.RSAEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service  // ✅ 꼭 필요
+@Service
 public class CodefCardService {
 
 	private final AccessTokenService accessTokenService = new AccessTokenService();
@@ -21,7 +21,19 @@ public class CodefCardService {
 	@Value("${codef.public-key}")
 	private String publicKey;
 
-	public String getMyCards(String loginId, String password, String birthDate, String organization) throws Exception {
+	@Value("${codef.login-id}")
+	private String loginId;
+
+	@Value("${codef.password}")
+	private String password;
+
+	@Value("${codef.organization}")
+	private String organization;
+
+	@Value("${codef.birth-date}")
+	private String birthDate;
+
+	public String getMyCards() throws Exception {
 		String accessToken = accessTokenService.getAccessToken(clientId, clientSecret);
 		String encryptedPw = RSAEncryptor.encrypt(password, publicKey);
 		String connectedIdJson = connectedIdService.createConnectedId(accessToken, encryptedPw, loginId, organization);
