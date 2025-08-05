@@ -15,7 +15,6 @@ import org.scoula.service.groupaccount.GroupAccountService;
 import org.scoula.service.groupaccount.InviteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,7 +91,7 @@ public class GroupAccountController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
-	@PutMapping("/join")
+	@PostMapping("/join")
 	public SuccessNonDataResponse joinGroupAccount(
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestBody GroupAccountJoinRequestDTO request
