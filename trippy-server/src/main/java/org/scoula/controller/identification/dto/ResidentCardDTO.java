@@ -5,5 +5,6 @@ public record ResidentCardDTO(
         String resIssueDate,
         String resUserIdentity,
         String address,
+        String imgUrl,
         String QrUrl
 ) {}
