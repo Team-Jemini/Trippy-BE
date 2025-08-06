@@ -32,7 +32,7 @@
             t.updated_at AS updatedAt,
             IFNULL(COUNT(m.user_id), 0) AS memberCount
         FROM travel_log t
-                 LEFT JOIN member_account m ON t.travel_id = m.travel_id
+                 LEFT JOIN account_member m ON t.travel_id = m.travel_id
         WHERE t.user_id = #{userId}
         GROUP BY t.travel_id
         ORDER BY t.travel_begin_date DESC
