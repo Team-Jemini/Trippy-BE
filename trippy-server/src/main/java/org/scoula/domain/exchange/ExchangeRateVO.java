@@ -1,9 +1,8 @@
 package org.scoula.domain.exchange;
 
 import java.time.LocalDateTime;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.scoula.domain.BaseTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +19,9 @@ import lombok.NoArgsConstructor;
 public class ExchangeRateVO extends BaseTime {
 	private Long exchangeRateId;
 	private String currencyCode;
-	private Integer baseExchangeRate;
-	private Integer rateBuy;
-	private Integer rateSell;
-	private LocalDateTime exchangeRateDate; //환율 고시날짜?
+	private String currencyName;
+	private Double baseExchangeRate;
+	private Double rateBuy;
+	private Double rateSell;
+	private LocalDateTime exchangeRateDate; //환율 고시날짜
 }
