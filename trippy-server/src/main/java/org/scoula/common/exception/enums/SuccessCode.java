@@ -13,6 +13,7 @@ public enum SuccessCode {
 	FIND_EXCHANGE_BALANCE_SUCCESS(HttpStatus.OK, "환율 잔액 찾기 성공"),
 	RESIDENT_CARD_OCR_SUCCESS(HttpStatus.OK, "주민등록증 정보 인식이 완료되었습니다."),
 	FIND_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 전체조회 성공"),
+	FIND_DETAIL_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 상세조회 성공"),
 	CREATE_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임 계좌가 성공적으로 생성되었습니다."),
 	CREATE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 링크가 성공적으로 생성 되었습니다."),
 	PARSE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 토큰을 성공적으로 파싱했습니다."),

@@ -20,6 +20,7 @@ public enum ErrorCode {
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
 	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
 	EXCHANGE_RATE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "환율 API 호출 중 오류 발생했습니다."),
+	AIR_TICKET_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 항공권Id가 존재하지 않습니다."),
 
 	//405 METHOD_NOT_ALLOWED
 
