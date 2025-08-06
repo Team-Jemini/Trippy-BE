@@ -3,6 +3,7 @@ package org.scoula.mapper.account.group;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.scoula.domain.account.AccountVO;
+import org.scoula.domain.account.group.GroupAccountVO;
 import org.scoula.domain.account.member.AccountMemberVO;
 
 @Mapper
@@ -26,4 +27,16 @@ public interface GroupAccountMapper {
 	String selectUserName(Long accountId);
 
 	int searchJoinUser(@Param("userId") Long userId, @Param("accountId") String accountId);
+
+	void groupAccountJoin(AccountMemberVO member);
+
+	int validateAccountIsGroupAccount(String accountId);
+
+	int existsAccountById(String accountId);
+
+	int checkAccountDeletionStatus(String accountId);
+
+	GroupAccountVO getGroupAccountDetail(@Param("accountId") String accountId,
+		@Param("userId") Long userId);
+
 }

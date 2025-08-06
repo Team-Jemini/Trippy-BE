@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.scoula.common.exception.model.ServerErrorException;
-import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
+import org.scoula.controller.identification.dto.res.ResidentCardOcrDTO;
 import org.scoula.external.codef.identification.dto.OcrResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -49,7 +49,7 @@ public class OcrService {
      * 6. 응답 디코딩
      * 7. DTO 생성
      */
-    public ResidentCardInquiryDTO callOCRApi(MultipartFile file) {
+    public ResidentCardOcrDTO callOCRApi(MultipartFile file) {
 
         String token = getAccessToken();
 
@@ -61,7 +61,7 @@ public class OcrService {
         String decodedJson = decodeResponse(resp);
         OcrResponseDTO OcrDto = getOcrResponse(decodedJson);
 
-        return new ResidentCardInquiryDTO(
+        return new ResidentCardOcrDTO(
                 OcrDto.resUserName(),
                 OcrDto.resIssueDate(),
                 OcrDto.resUserIdentity(),

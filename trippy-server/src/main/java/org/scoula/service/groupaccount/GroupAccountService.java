@@ -2,15 +2,22 @@ package org.scoula.service.groupaccount;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
+import org.scoula.domain.account.DeletedStatus;
+import org.scoula.domain.account.group.GroupAccountVO;
 import org.scoula.domain.account.member.Role;
+import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.mapper.account.group.GroupAccountMapper;
+import org.scoula.mapper.transaction.TransactionMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +30,8 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class GroupAccountService {
 
-	private final GroupAccountMapper mapper;
+	private final GroupAccountMapper groupAccountMapper;
+	private final TransactionMapper transactionMapper;
 
 	/****
 	 * 모임계좌 생성
@@ -37,13 +45,13 @@ public class GroupAccountService {
 		while (tryCount++ < 5) {
 			String accountId = checkedCreateGroupId(userId);
 			try {
-				mapper.createGroupAccount(
+				groupAccountMapper.createGroupAccount(
 					AccountConverter.toAccountVO(accountId, userId, AccountType.group, request));
 
-				mapper.createGroupAccountMember(
+				groupAccountMapper.createGroupAccountMember(
 					AccountConverter.toAccountMemberVO(accountId, userId, request.mainAccountId(), Role.leader));
 
-				AccountVO account = mapper.selectGroupAccountById(accountId);
+				AccountVO account = groupAccountMapper.selectGroupAccountById(accountId);
 
 				return new GroupAccountCreateResponseDTO(
 					account.getAccountId(),
@@ -66,7 +74,7 @@ public class GroupAccountService {
 		int tryCount = 0;
 		while (tryCount++ < 5) {
 			String groupId = createGroupId(userId);
-			int count = mapper.existsGroupId(groupId);
+			int count = groupAccountMapper.existsGroupId(groupId);
 			if (count == 0) {
 				return groupId;
 			}
@@ -82,11 +90,36 @@ public class GroupAccountService {
 	private String createGroupId(Long userId) {
 		String prePix = "0707";
 		String datePart = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
-		Long todayCount = mapper.countGroupAccountsByDate(datePart);
+		Long todayCount = groupAccountMapper.countGroupAccountsByDate(datePart);
 		String sequencePart = String.format("%05d", todayCount + 1);
 		String userIdStr = String.format("%04d", userId % 10000);
 		String randomPart = String.format("%04d", ThreadLocalRandom.current().nextInt(0, 10000));
 
 		return prePix + "-" + sequencePart + userIdStr + "-" + randomPart;
+	}
+
+	public GroupAccountDetailResponseDTO getGroupAccountDetail(String accountId, Long userId) {
+
+		GroupAccountVO vo = groupAccountMapper.getGroupAccountDetail(accountId, userId);
+
+		isAccountValid(vo);
+
+		checkAccountDeletionStatus(vo);
+
+		List<TransactionVO> transaction = transactionMapper.getAccountTransaction(accountId);
+
+		return AccountConverter.toGroupAccountDetailResponseDTO(vo, transaction);
+	}
+
+	private static void isAccountValid(GroupAccountVO vo) {
+		if (vo == null) {
+			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
+		}
+	}
+
+	private static void checkAccountDeletionStatus(GroupAccountVO vo) {
+		if (vo.getIsDeleted() == DeletedStatus.Y) {
+			throw new TrippyException(ErrorCode.ACCOUNT_ALREADY_DELETED);
+		}
 	}
 }
