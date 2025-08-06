@@ -41,7 +41,6 @@ public class InviteService {
 	 * @param userId
 	 * @param request
 	 * 토큰 분해
-	 *
 	 * 계좌가 있는지 체크
 	 * 해지된 계좌인지 체크
 	 * 계좌가 모임계좌이지 체크
