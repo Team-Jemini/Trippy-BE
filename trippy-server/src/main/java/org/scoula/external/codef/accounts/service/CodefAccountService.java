@@ -11,12 +11,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import org.scoula.domain.account.AccountType;
-import org.scoula.domain.account.AccountVO;
-import org.scoula.domain.account.DeletedStatus;
 import org.scoula.external.codef.accounts.dto.ConnectedIdRequestDTO;
 import org.scoula.external.codef.accounts.dto.ConnectedIdRequestDTOList;
-import org.scoula.mapper.account.AccountMapper;
 import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.common.util.CodefRsaUtil;
 import static org.scoula.common.exception.enums.ErrorCode.*;
@@ -55,8 +51,6 @@ public class CodefAccountService {
 
     @Value("${codef.account.publicKey}")
     private String publicKey;
-
-    private final AccountMapper accountMapper;
 
     /** Codef AccessToken 발급 */
     public String getAccessToken() {
@@ -179,50 +173,6 @@ public class CodefAccountService {
             return decodedBody;
         } catch (Exception e) {
             throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
-        }
-    }
-
-    /** Codef에서 조회한 내 계좌 목록 데이터 Trippy DB에 저장 */
-    public void saveAccounts(final Long userId) {
-        try {
-            String accountListJson = getAccountList();
-
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> responseMap = mapper.readValue(accountListJson, Map.class);
-
-            List<Map<String, Object>> accountList = (List<Map<String, Object>>)
-                    ((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
-
-            for (Map<String, Object> account : accountList) {
-                String accountId = (String) account.get("resAccount");
-                if (accountMapper.existsByAccountId(accountId)) {
-                    log.info("중복 계좌 건너뜀: {}", accountId);
-                    continue;
-                }
-
-                // 잔액 데이터 String -> Long 타입으로 형 변환
-                String balanceStr = (String) account.get("resAccountBalance");
-                Long balance = 0L;
-                if (balanceStr != null && !balanceStr.isEmpty()) {
-                    balance = Long.parseLong(balanceStr);
-                }
-
-                AccountVO vo = AccountVO.builder()
-                        .userId(userId)
-                        .accountId((String) account.get("resAccount"))
-                        .accountName((String) account.get("resAccountName"))
-                        .accountType(AccountType.valueOf("person"))
-                        .ownerId(userId)
-                        .balance(balance)
-                        .accountCurrency((String) account.get("resAccountCurrency"))
-                        .isDeleted(DeletedStatus.N)
-                        .build();
-
-                accountMapper.saveAccount(vo);
-            }
-
-        } catch (Exception e) {
-            throw new ServerErrorException(SAVE_ACCOUNTS_LIST_FAILED);
         }
     }
 }

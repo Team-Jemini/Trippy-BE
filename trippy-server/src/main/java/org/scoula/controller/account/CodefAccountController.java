@@ -6,7 +6,7 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.scoula.external.codef.accounts.service.CodefAccountService;
+import org.scoula.service.account.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.*;
@@ -16,7 +16,7 @@ import io.swagger.annotations.*;
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class CodefAccountController {
-    private final CodefAccountService codefAccountService;
+    private final AccountService accountService;
 
     @ApiOperation(value = "개인 계좌 조회", notes = "Codef 개인 계좌 조회 API입니다.")
     @ApiResponses(value = {
@@ -26,7 +26,7 @@ public class CodefAccountController {
     })
     @PostMapping(value = "/sync")
     public SuccessNonDataResponse saveCodefAccount(@RequestParam Long userId) {
-        codefAccountService.saveAccounts(userId);
+        accountService.saveAccounts(userId);
         return SuccessNonDataResponse.success(SuccessCode.GET_CODEF_DATA_SUCCESS);
     }
 }
