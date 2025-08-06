@@ -20,7 +20,6 @@ public enum SuccessCode {
 	RESIDENT_CARD_SUCCESS(HttpStatus.OK, "주민등록증 조회를 성공하였습니다."),
 	RESIDENT_CARD_ADD_SUCCESS(HttpStatus.OK, "주민등록증 등록에 성공하였습니다."),
 
-
 	//항공권, 숙소, 관광
 	FIND_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 전체조회 성공"),
 	FIND_DETAIL_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 상세조회 성공"),
@@ -33,14 +32,17 @@ public enum SuccessCode {
 	CREATE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 링크가 성공적으로 생성 되었습니다."),
 	PARSE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 토큰을 성공적으로 파싱했습니다."),
 	SETTLE_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임계좌 정산 요청 성공"),
+	JOIN_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임계좌에 가입 성공"),
+	GET_GROUP_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "모임 계좌 상세 조회 성공입니다."),
+	FIND_GROUP_ACCOUNT_MEMBER_SUCCESS(HttpStatus.OK, "모임 계좌 멤버 조회 성공"),
+
+	//계좌
+	GET_PERSONAL_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "개인계좌 상세 조회 성공"),
 
 	//여행로그
 	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공"),
 	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
-	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공"),
-	JOIN_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임계좌에 가입 성공"),
-	GET_GROUP_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "모임 계좌 상세 조회 성공입니다."),
-	FIND_GROUP_ACCOUNT_MEMBER_SUCCESS(HttpStatus.OK, "모임 계좌 멤버 조회 성공");
+	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공");
 
 	private final HttpStatus httpStatus;
 	private final String message;

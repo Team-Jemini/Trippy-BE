@@ -3,6 +3,7 @@ package org.scoula.service.groupaccount;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
@@ -83,6 +84,24 @@ public class AccountConverter {
 			accountVO.getAccountForeign(),
 			accountVO.getIsDeleted(),
 			accountVO.getRole(),
+			transactions
+		);
+	}
+
+	public static PersonalAccountDetailResponseDTO toPersonalAccountDetailResponseDTO(
+		AccountVO accountVO, List<TransactionVO> transactionVOs) {
+
+		List<AccountTransactionResponseDTO> transactions = toTransactionResponseDTOList(transactionVOs);
+
+		return new PersonalAccountDetailResponseDTO(
+			accountVO.getUserId(),
+			accountVO.getAccountId(),
+			accountVO.getAccountName(),
+			accountVO.getAccountType(),
+			accountVO.getOwnerId(),
+			accountVO.getBalance(),
+			accountVO.getAccountForeign(),
+			accountVO.getIsDeleted(),
 			transactions
 		);
 	}
