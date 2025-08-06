@@ -62,7 +62,7 @@ public class GroupAccountController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "초대링크 생성 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@PostMapping("/invite/reissue")
 	public SuccessResponse<InviteResponseDTO> reissueInviteTokenURL(
@@ -77,7 +77,7 @@ public class GroupAccountController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "초대 토큰 파싱 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@GetMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
@@ -92,7 +92,7 @@ public class GroupAccountController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "모임 계좌 멤버조회 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@GetMapping("/members")
 	public SuccessResponse<List<GroupAccountMemberResponseDTO>> getGroupAccountMembers(
@@ -101,7 +101,6 @@ public class GroupAccountController {
 		return SuccessResponse.success(SuccessCode.FIND_GROUP_ACCOUNT_MEMBER_SUCCESS,
 			memberService.getGroupAccountMembers(accountId));
 	}
-	//모임계좌 상세보기
 
 	//정산 요청하기
 
