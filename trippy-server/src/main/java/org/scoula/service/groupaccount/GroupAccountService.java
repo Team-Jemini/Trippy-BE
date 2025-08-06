@@ -9,6 +9,7 @@ import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
+import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
 import org.scoula.domain.account.AccountType;
@@ -176,6 +177,26 @@ public class GroupAccountService {
 	private void isGroupAccountLeader(Long userId) {
 		if (!memberMapper.isGroupAccountLeader(userId)) {
 			throw new TrippyException(ErrorCode.NOT_GROUP_ACCOUNT_LEADER_EXCEPTION);
+		}
+	}
+
+	public List<AccountTransactionResponseDTO> filterAccountTransactions(String accountId, Long userId,
+		String transactionType) {
+
+		isAccountuserValid(accountId, userId);
+
+		if (transactionType.equals("ALL")) {
+			return AccountConverter.toTransactionResponseDTOList(
+				transactionMapper.getAccountTransaction(accountId));
+		}
+
+		return AccountConverter.toTransactionResponseDTOList(
+			transactionMapper.filterAccountTransactions(accountId, transactionType));
+	}
+
+	private void isAccountuserValid(String accountId, Long userId) {
+		if (!groupAccountMapper.isGroupAccountUser(userId, accountId)) {
+			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
 		}
 	}
 }

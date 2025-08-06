@@ -12,6 +12,7 @@ import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountMemberResponseDTO;
@@ -152,6 +153,22 @@ public class GroupAccountController {
 		groupAccountService.sendSettlementRequest(userId, requestDTO);
 
 		return SuccessNonDataResponse.success(SuccessCode.SETTLE_GROUP_ACCOUNT_SUCCESS);
+	}
+
+	@ApiOperation(value = "[JWT]계좌 거래 내역 조회", notes = "계좌 거래 내역 조회.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "계좌 거래 내역 조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
+	})
+	@GetMapping("/transactions")
+	public SuccessResponse<List<AccountTransactionResponseDTO>> filterAccountTransactions(
+		@ApiParam(value = "개인 계좌 ID", required = true) @RequestParam String accountId,
+		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@ApiParam(value = "거래 타입", required = true) @RequestParam String transactionType
+	) {
+		return SuccessResponse.success(SuccessCode.FILTER_ACCOUNT_TRANSACTION_SUCCESS,
+			groupAccountService.filterAccountTransactions(accountId, userId, transactionType));
 	}
 	//1/n 송금하기
 }
