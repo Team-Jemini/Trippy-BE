@@ -14,4 +14,12 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <select id="findAllByUserIdOrderByViewingDateDesc" parameterType="long" resultMap="sightseeingMap">
+        SELECT *
+        FROM sightseeing
+        WHERE user_id = #{userId}
+        ORDER BY viewing_date DESC
+    </select>
+
 </mapper>
