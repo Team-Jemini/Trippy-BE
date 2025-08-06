@@ -4,13 +4,12 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.controller.identification.dto.req.ResidentCardReq;
+import org.scoula.controller.identification.dto.res.ResidentCardDTO;
+import org.scoula.controller.identification.dto.res.ResidentCardOcrDTO;
 import org.scoula.external.codef.identification.OcrService;
-import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.scoula.service.identification.ResidentCardService;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,8 +19,8 @@ import java.io.IOException;
 @Api(tags = "Resident Card")
 public class ResidentCardController {
 
-    @Autowired
     private final OcrService ocrService;
+    private final ResidentCardService residentCardService;
 
     @ApiOperation(value = "[JWT] 주민등록증 OCR", notes = "주민등록증 OCR을 하는 API")
     @ApiResponses(value = {
@@ -30,10 +29,37 @@ public class ResidentCardController {
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
     @PostMapping("/ocr")
-    public SuccessResponse<ResidentCardInquiryDTO> extractResidentCardInfo(
+    public SuccessResponse<ResidentCardOcrDTO> extractResidentCardOcrInfo(
             @ApiParam(value = "주민등록증", required = true)
             @RequestParam("file") MultipartFile file) throws IOException {
 
         return SuccessResponse.success(SuccessCode.RESIDENT_CARD_OCR_SUCCESS, ocrService.callOCRApi(file));
+    }
+
+
+    @ApiOperation(value = "[JWT] 주민등록증 조회", notes = "주민등록증 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "주민등록증 조회에 성공했습니다.", response = SuccessResponse.class),
+            @ApiResponse(code = 400, message = "잘못된 요청입니다."),
+            @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
+    })
+    @GetMapping("/residentCard")
+    public SuccessResponse<ResidentCardDTO> getResidentCardInfo(@RequestHeader("X-USER-ID") Long userId){
+
+        return SuccessResponse.success(SuccessCode.RESIDENT_CARD_SUCCESS, residentCardService.getResidentCardInfo(userId));
+    }
+
+    @ApiOperation(value = "[JWT] 주민등록증 추가", notes = "주민등록증 추가하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "주민등록증 추가에 성공했습니다.", response = SuccessResponse.class),
+            @ApiResponse(code = 400, message = "잘못된 요청입니다."),
+            @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
+    })
+    @PostMapping("/residentCard")
+    public SuccessResponse<Integer> addResidentCardInfo(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestBody ResidentCardReq residentCardReq){
+        return SuccessResponse.success(SuccessCode.RESIDENT_CARD_ADD_SUCCESS,
+                residentCardService.addResidentCardInfo(userId, residentCardReq));
     }
 }

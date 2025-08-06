@@ -7,6 +7,7 @@
     <resultMap id="exchangeRateMap" type="org.scoula.domain.exchange.ExchangeRateVO">
         <id property="exchangeRateId" column="exchange_rate_id"/>
         <result property="currencyCode" column="currency_code"/>
+        <result property="currencyName" column="currency_name"/>
         <result property="baseExchangeRate" column="base_exchange_rate"/>
         <result property="rateBuy" column="rate_buy"/>
         <result property="rateSell" column="rate_sell"/>
@@ -15,5 +16,26 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+    <select id="getExchangeRateList" resultType="org.scoula.domain.exchange.ExchangeRateVO">
+        select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date from exchange_rate
+    </select>
+
+    <!-- 환전 기능 -->
+    <select id="findTodayRateByCurrencyCode" resultType="java.lang.Double">
+        selecte base_exchange_rate
+        from exchange_rate
+        where currency_code = #{currencyCode}
+    </select>
+    <select id="findKrwBalanceByAccountId" resultType="java.lang.Long">
+        select balance
+        from account
+        where account_id = #{accountId}
+    </select>
+    <select id="findForeignBalanceByAccountIdAndCurrency" resultType="java.lang.Double">
+        select balance
+        from foreign_account_balance
+        where account_id = #{accountId}
+        and currency_code = #{currencyCode}
+    </select>
 
 </mapper>

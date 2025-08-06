@@ -33,9 +33,9 @@ public class AirTicketVO extends BaseTime {
 	private String gate;
 	private String seat;
 	private String baggage;
+	private String baggageWeight;
 	private String passengerName;
 	private String qrImg;
 	private boolean used; //mybatis에서 isUsed를 못 쓰게 한다. 인식이 안된다나...
-	private String ticketImg;
 	private SeatClass seatClass;
 }

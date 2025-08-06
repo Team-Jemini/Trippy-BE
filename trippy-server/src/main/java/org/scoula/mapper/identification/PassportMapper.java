@@ -6,4 +6,5 @@ import org.scoula.domain.identification.PassportVO;
 @Mapper
 public interface PassportMapper {
 	PassportVO findByUserId(Long userId);
+	int save(PassportVO passportVO);
 }
