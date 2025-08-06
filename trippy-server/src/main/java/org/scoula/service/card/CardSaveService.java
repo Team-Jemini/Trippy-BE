@@ -1,12 +1,9 @@
-package org.scoula.external.codef.card;
+package org.scoula.service.card;
 
 import org.scoula.domain.card.CardVO;
 import org.scoula.mapper.card.CardMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
-import org.scoula.domain.card.CardVO;
-import org.scoula.mapper.card.CardMapper;
 
 @Service
 @RequiredArgsConstructor

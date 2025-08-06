@@ -1,18 +1,17 @@
-package org.scoula.external.codef.card;
+package org.scoula.service.card;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.scoula.domain.card.CardVO;
-import org.scoula.mapper.card.CardMapper;
-import org.scoula.external.codef.card.CardSaveService;
+import org.scoula.external.codef.card.AccessTokenService;
+import org.scoula.external.codef.card.CardListService;
+import org.scoula.external.codef.card.ConnectedIdService;
 import org.scoula.common.util.RSAEncryptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
