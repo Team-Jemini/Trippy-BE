@@ -6,6 +6,11 @@
 
 -- voucher
 
+SELECT *
+FROM transaction
+WHERE account_id = '0707-000060001-6511'
+  AND user_id = 1;
+
 -- account
 INSERT INTO account (
     account_id, user_id, account_name, account_type, owner_id, balance, account_foreign, is_deleted, created_at, updated_at
