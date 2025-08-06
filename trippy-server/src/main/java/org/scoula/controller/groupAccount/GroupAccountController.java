@@ -1,10 +1,12 @@
 package org.scoula.controller.groupAccount;
 
 import org.scoula.common.dto.ErrorResponse;
+import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.groupAccount.dto.request.AcceptInviteTokenRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
+import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
@@ -76,14 +78,27 @@ public class GroupAccountController {
 	})
 	@GetMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
-		@ApiParam(value = "초대 토큰", required = true) @RequestParam Long userId,
+		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
 		@ApiParam(value = "초대 토큰", required = true) @RequestBody AcceptInviteTokenRequestDTO token) {
 
 		return SuccessResponse.success(SuccessCode.PARSE_INVITE_TOKEN_SUCCESS,
 			inviteService.parseInviteToken(userId, token.token()));
 	}
 
-	//모임계좌 멤버 조회
+	@ApiOperation(value = "[JWT]모임계좌 참여", notes = "모임계좌에 참여합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "모임계좌에 가입 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
+	})
+	@PostMapping("/join")
+	public SuccessNonDataResponse joinGroupAccount(
+		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@ApiParam(value = "모임계좌 ID", required = true) @RequestBody GroupAccountJoinRequestDTO request
+	) {
+		inviteService.joinGroupAccount(userId, request);
+		return SuccessNonDataResponse.success(SuccessCode.JOIN_GROUP_ACCOUNT_SUCCESS);
+	}
 
 	//모임계좌 상세보기
 

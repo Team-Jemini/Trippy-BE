@@ -32,4 +32,14 @@ public class AccountConverter {
 			.mainAccountId(mainAccountId)
 			.build();
 	}
+
+	public static AccountMemberVO toAccountMemberVO(String accountId, Long userId, String mainAccountId) {
+		return AccountMemberVO.builder()
+			.accountId(accountId)
+			.userId(userId)
+			.role(Role.member)
+			.mainAccountId(mainAccountId)
+			.build();
+	}
+
 }
