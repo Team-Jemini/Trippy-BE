@@ -22,10 +22,10 @@
         <result property="gate" column="gate"/>
         <result property="seat" column="seat"/>
         <result property="baggage" column="baggage"/>
+        <result property="baggageWeight" column="baggage_weight"/>
         <result property="passengerName" column="passenger_name"/>
         <result property="qrImg" column="qr_img"/>
         <result property="used" column="is_used"/>
-        <result property="ticketImg" column="ticket_img"/>
         <result property="seatClass" column="seat_class"
                 typeHandler="org.scoula.common.typehandler.voucher.SeatClassTypeHandler"/>
         <!-- BaseTime -->
@@ -39,4 +39,11 @@
         WHERE user_id = #{userId}
         ORDER BY departure_date DESC
     </select>
+
+    <select id="findById" resultMap="airTicketMap" parameterType="long">
+        SELECT *
+        FROM air_ticket
+        WHERE airline_id = #{airlineId}
+    </select>
+
 </mapper>

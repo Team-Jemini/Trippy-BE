@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class SightseeingVO extends BaseTime {
-	private Long voucherId;
+	private Long sightseeingId;
 	private Long userId;
 	private String voucherImg;
 	private String name;
