@@ -2,11 +2,13 @@ package org.scoula.service.exchange;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.controller.exchange.dto.ExchRateAneBalanceResponse;
-import org.scoula.controller.exchange.dto.ExchangeBalanceResponse;
+
+import org.scoula.controller.exchange.dto.response.ExchRateAneBalanceDTO;
+import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.mapper.exchange.ExchangeRateMapper;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Log4j2
@@ -14,19 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExchangeRateService {
 
-    private final ExchangeRateMapper mapper;
+	private final ExchangeRateMapper exchangeRateMapper;
 
-    /* DB에서 환율 데이터 가져오는 함수 */
-    public List<ExchangeRateVO> getExchangeRates() {
-        return mapper.getExchangeRateList();
-    }
+	/***
+	 * DB에서 환율 데이터 조회
+	 */
+	public List<ExchangeRateVO> getExchangeRates() {
+		return exchangeRateMapper.getExchangeRateList();
+	}
 
-    /* 환전 기능 (작성 중) */
-    public ExchRateAneBalanceResponse getRatesAndBalance(String currencyCode, Long accountId) {
-        Double rate = mapper.findTodayRateByCurrencyCode(currencyCode);
-        Long krwBalance = mapper.findKrwBalanceByAccountId(accountId);
-        Double foreignBalance = mapper.findForeignBalanceByAccountIdAndCurrency(accountId, currencyCode);
+	/***
+	 * 환전
+	 */
+	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, Long accountId) {
+		Double rate = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
+		Long krwBalance = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
+		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(accountId, currencyCode);
 
-        return new ExchangeBalanceResponse(currencyCode, rate, krwBalance, foreignBalance);
-    }
+		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
+	}
 }

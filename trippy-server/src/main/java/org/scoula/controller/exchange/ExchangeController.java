@@ -9,7 +9,8 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.scoula.controller.exchange.dto.ExchRateAneBalanceResponse;
+import org.scoula.controller.exchange.dto.response.ExchRateAneBalanceDTO;
+import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.external.exchange.ExchangeRateAPIService;
 import org.scoula.service.exchange.ExchangeRateService;
@@ -39,23 +40,15 @@ public class ExchangeController {
     }
 
     @GetMapping("/getList")
-    public ResponseEntity<List<ExchangeRateVO>> getExchangeRates() {
-        List<ExchangeRateVO> exchangeRates = ExchangeRateservice.getExchangeRates();
-        return ResponseEntity.ok(exchangeRates);
+    public SuccessResponse<List<ExchangeRateVO>> getExchangeRates() {
+        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateservice.getExchangeRates());
         // JSON 형태로 출력
         // LocalDateTime 값 출력 시 오류 발생.
     }
 
-    /***
-     * 환전 기능
-     * @param currencyCode
-     * @param accountId
-     * @return
-     */
     @GetMapping("/getBalance")
-    public ResponseEntity<ExchRateAneBalanceResponse> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam Long accountId) {
-        ExchRateAneBalanceResponse response = ExchangeRateservice.getRatesAndBalance(currencyCode, accountId);
-        return ResponseEntity.ok(response);
+    public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam Long accountId) {
+        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS, ExchangeRateservice.getRatesAndBalance(currencyCode, accountId));
     }
 
 }
