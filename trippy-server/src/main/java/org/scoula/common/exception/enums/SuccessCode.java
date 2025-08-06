@@ -38,6 +38,7 @@ public enum SuccessCode {
 
 	//계좌
 	GET_PERSONAL_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "개인계좌 상세 조회 성공"),
+	FILTER_ACCOUNT_TRANSACTION_SUCCESS(HttpStatus.OK, "계좌 거래 내역 조회 성공"),
 
 	//여행로그
 	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공"),

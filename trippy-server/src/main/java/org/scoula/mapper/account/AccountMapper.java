@@ -8,4 +8,6 @@ import org.scoula.domain.account.AccountVO;
 public interface AccountMapper {
 
 	AccountVO getPersonalAccountDetail(@Param("accountId") String accountId, @Param("userId") Long userId);
+
+	boolean isAccountUser(@Param("userId") Long userId, @Param("accountId") String accountId);
 }

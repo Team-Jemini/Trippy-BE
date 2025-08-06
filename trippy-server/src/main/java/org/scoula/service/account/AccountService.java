@@ -5,6 +5,7 @@ import java.util.List;
 import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.account.DeletedStatus;
 import org.scoula.domain.transaction.TransactionVO;
@@ -26,7 +27,6 @@ public class AccountService {
 
 	public PersonalAccountDetailResponseDTO getPersonalAccountDetail(String accountId, Long userId) {
 
-		log.info("getPersonalAccountDetail");
 		AccountVO vo = accountMapper.getPersonalAccountDetail(accountId, userId);
 
 		isAccountValid(vo);
@@ -47,6 +47,26 @@ public class AccountService {
 	private static void checkAccountDeletionStatus(AccountVO vo) {
 		if (vo.getIsDeleted() == DeletedStatus.Y) {
 			throw new TrippyException(ErrorCode.ACCOUNT_ALREADY_DELETED);
+		}
+	}
+
+	public List<AccountTransactionResponseDTO> filterAccountTransactions(String accountId, Long userId,
+		String transactionType) {
+
+		isAccountuserValid(accountId, userId);
+
+		if (transactionType.equals("ALL")) {
+			return AccountConverter.toTransactionResponseDTOList(
+				transactionMapper.getAccountTransaction(accountId));
+		}
+
+		return AccountConverter.toTransactionResponseDTOList(
+			transactionMapper.filterAccountTransactions(accountId, transactionType));
+	}
+
+	private void isAccountuserValid(String accountId, Long userId) {
+		if (!accountMapper.isAccountUser(userId, accountId)) {
+			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
 		}
 	}
 }

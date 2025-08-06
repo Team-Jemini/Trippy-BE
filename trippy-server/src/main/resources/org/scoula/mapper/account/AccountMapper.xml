@@ -20,11 +20,19 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+    
     <select id="getPersonalAccountDetail" resultType="org.scoula.domain.account.AccountVO">
         SELECT *
         FROM account
         WHERE account_id = #{accountId}
           and user_id = #{userId}
           and account_type = 'person'
+    </select>
+
+    <select id="isAccountUser" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM account
+        WHERE account_id = #{accountId}
+          AND user_id = #{userId}
     </select>
 </mapper>

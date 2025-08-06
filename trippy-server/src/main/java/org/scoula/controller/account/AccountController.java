@@ -1,9 +1,12 @@
 package org.scoula.controller.account;
 
+import java.util.List;
+
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.service.account.AccountService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +36,26 @@ public class AccountController {
 	})
 	@GetMapping("/detail")
 	public SuccessResponse<PersonalAccountDetailResponseDTO> getGroupAccountDetail(
-		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId,
+		@ApiParam(value = "개인 계좌 ID", required = true) @RequestParam String accountId,
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId
 	) {
 		return SuccessResponse.success(SuccessCode.GET_PERSONAL_ACCOUNT_DETAIL_SUCCESS,
 			accountService.getPersonalAccountDetail(accountId, userId));
 	}
 
+	@ApiOperation(value = "[JWT]계좌 거래 내역 조회", notes = "계좌 거래 내역 조회.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "계좌 거래 내역 조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
+	})
+	@GetMapping("/transactions")
+	public SuccessResponse<List<AccountTransactionResponseDTO>> filterAccountTransactions(
+		@ApiParam(value = "개인 계좌 ID", required = true) @RequestParam String accountId,
+		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@ApiParam(value = "거래 타입", required = true) @RequestParam String transactionType
+	) {
+		return SuccessResponse.success(SuccessCode.FILTER_ACCOUNT_TRANSACTION_SUCCESS,
+			accountService.filterAccountTransactions(accountId, userId, transactionType));
+	}
 }
