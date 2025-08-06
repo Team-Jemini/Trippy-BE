@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class AccommodationVO extends BaseTime {
-	private String reservationCode;
+	private String accommodationId;
 	private Long userId;
 	private String accommodationName;
 	private String roomName;
@@ -27,4 +27,6 @@ public class AccommodationVO extends BaseTime {
 	private LocalDate reservationEndDate;
 	private LocalDateTime checkIn;
 	private LocalDateTime checkOut;
+	private String address;
+	private String contact;
 }
