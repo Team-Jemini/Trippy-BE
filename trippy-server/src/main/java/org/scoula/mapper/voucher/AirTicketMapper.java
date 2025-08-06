@@ -9,4 +9,6 @@ import org.scoula.domain.voucher.AirTicketVO;
 public interface AirTicketMapper {
 
 	List<AirTicketVO> findAllByUserIdOrderByDepartureDateDesc(Long userId);
+
+	AirTicketVO findById(Long airLineId);
 }

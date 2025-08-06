@@ -23,4 +23,31 @@
         FROM passport
         WHERE user_id = #{userId}
     </select>
+
+    <insert id="save" parameterType="org.scoula.domain.identification.PassportVO">
+        INSERT INTO passport (
+        passport_number,
+        user_id,
+        name_kr,
+        name_en,
+        birth_date,
+        gender,
+        country_code,
+        expire_date,
+        created_at,
+        updated_at
+        ) VALUES (
+        #{passportNumber},
+        #{userId},
+        #{nameKr},
+        #{nameEn},
+        #{birthDate},
+        #{gender},
+        #{countryCode},
+        #{expireDate},
+        NOW(),
+        NOW()
+        )
+    </insert>
+
 </mapper>
