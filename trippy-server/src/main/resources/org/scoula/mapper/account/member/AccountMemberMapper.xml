@@ -27,4 +27,11 @@
         where account_id = #{accountId}
     </select>
 
+    <select id="isGroupAccountLeader" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM account_member
+        WHERE user_id = #{userId}
+          AND role = 'leader'
+    </select>
+
 </mapper>

@@ -8,4 +8,6 @@ import org.scoula.domain.account.member.AccountMemberVO;
 @Mapper
 public interface AccountMemberMapper {
 	List<AccountMemberVO> findAllGroupMembers(String accountId);
+
+	boolean isGroupAccountLeader(Long userId);
 }

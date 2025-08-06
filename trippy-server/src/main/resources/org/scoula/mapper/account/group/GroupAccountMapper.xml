@@ -56,6 +56,14 @@
         VALUES (#{accountId}, #{userId}, #{role}, #{mainAccountId})
     </insert>
 
+    <insert id="sendSettlementRequests" parameterType="list">
+        INSERT INTO notification (user_id, title, content, noti_type, amount)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId}, #{item.title}, #{item.content}, #{item.notiType}, #{item.amount})
+        </foreach>
+    </insert>
+
     <select id="countGroupAccountsByDate" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM account
