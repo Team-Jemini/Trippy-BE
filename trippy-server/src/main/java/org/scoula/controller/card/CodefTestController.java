@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.scoula.common.dto.SuccessNonDataResponse;
+import org.scoula.common.exception.enums.SuccessCode;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.*;
 
 @RestController
 @RequestMapping("/test/codef")
@@ -25,17 +29,12 @@ public class CodefTestController {
 
 	@ApiOperation(value = "CODEF 카드 불러오기 및 저장", notes = "CODEF로부터 카드 정보를 가져와 DB에 저장합니다.")
 	@PostMapping(value = "/cards", produces = "application/json; charset=UTF-8")
-	public String getAllCardsAndSave(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
-		@ApiParam(value = "계좌 ID", required = true) @RequestParam String accountId
+	public SuccessNonDataResponse getAllCardsAndSave(
+		@RequestParam Long userId,
+		@RequestParam String accountId
 	) {
-		try {
-			cardService.getAllMyCardsAndSave(userId, accountId);
-			return "카드 정보 저장 완료";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "❌ 에러 발생: " + e.getMessage();
-		}
+		cardService.getAllMyCardsAndSave(userId, accountId);
+		return SuccessNonDataResponse.success(SuccessCode.FIND_CODEF_CARD_SUCCESS);
 	}
 }
 
