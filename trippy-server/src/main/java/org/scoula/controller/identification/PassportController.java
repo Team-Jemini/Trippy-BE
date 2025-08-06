@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.identification.dto.PassportDTO;
-import org.scoula.controller.identification.dto.ResidentCardInquiryDTO;
 import org.scoula.controller.identification.dto.req.PassportReq;
 import org.scoula.service.identification.PassportService;
 import org.springframework.web.bind.annotation.*;
