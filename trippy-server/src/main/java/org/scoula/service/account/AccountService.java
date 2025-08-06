@@ -35,8 +35,6 @@ public class AccountService {
                 .map(vo -> AccountDTO.from(vo, userId))
                 .toList();
 
-        log.info(accounts);
-
         if (accounts.isEmpty()) {
             throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
         }

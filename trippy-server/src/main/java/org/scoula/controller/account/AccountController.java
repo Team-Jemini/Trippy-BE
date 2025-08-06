@@ -10,7 +10,6 @@ import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.account.dto.response.AccountDTO;
 import org.scoula.service.account.AccountService;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
