@@ -102,18 +102,20 @@ public class GroupAccountService {
 
 		GroupAccountVO vo = groupAccountMapper.getGroupAccountDetail(accountId, userId);
 
-		log.info("Account 조회 결과: {}", vo);
-
 		if (vo == null) {
 			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
 		}
 
-		if (vo.getIsDeleted() == DeletedStatus.Y) {
-			throw new TrippyException(ErrorCode.ACCOUNT_ALREADY_DELETED);
-		}
+		checkAccountDeletionStatus(vo);
 
 		List<TransactionVO> transaction = transactionMapper.getAccountTransaction(accountId);
 
 		return AccountConverter.toGroupAccountDetailResponseDTO(vo, transaction);
+	}
+
+	private static void checkAccountDeletionStatus(GroupAccountVO vo) {
+		if (vo.getIsDeleted() == DeletedStatus.Y) {
+			throw new TrippyException(ErrorCode.ACCOUNT_ALREADY_DELETED);
+		}
 	}
 }
