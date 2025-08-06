@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessResponse;
+import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.scoula.domain.account.AccountVO;
 import org.scoula.external.codef.accounts.service.CodefAccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +24,9 @@ public class CodefAccountController {
             @ApiResponse(code = 400, message = "잘못된 요청입니다."),
             @ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
     })
-    @PostMapping("/sync")
-    public SuccessResponse<AccountVO> saveCodefAccount(@RequestParam Long userId) {
+    @PostMapping(value = "/sync")
+    public SuccessNonDataResponse saveCodefAccount(@RequestParam Long userId) {
         codefAccountService.saveAccountsToDB(userId);
-        return SuccessResponse.success(SuccessCode.GET_CODEF_DATA_SUCCESS, null);
+        return SuccessNonDataResponse.success(SuccessCode.GET_CODEF_DATA_SUCCESS);
     }
 }
