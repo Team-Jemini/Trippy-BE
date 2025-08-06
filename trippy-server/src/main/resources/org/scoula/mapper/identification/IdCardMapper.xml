@@ -21,7 +21,7 @@
         WHERE user_id=#{userId}
     </select>
 
-    <insert id="addResidentCardInfo" parameterType="org.scoula.domain.identification.IdCardVO">
+    <insert id="save" parameterType="org.scoula.domain.identification.IdCardVO">
         INSERT INTO id_card (
             user_id,
             name,
