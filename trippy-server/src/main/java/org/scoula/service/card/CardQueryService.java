@@ -7,6 +7,8 @@ import org.scoula.mapper.card.CardMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.scoula.domain.card.CardVO;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,10 +17,16 @@ public class CardQueryService {
 	private final CardMapper cardMapper;
 
 	public List<CardSummaryResponseDTO> getCardSummaries(Long userId) {
-		return cardMapper.getCardSummaries(userId);
+		List<CardVO> cards = cardMapper.findByUserId(userId);
+		return cards.stream()
+			.map(CardSummaryResponseDTO::new) // 생성자 기반 변환
+			.collect(Collectors.toList());
 	}
 
 	public List<CardDetailResponseDTO> getCardDetails(Long userId) {
-		return cardMapper.getCardDetails(userId);
+		List<CardVO> cards = cardMapper.findByUserId(userId);
+		return cards.stream()
+			.map(CardDetailResponseDTO::new) // 생성자 기반 변환
+			.collect(Collectors.toList());
 	}
 }
