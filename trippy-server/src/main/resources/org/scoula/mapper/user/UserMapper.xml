@@ -30,4 +30,11 @@
         WHERE user_id = #{userId}
     </select>
 
+
+    <select id="findUserName" resultType="String" parameterType="long">
+        SELECT name
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

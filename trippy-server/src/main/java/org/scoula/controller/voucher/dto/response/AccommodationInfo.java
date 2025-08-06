@@ -4,6 +4,7 @@ import org.scoula.common.util.DateFormatUtil;
 import org.scoula.domain.voucher.AccommodationVO;
 
 public record AccommodationInfo(
+	String accommodationId,
 	String accommodationName,
 	String roomName,
 	String nights,
@@ -13,6 +14,7 @@ public record AccommodationInfo(
 ) {
 	public static AccommodationInfo from(AccommodationVO vo) {
 		return new AccommodationInfo(
+			vo.getAccommodationId(),
 			vo.getAccommodationName(),
 			vo.getRoomName(),
 			String.valueOf(vo.getReservationEndDate().toEpochDay() - vo.getReservationStartDate().toEpochDay())+"박",

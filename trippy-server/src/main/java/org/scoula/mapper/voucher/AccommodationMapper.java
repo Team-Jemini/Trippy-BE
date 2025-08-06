@@ -8,4 +8,6 @@ import org.scoula.domain.voucher.AccommodationVO;
 @Mapper
 public interface AccommodationMapper {
 	List<AccommodationVO> findAllByUserIdOrderByCheckOutDesc(Long userId);
+
+	AccommodationVO findById(String accommodationId);
 }
