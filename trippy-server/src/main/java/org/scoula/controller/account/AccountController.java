@@ -11,10 +11,7 @@ import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.account.dto.response.AccountDTO;
 import org.scoula.service.account.AccountService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class AccountController {
             @ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
     })
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @GetMapping()
     public SuccessResponse<List<AccountDTO>> getAccountsList(@RequestParam Long userId) {
         return SuccessResponse.success(SuccessCode.FIND_ACCOUNTS_LIST_SUCCESS, accountService.getAccountsList(userId));
     }
