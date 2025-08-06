@@ -111,12 +111,8 @@ public class GroupAccountService {
 	@Transactional
 	public void sendSettlementRequest(Long userId, SettlementRequestDTO request) {
 		isGroupAccountLeader(userId);
-
-		String title = getTitle(userId);
-
-		String content = getContent(request);
-
-		List<NotificationVO> notifications = getNotificationVOList(request, title, content);
+		
+		List<NotificationVO> notifications = getNotificationVOList(request, getTitle(userId), getContent(request));
 
 		mapper.sendSettlementRequests(notifications);
 	}
