@@ -4,11 +4,11 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.scoula.controller.identification.dto.ResidentCardDTO;
+import org.scoula.controller.identification.dto.req.ResidentCardReq;
+import org.scoula.controller.identification.dto.res.ResidentCardDTO;
+import org.scoula.controller.identification.dto.res.ResidentCardOcrDTO;
 import org.scoula.external.codef.identification.OcrService;
-import org.scoula.controller.identification.dto.ResidentCardOcrDTO;
 import org.scoula.service.identification.ResidentCardService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,5 +47,19 @@ public class ResidentCardController {
     public SuccessResponse<ResidentCardDTO> getResidentCardInfo(@RequestHeader("X-USER-ID") Long userId){
 
         return SuccessResponse.success(SuccessCode.RESIDENT_CARD_SUCCESS, residentCardService.getResidentCardInfo(userId));
+    }
+
+    @ApiOperation(value = "[JWT] 주민등록증 추가", notes = "주민등록증 추가하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "주민등록증 추가에 성공했습니다.", response = SuccessResponse.class),
+            @ApiResponse(code = 400, message = "잘못된 요청입니다."),
+            @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
+    })
+    @PostMapping("/residentCard")
+    public SuccessResponse<Integer> addResidentCardInfo(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestBody ResidentCardReq residentCardReq){
+        return SuccessResponse.success(SuccessCode.RESIDENT_CARD_ADD_SUCCESS,
+                residentCardService.addResidentCardInfo(userId, residentCardReq));
     }
 }

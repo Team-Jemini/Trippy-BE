@@ -18,6 +18,7 @@ public enum SuccessCode {
 	//주민등록, 여권
 	RESIDENT_CARD_OCR_SUCCESS(HttpStatus.OK, "주민등록증 정보 인식이 완료되었습니다."),
 	RESIDENT_CARD_SUCCESS(HttpStatus.OK, "주민등록증 조회를 성공하였습니다."),
+	RESIDENT_CARD_ADD_SUCCESS(HttpStatus.OK, "주민등록증 등록에 성공하였습니다."),
 
 
 	//항공권, 숙소, 관광
