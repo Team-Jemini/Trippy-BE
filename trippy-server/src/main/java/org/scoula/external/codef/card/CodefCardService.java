@@ -15,8 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-
-
+import lombok.extern.slf4j.Slf4j;
+import org.scoula.common.exception.enums.ErrorCode;
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CodefCardService {
@@ -55,14 +56,27 @@ public class CodefCardService {
 	@Value("${codef.card-2.organization}")
 	private String organization2;
 
-	public void getAllMyCardsAndSave(Long userId, String accountId) throws Exception {
-		String accessToken = accessTokenService.getAccessToken(clientId, clientSecret);
+	public void getAllMyCardsAndSave(Long userId, String accountId) {
+		String accessToken;
 
-		// 카드 1
-		processCardData(userId, accountId, loginId1, password1, birthDate1, organization1, accessToken);
+		try {
+			accessToken = accessTokenService.getAccessToken(clientId, clientSecret);
+		} catch (Exception e) {
+			log.error("{}: {}", ErrorCode.ACCESS_TOKEN_FAILED.getMessage(), e.getMessage(), e);
+			return;
+		}
 
-		// 카드 2
-		processCardData(userId, accountId, loginId2, password2, birthDate2, organization2, accessToken);
+		try {
+			processCardData(userId, accountId, loginId1, password1, birthDate1, organization1, accessToken);
+		} catch (Exception e) {
+			log.warn("{}: {}", ErrorCode.CARD_1_PROCESS_FAILED.getMessage(), e.getMessage(), e);
+		}
+
+		try {
+			processCardData(userId, accountId, loginId2, password2, birthDate2, organization2, accessToken);
+		} catch (Exception e) {
+			log.warn("{}: {}", ErrorCode.CARD_2_PROCESS_FAILED.getMessage(), e.getMessage(), e);
+		}
 	}
 
 	private void processCardData(Long userId, String accountId, String loginId, String password, String birthDate,
@@ -114,6 +128,6 @@ public class CodefCardService {
 				return data.getString("connectedId");
 			}
 		}
-		throw new RuntimeException("connectedId를 찾을 수 없습니다. 응답: " + json);
+		throw new RuntimeException(ErrorCode.CONNECTED_ID_NOT_FOUND_EXCEPTION.getMessage() + ": " + json);
 	}
 }
