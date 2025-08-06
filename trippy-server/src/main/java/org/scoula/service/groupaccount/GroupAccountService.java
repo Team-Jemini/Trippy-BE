@@ -102,15 +102,19 @@ public class GroupAccountService {
 
 		GroupAccountVO vo = groupAccountMapper.getGroupAccountDetail(accountId, userId);
 
-		if (vo == null) {
-			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
-		}
+		isAccountValid(vo);
 
 		checkAccountDeletionStatus(vo);
 
 		List<TransactionVO> transaction = transactionMapper.getAccountTransaction(accountId);
 
 		return AccountConverter.toGroupAccountDetailResponseDTO(vo, transaction);
+	}
+
+	private static void isAccountValid(GroupAccountVO vo) {
+		if (vo == null) {
+			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
+		}
 	}
 
 	private static void checkAccountDeletionStatus(GroupAccountVO vo) {
