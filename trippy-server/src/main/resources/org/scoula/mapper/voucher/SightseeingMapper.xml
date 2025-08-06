@@ -5,7 +5,7 @@
 <mapper namespace="org.scoula.mapper.voucher.SightseeingMapper">
 
     <resultMap id="sightseeingMap" type="org.scoula.domain.voucher.SightseeingVO">
-        <id property="voucherId" column="voucher_id"/>
+        <id property="sightseeingId" column="voucher_id"/>
         <result property="userId" column="user_id"/>
         <result property="voucherImg" column="voucher_img"/>
         <result property="name" column="name"/>
@@ -14,4 +14,18 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <select id="findAllByUserIdOrderByViewingDateDesc" parameterType="long" resultMap="sightseeingMap">
+        SELECT *
+        FROM sightseeing
+        WHERE user_id = #{userId}
+        ORDER BY viewing_date DESC
+    </select>
+
+    <insert id="save" parameterType="org.scoula.domain.voucher.SightseeingVO" useGeneratedKeys="true"
+            keyProperty="voucherId">
+        INSERT INTO sightseeing (user_id, name, viewing_date, voucher_img, created_at, updated_at)
+        VALUES (#{userId}, #{name}, #{viewingDate}, #{voucherImg}, NOW(), NOW())
+    </insert>
+
 </mapper>

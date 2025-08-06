@@ -9,4 +9,6 @@ public interface UserMapper {
 	UserVO findById(Long userId);
 
 	Boolean existsById(Long userId);
+
+	String findUserName(Long userId);
 }

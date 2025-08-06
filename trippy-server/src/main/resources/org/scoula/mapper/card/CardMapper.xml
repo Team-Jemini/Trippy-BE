@@ -18,4 +18,18 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <insert id="insertCard" parameterType="org.scoula.domain.card.CardVO">
+        INSERT INTO card (
+            user_id, account_id, card_number, card_name, card_img
+        ) VALUES (
+                     #{userId}, #{accountId}, #{cardNumber}, #{cardName}, #{cardImg}
+                 )
+    </insert>
+
+    <select id="findByUserId" resultMap="cardMap">
+        SELECT * FROM card WHERE user_id = #{userId}
+    </select>
+
+
 </mapper>

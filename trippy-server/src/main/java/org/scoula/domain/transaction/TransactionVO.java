@@ -1,7 +1,6 @@
 package org.scoula.domain.transaction;
 
 import org.scoula.domain.BaseTime;
-import org.springframework.transaction.TransactionStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
