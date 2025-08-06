@@ -59,9 +59,7 @@ public class ResidentCardController {
     public SuccessResponse<Integer> addResidentCardInfo(
             @RequestHeader("X-USER-ID") Long userId,
             @RequestBody ResidentCardReq residentCardReq){
-
-        Integer affectedRows = residentCardService.addResidentCardInfo(userId, residentCardReq);
-
-        return SuccessResponse.success(SuccessCode.RESIDENT_CARD_ADD_SUCCESS, affectedRows);
+        return SuccessResponse.success(SuccessCode.RESIDENT_CARD_ADD_SUCCESS,
+                residentCardService.addResidentCardInfo(userId, residentCardReq));
     }
 }
