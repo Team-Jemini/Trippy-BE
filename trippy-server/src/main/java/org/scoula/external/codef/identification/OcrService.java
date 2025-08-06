@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.scoula.common.exception.model.ServerErrorException;
-import org.scoula.controller.identification.dto.ResidentCardOcrDTO;
+import org.scoula.controller.identification.dto.res.ResidentCardOcrDTO;
 import org.scoula.external.codef.identification.dto.OcrResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;

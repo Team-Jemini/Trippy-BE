@@ -2,7 +2,8 @@ package org.scoula.service.identification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.controller.identification.dto.ResidentCardDTO;
+import org.scoula.controller.identification.dto.req.ResidentCardReq;
+import org.scoula.controller.identification.dto.res.ResidentCardDTO;
 import org.scoula.domain.identification.IdCardVO;
 import org.scoula.mapper.identification.IdCardMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,5 +23,11 @@ public class ResidentCardService {
         // TODO: 유저 유효성 검사
         IdCardVO idCardVO = ResidentCardMapper.findById(userId);
         return ResidentCardDTO.from(idCardVO, qrUrl);
+    }
+
+    public int addResidentCardInfo(Long userId, ResidentCardReq req){
+
+        // TODO: 올바른 사용자인지 검사
+        return ResidentCardMapper.save(IdCardVO.from(userId, req));
     }
 }

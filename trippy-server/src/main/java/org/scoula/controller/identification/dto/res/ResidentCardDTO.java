@@ -1,4 +1,4 @@
-package org.scoula.controller.identification.dto;
+package org.scoula.controller.identification.dto.res;
 
 import org.scoula.domain.identification.IdCardVO;
 

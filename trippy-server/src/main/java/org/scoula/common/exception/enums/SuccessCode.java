@@ -18,6 +18,7 @@ public enum SuccessCode {
 	//주민등록, 여권
 	RESIDENT_CARD_OCR_SUCCESS(HttpStatus.OK, "주민등록증 정보 인식이 완료되었습니다."),
 	RESIDENT_CARD_SUCCESS(HttpStatus.OK, "주민등록증 조회를 성공하였습니다."),
+	RESIDENT_CARD_ADD_SUCCESS(HttpStatus.OK, "주민등록증 등록에 성공하였습니다."),
 
 
 	//항공권, 숙소, 관광
@@ -33,8 +34,9 @@ public enum SuccessCode {
 	PARSE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 토큰을 성공적으로 파싱했습니다."),
 
 	//여행로그
-	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공");
-
+	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공"),
+	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
+	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공");
 
 	private final HttpStatus httpStatus;
 	private final String message;
