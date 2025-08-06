@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record PassportDTO(
+        String passportNumber,
         String nameKr,
         String nameEn,
         LocalDate birthDate,
@@ -17,6 +18,7 @@ public record PassportDTO(
 
     public static PassportDTO from(PassportVO vo){
         return new PassportDTO(
+                vo.getPassportNumber(),
                 vo.getNameKr(),
                 vo.getNameEn(),
                 vo.getBirthDate(),
