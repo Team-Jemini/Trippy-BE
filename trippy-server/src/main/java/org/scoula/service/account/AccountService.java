@@ -1,21 +1,23 @@
 package org.scoula.service.account;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
+import lombok.RequiredArgsConstructor;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.account.DeletedStatus;
 import org.scoula.external.codef.accounts.service.CodefAccountService;
 import org.scoula.mapper.account.AccountMapper;
+import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
+import static org.scoula.common.exception.enums.ErrorCode.SAVE_ACCOUNTS_LIST_FAILED;
 
 import java.util.List;
 import java.util.Map;
-
-import static org.scoula.common.exception.enums.ErrorCode.SAVE_ACCOUNTS_LIST_FAILED;
 
 @Log4j2
 @Service
@@ -23,10 +25,13 @@ import static org.scoula.common.exception.enums.ErrorCode.SAVE_ACCOUNTS_LIST_FAI
 public class AccountService {
 
     private final CodefAccountService codefAccountService;
+    private final UserService userService;
     private final AccountMapper accountMapper;
 
     public void saveAccounts(final Long userId) {
         try {
+            userService.validateUserExists(userId);
+
             String accountListJson = codefAccountService.getAccountList();
 
             ObjectMapper mapper = new ObjectMapper();
