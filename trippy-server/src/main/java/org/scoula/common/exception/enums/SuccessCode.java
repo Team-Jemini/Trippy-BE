@@ -17,6 +17,8 @@ public enum SuccessCode {
 
 	//주민등록, 여권
 	RESIDENT_CARD_OCR_SUCCESS(HttpStatus.OK, "주민등록증 정보 인식이 완료되었습니다."),
+	RESIDENT_CARD_SUCCESS(HttpStatus.OK, "주민등록증 조회를 성공하였습니다."),
+
 
 	//항공권, 숙소, 관광
 	FIND_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 전체조회 성공"),
@@ -33,7 +35,8 @@ public enum SuccessCode {
 	//여행로그
 	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공");
 
-    private final HttpStatus httpStatus;
+
+	private final HttpStatus httpStatus;
 	private final String message;
 
 	SuccessCode(HttpStatus httpStatus, String message) {
