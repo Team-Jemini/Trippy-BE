@@ -1,4 +1,4 @@
-package org.scoula.external.codef.accounts.controller;
+package org.scoula.controller.account;
 
 import lombok.RequiredArgsConstructor;
 
