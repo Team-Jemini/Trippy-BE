@@ -6,8 +6,8 @@ import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.identification.dto.req.ResidentCardReq;
 import org.scoula.controller.identification.dto.res.ResidentCardDTO;
-import org.scoula.external.codef.identification.OcrService;
 import org.scoula.controller.identification.dto.res.ResidentCardOcrDTO;
+import org.scoula.external.codef.identification.OcrService;
 import org.scoula.service.identification.ResidentCardService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +44,7 @@ public class ResidentCardController {
             @ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
     })
     @GetMapping("/residentCard")
-    public SuccessResponse<ResidentCardDTO> getResidentCardInfo(@RequestParam("userId") Long userId){
+    public SuccessResponse<ResidentCardDTO> getResidentCardInfo(@RequestHeader("X-USER-ID") Long userId){
 
         return SuccessResponse.success(SuccessCode.RESIDENT_CARD_SUCCESS, residentCardService.getResidentCardInfo(userId));
     }

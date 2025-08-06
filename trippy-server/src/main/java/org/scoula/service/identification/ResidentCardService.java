@@ -14,22 +14,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ResidentCardService {
 
-    private final IdCardMapper mapper;
+    private final IdCardMapper ResidentCardMapper;
 
     @Value("${aws.qr-url}")
     private String qrUrl;
 
     public ResidentCardDTO getResidentCardInfo(Long userId){
-
-        IdCardVO residentCardInfo = mapper.getResidentCardInfo(userId);
-
-        return new ResidentCardDTO(
-                residentCardInfo.getName(),
-                residentCardInfo.getIdCardDate(),
-                residentCardInfo.getIdCardNum(),
-                residentCardInfo.getAddress(),
-                qrUrl
-        );
+        // TODO: 유저 유효성 검사
+        IdCardVO idCardVO = ResidentCardMapper.findById(userId);
+        return ResidentCardDTO.from(idCardVO, qrUrl);
     }
 
     public int addResidentCardInfo(Long userId, ResidentCardReq req){

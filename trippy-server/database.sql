@@ -1,3 +1,4 @@
+use trippy_db;
 -- account_member
 CREATE TABLE account_member
 (
@@ -83,13 +84,16 @@ CREATE TABLE exchange_log
   COLLATE = utf8mb4_general_ci;
 
 -- exchange rate mapper
+DROP table exchange_rate;
+
 CREATE TABLE exchange_rate
 (
     exchange_rate_id   BIGINT NOT NULL AUTO_INCREMENT,
     currency_code      VARCHAR(10),
-    base_exchange_rate INT,
-    rate_buy           INT,
-    rate_sell          INT,
+    currency_name      VARCHAR(30),
+    base_exchange_rate DOUBLE,
+    rate_buy           DOUBLE,
+    rate_sell          DOUBLE,
     exchange_rate_date DATETIME,
     created_at         DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at         DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
