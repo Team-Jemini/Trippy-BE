@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface AccountMapper {
-    void insertAccount(AccountVO account);
+    void saveAccount(AccountVO account);
     boolean existsByAccountId(String accountId);
     List<AccountVO> findAllByUserIdOrderByUpdatedAt(Long userId);
 }
