@@ -28,16 +28,6 @@ public class ResidentCardService {
     public int addResidentCardInfo(Long userId, ResidentCardReq req){
 
         // TODO: 올바른 사용자인지 검사
-
-        return mapper.addResidentCardInfo(
-                IdCardVO.builder()
-                    .userId(userId)
-                .idCardNum(req.identity())
-                .idCardDate(req.resIssueDate())
-                .name(req.name())
-                .address(req.address())
-                        .imgUrl(req.imgUrl())
-                .build()
-        );
+        return ResidentCardMapper.save(IdCardVO.from(userId, req));
     }
 }
