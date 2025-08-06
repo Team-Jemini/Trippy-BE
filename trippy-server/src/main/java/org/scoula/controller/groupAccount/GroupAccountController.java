@@ -1,5 +1,7 @@
 package org.scoula.controller.groupAccount;
 
+import java.util.List;
+
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
@@ -11,9 +13,11 @@ import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountMemberResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
 import org.scoula.service.groupaccount.GroupAccountService;
 import org.scoula.service.groupaccount.InviteService;
+import org.scoula.service.groupaccount.MemberService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +41,7 @@ public class GroupAccountController {
 
 	private final GroupAccountService groupAccountservice;
 	private final InviteService inviteService;
+	private final MemberService memberService;
 
 	@ApiOperation(value = "[JWT] 모임계좌 생성", notes = "모임계좌 생성 및 모임주를 등록하는 API입니다.")
 	@ApiResponses(value = {
@@ -60,7 +65,7 @@ public class GroupAccountController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "초대링크 생성 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@PostMapping("/invite/reissue")
 	public SuccessResponse<InviteResponseDTO> reissueInviteTokenURL(
@@ -75,7 +80,7 @@ public class GroupAccountController {
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "초대 토큰 파싱 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = SuccessResponse.class)
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@GetMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
@@ -114,6 +119,19 @@ public class GroupAccountController {
 	) {
 		return SuccessResponse.success(SuccessCode.GET_GROUP_ACCOUNT_DETAIL_SUCCESS,
 			groupAccountservice.getGroupAccountDetail(accountId, userId));
+	}
+	@ApiOperation(value = "모임 계좌 멤버조회", notes = "모임 계좌 멤버조회.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "모임 계좌 멤버조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
+	})
+	@GetMapping("/members")
+	public SuccessResponse<List<GroupAccountMemberResponseDTO>> getGroupAccountMembers(
+		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId
+	) {
+		return SuccessResponse.success(SuccessCode.FIND_GROUP_ACCOUNT_MEMBER_SUCCESS,
+			memberService.getGroupAccountMembers(accountId));
 	}
 
 	//정산 요청하기

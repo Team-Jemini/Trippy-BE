@@ -38,7 +38,8 @@ public enum SuccessCode {
 	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
 	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공"),
 	JOIN_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임계좌에 가입 성공"),
-	GET_GROUP_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "모임 계좌 상세 조회 성공입니다.");
+	GET_GROUP_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "모임 계좌 상세 조회 성공입니다."),
+	FIND_GROUP_ACCOUNT_MEMBER_SUCCESS(HttpStatus.OK, "모임 계좌 멤버 조회 성공");
 
 	private final HttpStatus httpStatus;
 	private final String message;
