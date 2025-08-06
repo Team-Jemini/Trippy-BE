@@ -1,0 +1,91 @@
+package org.scoula.common.util;
+
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
+
+import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.TrippyException;
+import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+@Component
+public class JwtTokenUtil {
+
+	private final Key secretKey;
+	private static final long EXPIRATION_TIME = 1000L * 60 * 60 * 24; // 24시간
+
+	public JwtTokenUtil(@Value("${invite.SECRET-key}") String secret) {
+		this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+	}
+
+	public String createInviteToken(Long userId, String userName, String accountId, String accountName) {
+		Date now = new Date();
+		Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+
+		return Jwts.builder()
+			.setSubject("invite")
+			.claim("accountId", accountId)
+			.claim("userId", userId)
+			.claim("userName", userName)
+			.claim("accountName", accountName)
+			.claim("expiryDate", Long.valueOf(expiryDate.getTime()))
+			.setIssuedAt(now)
+			.setExpiration(expiryDate)
+			.signWith(secretKey, SignatureAlgorithm.HS256)
+			.compact();
+	}
+
+	public AcceptInviteResponseDTO parseInviteToken(String token) {
+		try {
+			Jws<Claims> climsJws = Jwts.parserBuilder()
+				.setSigningKey(secretKey)
+				.build()
+				.parseClaimsJws(token);
+
+			Claims claims = climsJws.getBody();
+
+			String accountId = claims.get("accountId", String.class);
+			String accountName = claims.get("accountName", String.class);
+			String userName = claims.get("userName", String.class);
+			Number userIdNumber = claims.get("userId", Number.class);
+			Long userId = userIdNumber.longValue();
+
+			Number expiryDateNumber = claims.get("expiryDate", Number.class);
+			if (expiryDateNumber == null) {
+				throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
+			}
+			Long expiryDateMillis = expiryDateNumber.longValue();
+			LocalDateTime expiryDate = LocalDateTime.ofEpochSecond(expiryDateMillis / 1000, 0, ZoneOffset.UTC);
+
+			return new AcceptInviteResponseDTO(accountId, accountName, userId, userName, expiryDate);
+
+		} catch (ExpiredJwtException e) {
+			throw new TrippyException(ErrorCode.EXPIRED_INVITE_TOKEN);
+		} catch (SignatureException e) {
+			throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
+		} catch (MalformedJwtException | UnsupportedJwtException e) {
+			throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
+		} catch (IllegalArgumentException e) {
+			throw new TrippyException(ErrorCode.INVALID_REQUEST_PARAMETER);
+		} catch (JwtException e) {
+			throw new TrippyException(ErrorCode.INVALID_INVITE_TOKEN);
+		}
+	}
+}
