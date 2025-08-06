@@ -33,7 +33,7 @@ public class PassportVO extends BaseTime {
 	public static PassportVO from(Long userId, PassportReq req) {
 		return new PassportVO(
 				userId,
-				"a",
+				req.passportNumber(),
 				req.nameKr(),
 				req.nameEn(),
 				req.birthDate(),
