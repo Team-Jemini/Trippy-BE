@@ -23,6 +23,9 @@ public enum SuccessCode {
 
 	//항공권, 숙소, 관광
 	FIND_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 전체조회 성공"),
+
+	FIND_CODEF_CARD_SUCCESS(HttpStatus.OK, "CODEF 카드 정보 저장 완료"),
+
 	FIND_DETAIL_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 상세조회 성공"),
 	FIND_VOUCHER_SUCCESS(HttpStatus.OK, "바우처(숙소,관광) 전체조회 성공"),
 	FIND_DETAIL_ACCOMMODATION_SUCCESS(HttpStatus.OK, "숙소예약 상세조회 성공"),
