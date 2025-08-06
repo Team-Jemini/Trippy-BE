@@ -9,8 +9,15 @@
         <result property="idCardNum" column="id_card_num"/>
         <result property="idCardDate" column="id_card_date"/>
         <result property="name" column="name"/>
+        <result property="address" column="address"/>
         <!-- BaseTime -->
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <select id="findById" resultMap="idCardMap">
+        SELECT *
+        FROM id_card
+        WHERE user_id=#{userId}
+    </select>
 </mapper>
