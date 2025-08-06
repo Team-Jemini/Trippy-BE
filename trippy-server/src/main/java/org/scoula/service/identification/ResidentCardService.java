@@ -19,18 +19,8 @@ public class ResidentCardService {
     private String qrUrl;
 
     public ResidentCardDTO getResidentCardInfo(Long userId){
-
         // TODO: 유저 유효성 검사
-
         IdCardVO idCardVO = ResidentCardMapper.findById(userId);
-
-        return new ResidentCardDTO(
-                idCardVO.getName(),
-                idCardVO.getIdCardDate(),
-                idCardVO.getIdCardNum(),
-                idCardVO.getAddress(),
-                idCardVO.getImgUrl(),
-                qrUrl
-        );
+        return ResidentCardDTO.from(idCardVO, qrUrl);
     }
 }
