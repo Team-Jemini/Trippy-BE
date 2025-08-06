@@ -1,11 +1,15 @@
 package org.scoula.controller.groupAccount;
 
+import java.util.List;
+
 import org.scoula.common.dto.ErrorResponse;
+import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.groupAccount.dto.request.AcceptInviteTokenRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
+import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
@@ -32,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/group-account")
 public class GroupAccountController {
 
-	private final GroupAccountService service;
+	private final GroupAccountService groupAccountService;
 	private final InviteService inviteService;
 
 	@ApiOperation(value = "[JWT] 모임계좌 생성", notes = "모임계좌 생성 및 모임주를 등록하는 API입니다.")
@@ -50,7 +54,7 @@ public class GroupAccountController {
 		@RequestBody GroupAccountCreateRequestDTO request) {
 
 		return SuccessResponse.success(SuccessCode.CREATE_GROUP_ACCOUNT_SUCCESS,
-			service.createGroupAccount(request, userId));
+			groupAccountService.createGroupAccount(request, userId));
 	}
 
 	@ApiOperation(value = "[JWT] 초대링크 발급", notes = "모임 계좌의 초대 링크를 생성합니다.")
@@ -89,5 +93,20 @@ public class GroupAccountController {
 
 	//정산 요청하기
 
+	@ApiOperation(value = "[JWT] 정산 요청하기", notes = "정산 요청하기")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "정산 요청하기 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
+		@ApiResponse(code = 500, message = "서버 내부 오류이 발생한 경우", response = ErrorResponse.class)
+	})
+	@PostMapping("/settle")
+	public SuccessNonDataResponse sendSettlementRequest(
+		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@ApiParam(value = "정산 요청 정보", required = true) @RequestBody List<SettlementRequestDTO> requestDTO) {
+
+		groupAccountService.sendSettlementRequest(userId, requestDTO);
+
+		return SuccessNonDataResponse.success(SuccessCode.SETTLE_GROUP_ACCOUNT_SUCCESS);
+	}
 	//1/n 송금하기
 }

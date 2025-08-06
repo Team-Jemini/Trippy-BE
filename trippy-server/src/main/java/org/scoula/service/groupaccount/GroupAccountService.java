@@ -2,10 +2,12 @@ package org.scoula.service.groupaccount;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
+import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
@@ -88,5 +90,9 @@ public class GroupAccountService {
 		String randomPart = String.format("%04d", ThreadLocalRandom.current().nextInt(0, 10000));
 
 		return prePix + "-" + sequencePart + userIdStr + "-" + randomPart;
+	}
+
+	@Transactional
+	public void sendSettlementRequest(Long userId, List<SettlementRequestDTO> requestDTO) {
 	}
 }
