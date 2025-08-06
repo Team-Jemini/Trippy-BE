@@ -15,7 +15,4 @@ import org.scoula.controller.card.dto.response.CardDetailResponseDTO;
 public interface CardMapper {
 	void insertCard(CardVO card);
 	List<CardVO> findByUserId(Long userId);
-
-	List<CardSummaryResponseDTO> getCardSummaries(@Param("userId") Long userId);
-	List<CardDetailResponseDTO> getCardDetails(@Param("userId") Long userId);
 }
