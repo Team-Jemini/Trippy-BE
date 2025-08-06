@@ -23,4 +23,13 @@ public class UserService {
 		}
 	}
 
+	/***
+	 * 유저 이름 받아오기
+	 * @param userId
+	 */
+	public String geteUserName(Long userId) {
+		validateUserExists(userId);
+		return userMapper.findUserName(userId);
+	}
+
 }

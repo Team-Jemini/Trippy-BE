@@ -1,6 +1,6 @@
 package org.scoula.controller.identification.dto;
 
-public record ResidentCardInquiryDTO(
+public record ResidentCardOcrDTO(
         String resUserName,
         String resIssueDate,
         String resUserIdentity,
