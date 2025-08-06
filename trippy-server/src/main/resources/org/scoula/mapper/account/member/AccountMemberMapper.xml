@@ -15,4 +15,11 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <select id="isGroupAccountLeader" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM account_member
+        WHERE user_id = #{userId}
+          AND role = 'leader'
+    </select>
+
 </mapper>

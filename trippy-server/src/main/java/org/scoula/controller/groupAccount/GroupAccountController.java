@@ -1,7 +1,5 @@
 package org.scoula.controller.groupAccount;
 
-import java.util.List;
-
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
@@ -102,7 +100,7 @@ public class GroupAccountController {
 	@PostMapping("/settle")
 	public SuccessNonDataResponse sendSettlementRequest(
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
-		@ApiParam(value = "정산 요청 정보", required = true) @RequestBody List<SettlementRequestDTO> requestDTO) {
+		@ApiParam(value = "정산 요청 정보", required = true) @RequestBody SettlementRequestDTO requestDTO) {
 
 		groupAccountService.sendSettlementRequest(userId, requestDTO);
 
