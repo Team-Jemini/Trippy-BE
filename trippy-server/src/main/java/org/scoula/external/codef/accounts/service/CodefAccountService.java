@@ -218,7 +218,7 @@ public class CodefAccountService {
                         .isDeleted(DeletedStatus.N)
                         .build();
 
-                accountMapper.insertAccount(vo);
+                accountMapper.saveAccount(vo);
             }
 
         } catch (Exception e) {

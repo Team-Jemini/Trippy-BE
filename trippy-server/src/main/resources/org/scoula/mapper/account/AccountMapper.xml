@@ -20,7 +20,7 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <insert id="insertAccount">
+    <insert id="saveAccount">
         INSERT INTO account (account_id, user_id, account_name, account_type, owner_id, balance, account_currency, is_deleted)
         VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountCurrency}, #{isDeleted})
     </insert>

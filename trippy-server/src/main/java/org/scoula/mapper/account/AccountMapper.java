@@ -5,6 +5,6 @@ import org.scoula.domain.account.AccountVO;
 
 @Mapper
 public interface AccountMapper {
-    void insertAccount(AccountVO account);
+    void saveAccount(AccountVO account);
     boolean existsByAccountId(String accountId);
 }
