@@ -6,6 +6,7 @@
 
     <resultMap id="accountMemberMap" type="org.scoula.domain.account.member.AccountMemberVO">
         <id property="accountId" column="account_id"/>
+        <id property="userName" column="name"/>
         <id property="userId" column="user_id"/>
         <result property="role" column="role"
                 typeHandler="org.scoula.common.typehandler.account.member.RoleTypeHandler"/>
@@ -14,6 +15,17 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <select id="findAllGroupMembers" resultMap="accountMemberMap">
+        SELECT a.account_id,
+               a.user_id,
+               u.name,
+               a.role,
+               a.main_account_id
+        FROM account_member a
+                 inner join users u on a.user_id = u.user_id
+        where account_id = #{accountId}
+    </select>
 
     <select id="isGroupAccountLeader" resultType="java.lang.Boolean">
         SELECT COUNT(*) > 0

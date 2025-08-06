@@ -20,6 +20,25 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <resultMap id="GroupAccountResultMap" type="org.scoula.domain.account.group.GroupAccountVO">
+        <result property="userId" column="user_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="accountName" column="account_name"/>
+        <result property="accountType" column="account_type"
+                typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
+        <result property="ownerId" column="owner_id"/>
+        <result property="balance" column="balance"/>
+        <result property="accountForeign" column="account_foreign"
+                typeHandler="org.scoula.common.typehandler.account.AccountForeignTypeHandler"/>
+        <result property="isDeleted" column="is_deleted"
+                typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
+        <result property="role" column="role"
+                typeHandler="org.scoula.common.typehandler.account.member.RoleTypeHandler"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+
     <insert id="createGroupAccount">
         INSERT into account(account_id, user_id, account_name, account_type, owner_id, balance, account_foreign,
                             is_deleted)
@@ -28,6 +47,11 @@
     </insert>
 
     <insert id="createGroupAccountMember">
+        INSERT into account_member(account_id, user_id, role, main_account_id)
+        VALUES (#{accountId}, #{userId}, #{role}, #{mainAccountId})
+    </insert>
+
+    <insert id="groupAccountJoin">
         INSERT into account_member(account_id, user_id, role, main_account_id)
         VALUES (#{accountId}, #{userId}, #{role}, #{mainAccountId})
     </insert>
@@ -78,4 +102,41 @@
         where user_id = #{userId}
           and account_id = #{accountId};
     </select>
+    <select id="validateAccountIsGroupAccount" resultType="java.lang.Integer">
+        select count(*)
+        from account
+        where account_id = #{accountId}
+          and account_type = "group";
+    </select>
+    <select id="existsAccountById" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM account
+        WHERE account_id = #{account_id};
+    </select>
+    <select id="checkAccountDeletionStatus" resultType="java.lang.Integer">
+        select count(*)
+        from account
+        where account_id = #{accountId}
+          and is_deleted = 'N';
+    </select>
+
+    <select id="getGroupAccountDetail" resultMap="GroupAccountResultMap">
+        SELECT am.user_id,
+               a.account_id,
+               a.account_name,
+               a.account_type,
+               a.owner_id,
+               a.balance,
+               a.account_foreign,
+               a.is_deleted,
+               am.role,
+               a.created_at,
+               a.updated_at
+        FROM account a
+                 JOIN account_member am ON a.account_id = am.account_id
+        WHERE a.account_id = #{accountId}
+          AND am.user_id = #{userId}
+    </select>
+
+
 </mapper>
