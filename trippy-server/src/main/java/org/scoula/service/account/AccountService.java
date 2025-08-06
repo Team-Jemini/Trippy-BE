@@ -14,7 +14,7 @@ import org.scoula.external.codef.accounts.service.CodefAccountService;
 import org.scoula.mapper.account.AccountMapper;
 import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
-import static org.scoula.common.exception.enums.ErrorCode.SAVE_ACCOUNTS_LIST_FAILED;
+import static org.scoula.common.exception.enums.ErrorCode.*;
 
 import java.util.List;
 import java.util.Map;
@@ -31,18 +31,17 @@ public class AccountService {
     public List<AccountDTO> getAccountsList(final Long userId) {
         userService.validateUserExists(userId);
 
-        return accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
-                .map(vo -> new AccountDTO(
-                        vo.getUserId(),
-                        vo.getAccountId(),
-                        vo.getAccountName(),
-                        vo.getAccountType(),
-                        vo.getOwnerId(),
-                        vo.getBalance(),
-                        vo.getAccountCurrency(),
-                        vo.getIsDeleted()
-                ))
+        List<AccountDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
+                .map(vo -> AccountDTO.from(vo, userId))
                 .toList();
+
+        log.info(accounts);
+
+        if (accounts.isEmpty()) {
+            throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
+        }
+
+        return accounts;
     }
 
     public void saveAccounts(final Long userId) {
