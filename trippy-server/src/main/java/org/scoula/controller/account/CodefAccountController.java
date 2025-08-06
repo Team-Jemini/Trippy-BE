@@ -26,7 +26,7 @@ public class CodefAccountController {
     })
     @PostMapping(value = "/sync")
     public SuccessNonDataResponse saveCodefAccount(@RequestParam Long userId) {
-        codefAccountService.saveAccountsToDB(userId);
+        codefAccountService.saveAccounts(userId);
         return SuccessNonDataResponse.success(SuccessCode.GET_CODEF_DATA_SUCCESS);
     }
 }

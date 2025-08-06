@@ -183,7 +183,7 @@ public class CodefAccountService {
     }
 
     /** Codef에서 조회한 내 계좌 목록 데이터 Trippy DB에 저장 */
-    public void saveAccountsToDB(final Long userId) {
+    public void saveAccounts(final Long userId) {
         try {
             String accountListJson = getAccountList();
 
