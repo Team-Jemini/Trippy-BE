@@ -1,6 +1,6 @@
 package org.scoula.controller.card;
 
-import org.scoula.external.codef.card.CodefCardService;
+import org.scoula.service.card.CodefCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
 
 @RestController
 @RequestMapping("/test/codef")

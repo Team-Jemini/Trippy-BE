@@ -27,4 +27,9 @@
                  )
     </insert>
 
+    <select id="findByUserId" resultMap="cardMap">
+        SELECT * FROM card WHERE user_id = #{userId}
+    </select>
+
+
 </mapper>
