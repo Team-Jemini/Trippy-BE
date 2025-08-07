@@ -3,6 +3,7 @@ package org.scoula.service.transfer;
 import lombok.RequiredArgsConstructor;
 import org.scoula.controller.transfer.dto.request.TransferRequestDTO;
 import org.scoula.controller.transfer.dto.response.TransferResponseDTO;
+import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.mapper.transaction.TransactionMapper;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +28,34 @@ public class TransferService {
         }
 
         // 출금 계좌 잔액 확인
-
-
-        // TransferRequestDTO -> TransactionVO로 변환
-
-
-        // 목표 account가 우리 DB에 있는 거면 그 account balance 금액 증가
-        if (accountMapper.existsByAccountId(requestDTO.toAccountId())) {
-            // 해당 account에 거래 내역 추가
-//            transactionMapper.saveTransaction();
+        Long fromBalance = accountMapper.findBalanceByAccountId(requestDTO.fromAccountId());
+        if (fromBalance < requestDTO.amount()) {
+            throw new ServerErrorException(LACK_BALANCE_EXCEPTION);
         }
-        // 돈 빠져나가는 account balance 금액 감소
-        // 돈 빠져나가는 account의 거래 내역에 추가
-        // 목표 account가 우리 DB에 있다면, 그 account에도 거래 내역 추가
 
+        // 출금 계좌 잔액 차감
+        Long updatedFromBalance = fromBalance - requestDTO.amount();
+        accountMapper.updateBalance(requestDTO.fromAccountId(), updatedFromBalance);
+
+        // 출금 내역 저장
+        transactionMapper.saveTransaction(TransactionVO.fromForWithdraw(userId, requestDTO, updatedFromBalance));
+
+
+        // 수신 계좌가 우리 DB에 있는 경우, 해당 계좌의 잔액과 거래 내역 업데이트
+        if (accountMapper.existsByAccountId(requestDTO.toAccountId())) {
+            Long toBalance = accountMapper.findBalanceByAccountId(requestDTO.toAccountId());
+            Long updatedToBalance = toBalance + requestDTO.amount();
+            accountMapper.updateBalance(requestDTO.toAccountId(), updatedToBalance);
+
+            transactionMapper.saveTransaction(TransactionVO.fromForDeposit(userId, requestDTO, updatedToBalance));
+        }
+
+        return new TransferResponseDTO(
+                requestDTO.fromAccountId(),
+                requestDTO.toAccountId(),
+                requestDTO.amount(),
+                updatedFromBalance,
+                requestDTO.currencyCode()
+        );
     }
 }
