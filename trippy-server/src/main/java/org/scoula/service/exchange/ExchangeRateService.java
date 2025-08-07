@@ -48,22 +48,20 @@ public class ExchangeRateService {
 	}
 
 	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, String accountId) {
-		log.info(" =============== 잘 나오고 있는지 확인1");
-		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
-		log.info("exchangeRateVO : {}", exchangeRateVO);
+		ExchangeRateVO  exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
 		Double rate = exchangeRateVO.getBaseExchangeRate();
 		log.info(" =============== 잘 나오고 있는지 확인 : {}", rate);
 
-		AccountVO accountVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
-		Long krwBalance = accountVo.getBalance();
-		log.info(" =============== 잘 나오고 있는지 확인3");
+		AccountListVO accountListVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
+		Long krwBalance = accountListVo.getBalance();
+		log.info(" =============== 잘 나오고 있는지 확인3 : {}", krwBalance); // 여기까진 출력 됨.
 
 		ForeignAccountBalanceVO foreignBalanceVO = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(accountId, currencyCode);
 		Double foreignBalance = foreignBalanceVO.getBalance();
-		log.info(" =============== 잘 나오고 있는지 확인4");
+		log.info(" =============== 잘 나오고 있는지 확인4 : {}", foreignBalance);
 
 		ExchangeBalanceDTO exchangeBalanceDTO = ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
-		log.info(" =============== 잘 나오고 있는 지 확인 : {}" ,exchangeBalanceDTO);
+		log.info(" =============== 잘 나오고 있는 지 확인5 : {}" ,exchangeBalanceDTO);
 
 		return exchangeBalanceDTO;
 	}
