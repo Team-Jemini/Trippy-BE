@@ -7,7 +7,6 @@ import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseD
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
-import org.scoula.domain.account.AccountForeign;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.account.DeletedStatus;
@@ -100,7 +99,7 @@ public class AccountConverter {
 			accountVO.getAccountType(),
 			accountVO.getOwnerId(),
 			accountVO.getBalance(),
-			accountVO.getAccountForeign(),
+			accountVO.getAccountCurrency(),
 			accountVO.getIsDeleted(),
 			transactions
 		);
