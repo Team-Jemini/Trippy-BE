@@ -11,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @ComponentScan(basePackages = {
     "org.scoula.exception",
-    "org.scoula.controller"
+    "org.scoula.controller",
+    "org.scoula.external",
 })
 public class ServletConfig implements WebMvcConfigurer {
 

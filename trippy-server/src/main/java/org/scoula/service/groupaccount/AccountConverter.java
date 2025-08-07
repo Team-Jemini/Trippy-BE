@@ -27,7 +27,7 @@ public class AccountConverter {
 			.accountType(accountType)
 			.ownerId(userId)
 			.balance(0L)
-			.accountForeign(AccountForeign.kor)
+			.accountCurrency("KOR")
 			.isDeleted(DeletedStatus.N)
 			.build();
 	}

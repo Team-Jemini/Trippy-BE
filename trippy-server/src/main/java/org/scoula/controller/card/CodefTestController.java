@@ -14,7 +14,7 @@ import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 
 @RestController
-@RequestMapping("/test/codef")
+@RequestMapping("/cards")
 @Api(tags = "Payment")
 public class CodefTestController {
 
@@ -26,7 +26,7 @@ public class CodefTestController {
 	}
 
 	@ApiOperation(value = "CODEF 카드 불러오기 및 저장", notes = "CODEF로부터 카드 정보를 가져와 DB에 저장합니다.")
-	@PostMapping(value = "/cards", produces = "application/json; charset=UTF-8")
+	@PostMapping(value = "/codef", produces = "application/json; charset=UTF-8")
 	public SuccessNonDataResponse getAllCardsAndSave(
 		@RequestParam Long userId,
 		@RequestParam String accountId

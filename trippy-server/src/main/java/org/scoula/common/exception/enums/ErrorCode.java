@@ -22,6 +22,7 @@ public enum ErrorCode {
 
 	//404 NOT FOUND
 	ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계좌입니다."),
+	CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카드입니다."),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
 	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
 
@@ -43,13 +44,14 @@ public enum ErrorCode {
 	PARSING_FAIL_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "파싱 실패 오류입니다."),
 	ACCOUNT_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "모임계좌 생성 실패: 시도 5회 초과"),
 	ACCOUNT_ID_DUPLICATION(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 번호 중복: 시도 5회 초과"),
-
 	DUPLICATE_ACCOUNT_ID_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 계좌번호입니다."),
+	CREATE_CONNECTED_ID_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "은행 인증 ID 생성에 실패했습니다."),
+	GET_ACCOUNTS_LIST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 목록 조회에 실패했습니다."),
+	SAVE_ACCOUNTS_LIST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 목록 저장에 실패했습니다."),
+	PASSWORD_ENCRYPTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 암호화 실패"),
 	ACCESS_TOKEN_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AccessToken 발급 실패"),
 	CARD_1_PROCESS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "카드1 처리 실패"),
 	CARD_2_PROCESS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "카드2 처리 실패");
-
-
 
 
 	private final HttpStatus httpStatus;
