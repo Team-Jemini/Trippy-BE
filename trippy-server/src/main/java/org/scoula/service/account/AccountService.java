@@ -1,5 +1,19 @@
 package org.scoula.service.account;
 
+import java.util.List;
+
+import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.TrippyException;
+import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
+import org.scoula.domain.account.AccountVO;
+import org.scoula.domain.account.DeletedStatus;
+import org.scoula.domain.transaction.TransactionVO;
+import org.scoula.mapper.account.AccountMapper;
+import org.scoula.mapper.transaction.TransactionMapper;
+import org.scoula.service.groupaccount.AccountConverter;
+import org.springframework.stereotype.Service;
+
 import lombok.extern.log4j.Log4j2;
 import lombok.RequiredArgsConstructor;
 
@@ -8,15 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.scoula.controller.account.dto.response.AccountDTO;
 import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.domain.account.AccountType;
-import org.scoula.domain.account.AccountVO;
-import org.scoula.domain.account.DeletedStatus;
 import org.scoula.external.codef.accounts.service.CodefAccountService;
-import org.scoula.mapper.account.AccountMapper;
 import org.scoula.service.user.UserService;
-import org.springframework.stereotype.Service;
 import static org.scoula.common.exception.enums.ErrorCode.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Log4j2
@@ -24,9 +33,56 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AccountService {
 
-    private final CodefAccountService codefAccountService;
-    private final UserService userService;
-    private final AccountMapper accountMapper;
+	final AccountMapper accountMapper;
+	final TransactionMapper transactionMapper;
+	private final CodefAccountService codefAccountService;
+	private final UserService userService;
+
+	public PersonalAccountDetailResponseDTO getPersonalAccountDetail(String accountId, Long userId) {
+
+		AccountVO vo = accountMapper.getPersonalAccountDetail(accountId, userId);
+
+		isAccountValid(vo);
+
+		checkAccountDeletionStatus(vo);
+
+		List<TransactionVO> transaction = transactionMapper.getAccountTransaction(accountId);
+
+		return AccountConverter.toPersonalAccountDetailResponseDTO(vo, transaction);
+	}
+
+	private static void isAccountValid(AccountVO vo) {
+		if (vo == null) {
+			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
+		}
+	}
+
+	private static void checkAccountDeletionStatus(AccountVO vo) {
+		if (vo.getIsDeleted() == DeletedStatus.Y) {
+			throw new TrippyException(ErrorCode.ACCOUNT_ALREADY_DELETED);
+		}
+	}
+
+	public List<AccountTransactionResponseDTO> filterAccountTransactions(String accountId, Long userId,
+		String transactionType) {
+
+		isAccountuserValid(accountId, userId);
+
+		if (transactionType.equals("ALL")) {
+			return AccountConverter.toTransactionResponseDTOList(
+				transactionMapper.getAccountTransaction(accountId));
+		}
+
+		return AccountConverter.toTransactionResponseDTOList(
+			transactionMapper.filterAccountTransactions(accountId, transactionType));
+	}
+
+	private void isAccountuserValid(String accountId, Long userId) {
+		if (!accountMapper.isAccountUser(userId, accountId)) {
+			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
+		}
+	}
+
 
     public List<AccountDTO> getAccountsList(final Long userId) {
         userService.validateUserExists(userId);
