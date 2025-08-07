@@ -9,6 +9,7 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.external.exchange.ExchangeRateAPIService;
@@ -37,15 +38,20 @@ public class ExchangeController {
         return SuccessNonDataResponse.success(SuccessCode.SAVE_EXCHANGE_RATE_SUCCESS);
     }
 
-    @GetMapping("/getList")
+    @GetMapping("/getRateList")
     public SuccessResponse<List<ExchangeRateVO>> getExchangeRates() {
         return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateservice.getExchangeRates());
         // JSON 형태로 출력
-        // LocalDateTime 값 출력 시 오류 발생.
+    }
+
+
+    @GetMapping("/getAccountList")
+    public SuccessResponse<List<AccountListDTO>> getAccountList(@RequestParam String userId) {
+        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateservice.getAccountList(userId));
     }
 
     @GetMapping("/getBalance")
-    public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam Long accountId) {
+    public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam String accountId) {
         return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS, ExchangeRateservice.getRatesAndBalance(currencyCode, accountId));
     }
 

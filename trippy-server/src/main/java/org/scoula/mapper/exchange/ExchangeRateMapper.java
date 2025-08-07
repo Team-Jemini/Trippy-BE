@@ -1,8 +1,10 @@
 package org.scoula.mapper.exchange;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -11,8 +13,10 @@ public interface ExchangeRateMapper {
 
 
     /* 환전 기능 */
-    Double findTodayRateByCurrencyCode(String currencyCode);
-    Long findKrwBalanceByAccountId(Long accountId);
-    Double findForeignBalanceByAccountIdAndCurrency(Long accountId, String currency);
+    List<AccountListDTO> getAccountList(String userId);
+
+    Double findTodayRateByCurrencyCode(String currencyCode, LocalDateTime exchangeRateDate);
+    Long findKrwBalanceByAccountId(String accountId);
+    Double findForeignBalanceByAccountIdAndCurrency(String accountId, String currency);
 
 }

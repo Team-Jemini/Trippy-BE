@@ -32,11 +32,14 @@ CREATE TABLE account
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
 
+Drop table if exists foreign_account_balance;
+
 -- foreign_account_balance
+-- account_id 형식 수정
 CREATE TABLE foreign_account_balance
 (
     balance_id    BIGINT NOT NULL AUTO_INCREMENT,
-    account_id    BIGINT NOT NULL,
+    account_id    VARCHAR(50) NOT NULL,
     currency_code VARCHAR(10),
     balance       BIGINT   DEFAULT 0,
     created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -84,7 +87,7 @@ CREATE TABLE exchange_log
   COLLATE = utf8mb4_general_ci;
 
 -- exchange rate mapper
-DROP table exchange_rate;
+DROP table if exists exchange_rate;
 
 CREATE TABLE exchange_rate
 (

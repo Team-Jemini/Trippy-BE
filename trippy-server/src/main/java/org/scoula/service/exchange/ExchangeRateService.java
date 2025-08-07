@@ -3,13 +3,16 @@ package org.scoula.service.exchange;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-import org.scoula.controller.exchange.dto.response.ExchRateAneBalanceDTO;
+import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.mapper.exchange.ExchangeRateMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.security.web.savedrequest.FastHttpDateFormat.getCurrentDate;
 
 @Log4j2
 @Service
@@ -28,8 +31,15 @@ public class ExchangeRateService {
 	/***
 	 * 환전
 	 */
-	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, Long accountId) {
-		Double rate = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
+
+	public List<AccountListDTO> getAccountList(String userId) {
+		List<AccountListDTO> e = exchangeRateMapper.getAccountList(userId);
+		log.info("getAccountList : {}", e);
+		return e;
+	}
+
+	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, String accountId) {
+		Double rate = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode, LocalDateTime.parse(getCurrentDate()));
 		Long krwBalance = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
 		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(accountId, currencyCode);
 
