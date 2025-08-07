@@ -26,6 +26,9 @@ public class TransferService {
             throw new ServerErrorException(ACCOUNT_NOT_FOUND);
         }
 
+        // TransferRequestDTO -> TransactionVO로 변환
+
+
         // 목표 account가 우리 DB에 있는 거면 그 account balance 금액 증가
         if (accountMapper.existsByAccountId(requestDTO.toAccountId())) {
             // 해당 account에 거래 내역 추가

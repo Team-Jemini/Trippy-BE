@@ -1,5 +1,7 @@
 package org.scoula.controller.transfer.dto.request;
 
+import org.scoula.domain.transaction.TransactionVO;
+
 public record TransferRequestDTO(
         Long transactionId,
         String fromAccountId,
@@ -8,6 +10,4 @@ public record TransferRequestDTO(
         Long amount,
         String currencyCode,
         String title
-) {
-
-}
+) {}
