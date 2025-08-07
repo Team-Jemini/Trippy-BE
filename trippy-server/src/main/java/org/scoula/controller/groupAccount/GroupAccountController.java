@@ -14,6 +14,7 @@ import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountMemberResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
@@ -169,6 +170,18 @@ public class GroupAccountController {
 		groupAccountService.sendSettlementRequest(userId, requestDTO);
 
 		return SuccessNonDataResponse.success(SuccessCode.SETTLE_GROUP_ACCOUNT_SUCCESS);
+	}
+
+	@ApiOperation(value = "모암 계좌 목록 조회", notes = "모임 계좌 목록 조회")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "모임 계좌 목록 조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
+	})
+	@GetMapping("/list")
+	public SuccessResponse<List<GroupAccountDTO>> getAccountsList(@RequestParam Long userId) {
+		return SuccessResponse.success(SuccessCode.FIND_ACCOUNTS_LIST_SUCCESS,
+			groupAccountService.getGroupAccountsList(userId));
 	}
 
 	//1/n 송금하기
