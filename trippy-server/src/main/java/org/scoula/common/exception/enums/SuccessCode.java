@@ -38,6 +38,9 @@ public enum SuccessCode {
 	FIND_DETAIL_ACCOMMODATION_SUCCESS(HttpStatus.OK, "숙소예약 상세조회 성공"),
 	CREATE_SIGHTSEEING_SUCCESS(HttpStatus.OK, "관광예약 생성 성공"),
 
+	//CODEF
+	GET_CODEF_DATA_SUCCESS(HttpStatus.OK, "내 자산 추가 성공"),
+
 	//모임
 	CREATE_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임 계좌가 성공적으로 생성되었습니다."),
 	CREATE_INVITE_TOKEN_SUCCESS(HttpStatus.OK, "초대 링크가 성공적으로 생성 되었습니다."),
