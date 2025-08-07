@@ -1,14 +1,11 @@
 package org.scoula.service.groupaccount;
 
-import static org.scoula.common.exception.enums.ErrorCode.*;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.scoula.common.exception.enums.ErrorCode;
-import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
@@ -212,10 +209,6 @@ public class GroupAccountService {
 		List<GroupAccountDTO> accounts = groupAccountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
 			.map(vo -> GroupAccountDTO.from(vo, userId))
 			.toList();
-
-		if (accounts.isEmpty()) {
-			throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
-		}
 
 		return accounts;
 	}
