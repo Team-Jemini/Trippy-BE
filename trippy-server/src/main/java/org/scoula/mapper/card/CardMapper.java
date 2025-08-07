@@ -15,4 +15,5 @@ import org.scoula.controller.card.dto.response.CardDetailResponseDTO;
 public interface CardMapper {
 	void insertCard(CardVO card);
 	List<CardVO> findByUserId(Long userId);
+	int deleteCardById(Long cardId);
 }

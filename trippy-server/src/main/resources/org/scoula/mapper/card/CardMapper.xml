@@ -31,5 +31,10 @@
         SELECT * FROM card WHERE user_id = #{userId}
     </select>
 
+    <!-- 카드 삭제 -->
+    <delete id="deleteCardById" parameterType="long">
+        DELETE FROM card WHERE card_id = #{cardId}
+    </delete>
+
 
 </mapper>
