@@ -12,6 +12,9 @@ public enum ErrorCode {
 	INVALID_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 	INVALID_INVITE_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 초대 링크입니다."),
 	EXPIRED_INVITE_TOKEN(HttpStatus.BAD_REQUEST, "초대 수락 가능 기간이 지났습니다."),
+	NOT_GROUP_ACCOUNT(HttpStatus.BAD_REQUEST, "모임계좌가 아닌 계좌입니다."),
+	ACCOUNT_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "해지된 계좌입니다."),
+	NOT_GROUP_ACCOUNT_LEADER_EXCEPTION(HttpStatus.BAD_REQUEST, "모임계좌 모임주가 아닌 사용자입니다."),
 
 	//401 UNAUTHORIZED _인증
 	TOKEN_NOT_CONTAINED_EXCEPTION(HttpStatus.UNAUTHORIZED, "Access Token이 필요합니다."),
@@ -19,11 +22,16 @@ public enum ErrorCode {
 
 	//404 NOT FOUND
 	ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계좌입니다."),
+	CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카드입니다."),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
 	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
+
+	CONNECTED_ID_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "connectedId를 찾을 수 없습니다."),
+
 	EXCHANGE_RATE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "환율 API 호출 중 오류 발생했습니다."),
 	AIR_TICKET_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 항공권Id가 존재하지 않습니다."),
 	ACCOMMODATION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 숙소가 존재하지 않습니다."), //관광 바우처 이미지가 잘못되었습니다
+
 
 	//405 METHOD_NOT_ALLOWED
 
@@ -41,7 +49,10 @@ public enum ErrorCode {
 	GET_ACCOUNTS_LIST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 목록 조회에 실패했습니다."),
 	SAVE_ACCOUNTS_LIST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 목록 저장에 실패했습니다."),
 	PASSWORD_ENCRYPTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 암호화 실패"),
-	;
+	ACCESS_TOKEN_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AccessToken 발급 실패"),
+	CARD_1_PROCESS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "카드1 처리 실패"),
+	CARD_2_PROCESS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "카드2 처리 실패");
+
 
 	private final HttpStatus httpStatus;
 	private final String message;

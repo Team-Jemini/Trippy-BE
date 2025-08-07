@@ -3,6 +3,7 @@ package org.scoula.domain.identification;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.scoula.controller.identification.dto.req.PassportReq;
 import org.scoula.domain.BaseTime;
 import org.scoula.domain.user.Gender;
 
@@ -28,4 +29,17 @@ public class PassportVO extends BaseTime {
 	private Gender gender;
 	private String countryCode;
 	private LocalDateTime expireDate;
+
+	public static PassportVO from(Long userId, PassportReq req) {
+		return new PassportVO(
+				userId,
+				req.passportNumber(),
+				req.nameKr(),
+				req.nameEn(),
+				req.birthDate(),
+				req.gender(),
+				req.countryCode(),
+				req.expireDate()
+		);
+	}
 }

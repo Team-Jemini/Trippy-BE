@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class AccountMemberVO extends BaseTime {
 	private String accountId; //모임의 계좌
 	private Long userId;
+	private String userName;
 	private Role role;
 	private String mainAccountId; //구성원 각각의 대표계좌
 }

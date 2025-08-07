@@ -18,4 +18,44 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <insert id="insertCard" parameterType="org.scoula.domain.card.CardVO">
+        INSERT INTO card (
+            user_id, account_id, card_number, card_name, card_img
+        ) VALUES (
+                     #{userId}, #{accountId}, #{cardNumber}, #{cardName}, #{cardImg}
+                 )
+    </insert>
+
+    <select id="findByUserId" resultMap="cardMap">
+        SELECT * FROM card WHERE user_id = #{userId}
+    </select>
+
+    <!-- 카드 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM card WHERE card_id = #{cardId}
+    </delete>
+
+    <update id="updateCardNickname">
+        UPDATE card
+        SET card_nickname = #{cardNickname}
+        WHERE card_id = #{cardId}
+    </update>
+
+    <select id="findUserIdByCardId" resultType="long">
+        SELECT user_id FROM card WHERE card_id = #{cardId}
+    </select>
+
+    <update id="unsetMainCardByUserId">
+        UPDATE card
+        SET is_main_card = false
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="setMainCard">
+        UPDATE card
+        SET is_main_card = true
+        WHERE card_id = #{cardId}
+    </update>
+
 </mapper>
