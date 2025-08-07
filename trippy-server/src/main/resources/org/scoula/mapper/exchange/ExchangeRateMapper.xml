@@ -37,13 +37,14 @@
         where account_id = #{accountId}
         and currency_code = #{currencyCode}
     </select>
+
     <select id="getAccountList" resultType="org.scoula.controller.exchange.dto.response.AccountListDTO">
         select account_id, account_name, balance, account_foreign
         from account
         where user_id = #{userId}
         and is_deleted = 'false'
         and account_foreign = 'kor'
-
     </select>
+
 
 </mapper>
