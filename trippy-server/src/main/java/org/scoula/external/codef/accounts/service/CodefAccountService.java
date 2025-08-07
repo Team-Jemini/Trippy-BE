@@ -53,7 +53,7 @@ public class CodefAccountService {
     private String publicKey;
 
     /** Codef AccessToken 발급 */
-    public String getAccessToken() {
+    private String getAccessToken() {
 
         // HTTP 헤더 설정
         RestTemplate restTemplate = new RestTemplate();
@@ -85,7 +85,7 @@ public class CodefAccountService {
     }
 
     /** Codef ConnectedID 발급 */
-    public String getConnectedId() {
+    private String getConnectedId() {
 
         // HTTP 헤더 설정
         RestTemplate restTemplate = new RestTemplate();

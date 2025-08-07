@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
+import org.scoula.controller.account.dto.response.AccountDTO;
 import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
@@ -14,7 +14,7 @@ import org.scoula.external.codef.accounts.service.CodefAccountService;
 import org.scoula.mapper.account.AccountMapper;
 import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
-import static org.scoula.common.exception.enums.ErrorCode.SAVE_ACCOUNTS_LIST_FAILED;
+import static org.scoula.common.exception.enums.ErrorCode.*;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +27,20 @@ public class AccountService {
     private final CodefAccountService codefAccountService;
     private final UserService userService;
     private final AccountMapper accountMapper;
+
+    public List<AccountDTO> getAccountsList(final Long userId) {
+        userService.validateUserExists(userId);
+
+        List<AccountDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
+                .map(vo -> AccountDTO.from(vo, userId))
+                .toList();
+
+        if (accounts.isEmpty()) {
+            throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
+        }
+
+        return accounts;
+    }
 
     public void saveAccounts(final Long userId) {
         try {
@@ -72,5 +86,4 @@ public class AccountService {
             throw new ServerErrorException(SAVE_ACCOUNTS_LIST_FAILED);
         }
     }
-
 }

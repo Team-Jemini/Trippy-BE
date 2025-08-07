@@ -49,6 +49,9 @@ public enum SuccessCode {
 
 	//여행로그
 	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공"),
+
+	FIND_ACCOUNTS_LIST_SUCCESS(HttpStatus.OK, "계좌 목록 조회 성공"),
+
 	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
 	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공"),
 	JOIN_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임계좌에 가입 성공"),
