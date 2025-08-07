@@ -38,5 +38,10 @@
         ORDER BY updated_at DESC
     </select>
 
+    <update id="updateBalance">
+        UPDATE account
+        SET balance = #{balance}, updated_at = NOW()
+        WHERE account_id = #{accountId}
+    </update>
 
 </mapper>
