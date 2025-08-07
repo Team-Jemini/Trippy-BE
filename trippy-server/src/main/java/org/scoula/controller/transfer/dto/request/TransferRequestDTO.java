@@ -1,7 +1,5 @@
 package org.scoula.controller.transfer.dto.request;
 
-import org.scoula.domain.transaction.TransactionVO;
-
 public record TransferRequestDTO(
         Long transactionId,
         String fromAccountId,

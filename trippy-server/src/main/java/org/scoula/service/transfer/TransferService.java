@@ -21,10 +21,13 @@ public class TransferService {
         // userID validate
         userService.validateUserExists(userId);
 
-        // 돈 빠져나가는 account validate
+        // 출금 계좌 validate
         if (!accountMapper.existsByAccountId(requestDTO.fromAccountId())) {
             throw new ServerErrorException(ACCOUNT_NOT_FOUND);
         }
+
+        // 출금 계좌 잔액 확인
+
 
         // TransferRequestDTO -> TransactionVO로 변환
 
