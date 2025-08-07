@@ -26,4 +26,5 @@ public class TravelLogVO extends BaseTime {
 	private String destination;
 	private Boolean isGenerated;
 	private String travelImg;
+	private Integer memberCount;
 }
