@@ -29,7 +29,7 @@ public enum SuccessCode {
 	DELETE_CARD_SUCCESS(HttpStatus.OK, "카드 삭제 성공"),
 	UPDATE_CARD_NICKNAME_SUCCESS(HttpStatus.OK, "카드 별명 등록 성공"),
 	SET_MAIN_CARD_SUCCESS(HttpStatus.OK, "주카드 설정이 완료되었습니다."),
-
+	QR_CODE_SUCCESS(HttpStatus.OK, "QR코드가 생성되었습니다"),
 
 
 	FIND_DETAIL_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 상세조회 성공"),
