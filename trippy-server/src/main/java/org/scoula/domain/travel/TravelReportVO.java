@@ -26,4 +26,6 @@ public class TravelReportVO extends BaseTime {
 	private Integer totalAcc;
 	private Integer totalTransport;
 	private Integer totalShop;
+	private String maxSpendingTitle;
+	private Long maxSpendingAmount;
 }
