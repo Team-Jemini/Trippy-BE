@@ -46,7 +46,7 @@ public class ExchangeController {
 
 
     @GetMapping("/getAccountList")
-    public SuccessResponse<List<AccountListDTO>> getAccountList(@RequestParam String userId) {
+    public SuccessResponse<List<AccountListDTO>> getAccountList(@RequestParam Long userId) {
         return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateservice.getAccountList(userId));
     }
 

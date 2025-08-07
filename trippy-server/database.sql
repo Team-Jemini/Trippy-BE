@@ -298,3 +298,7 @@ CREATE TABLE sightseeing
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
+
+--
+alter table account
+    change account_foreign account_currency VARCHAR(20)

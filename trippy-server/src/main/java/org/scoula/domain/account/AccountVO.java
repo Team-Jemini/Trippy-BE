@@ -22,6 +22,6 @@ public class AccountVO extends BaseTime {
 	private AccountType accountType;
 	private Long ownerId;
 	private Long balance;
-	private AccountForeign accountForeign;
+	private String accountCurrency;
 	private DeletedStatus isDeleted;
 }

@@ -16,34 +16,71 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <resultMap id="accountMap" type="org.scoula.domain.exchange.AccountListVO">
+        <id property="accountId" column="account_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="accountName" column="account_name"/>
+        <result property="accountType" column="account_type"
+                typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
+        <result property="ownerId" column="owner_id"/>
+        <result property="balance" column="balance"/>
+        <result property="accountCurrency" column="account_currency"/>
+        <result property="isDeleted" column="is_deleted"
+                typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <resultMap id="foreignAccountBalanceMap" type="org.scoula.domain.exchange.ForeignAccountBalanceVO">
+        <id property="balanceId" column="balance_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="currencyCode" column="currency_code"/>
+        <result property="balance" column="balance"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
     <select id="getExchangeRateList" resultType="org.scoula.domain.exchange.ExchangeRateVO">
         select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date from exchange_rate
     </select>
 
     <!-- 환전 기능 -->
-    <select id="findTodayRateByCurrencyCode" resultType="java.lang.Double">
-        select base_exchange_rate
+    <select id="findTodayRateByCurrencyCode" resultMap="exchangeRateMap">
+        select exchange_rate_id, currency_code, currency_name, rate_buy, rate_sell, base_exchange_rate, exchange_rate_date, created_at, updated_at
         from exchange_rate
         where currency_code = #{currencyCode} and exchange_rate_date = #{exchangeRateDate}
     </select>
-    <select id="findKrwBalanceByAccountId" resultType="java.lang.Long">
-        select balance
+    <select id="findKrwBalanceByAccountId" resultMap="accountMap">
+        select balance, account_id, account_name, account_type, owner_id, account_currency, is_deleted, created_at, updated_at
         from account
         where account_id = #{accountId}
     </select>
-    <select id="findForeignBalanceByAccountIdAndCurrency" resultType="java.lang.Double">
-        select balance
+    <select id="findForeignBalanceByAccountIdAndCurrency" resultMap="foreignAccountBalanceMap">
+        select balance, account_id, currency_code, created_at, updated_at
         from foreign_account_balance
         where account_id = #{accountId}
         and currency_code = #{currencyCode}
     </select>
 
-    <select id="getAccountList" resultType="org.scoula.controller.exchange.dto.response.AccountListDTO">
-        select account_id, account_name, balance, account_foreign
+    <select id="getAccountList" resultMap="accountMap">
+        select
+            user_id,
+            account_id,
+            account_name,
+            account_type,
+            owner_id,
+            balance,
+            account_currency,
+            is_deleted,
+            created_at,
+            updated_at
         from account
         where user_id = #{userId}
-        and is_deleted = 'false'
-        and account_foreign = 'kor'
+        and is_deleted = 'N'
+        and account_currency = 'KOR'
     </select>
 
 

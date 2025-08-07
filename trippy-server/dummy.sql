@@ -42,7 +42,7 @@ WHERE account_id = '0707-000060001-6511'
 
 -- account
 INSERT INTO account (
-    account_id, user_id, account_name, account_type, owner_id, balance, account_foreign, is_deleted, created_at, updated_at
+    account_id, user_id, account_name, account_type, owner_id, balance, account_currency, is_deleted, created_at, updated_at
 ) VALUES
       ('100-200-300001', 1001, '홍길동의 통장', '보통예금', 1001, 500000, 'kor', 'false', NOW(), NOW()),
       ('100-200-300002', 1002, '김영희 통장', '보통예금', 1002, 230000, 'kor', 'false', NOW(), NOW()),
@@ -229,3 +229,6 @@ INSERT INTO account_member (account_id, user_id, travel_id, role) VALUES
     ('ACC015', 107, 15, 'owner');
 
 
+-- foreign_account_balance 테이블 수정
+ALTER TABLE foreign_account_balance
+    MODIFY COLUMN balance DOUBLE;

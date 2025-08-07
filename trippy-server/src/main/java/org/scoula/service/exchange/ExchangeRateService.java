@@ -5,7 +5,10 @@ import lombok.extern.log4j.Log4j2;
 
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
+import org.scoula.domain.account.AccountVO;
+import org.scoula.domain.exchange.AccountListVO;
 import org.scoula.domain.exchange.ExchangeRateVO;
+import org.scoula.domain.exchange.ForeignAccountBalanceVO;
 import org.scoula.mapper.account.AccountMapper;
 import org.scoula.mapper.exchange.ExchangeRateMapper;
 import org.springframework.stereotype.Service;
@@ -35,21 +38,32 @@ public class ExchangeRateService {
 	 * 환전
 	 */
 
-	public List<AccountListDTO> getAccountList(String userId) {
-		List<AccountListDTO> accListDto = exchangeRateMapper.getAccountList(userId);
-
-
-
-		log.info("userID : {}",userId);
-		log.info("accListDto : {}",accListDto);
+	public List<AccountListDTO> getAccountList(Long userId) {
+		List<AccountListVO> accListVO = exchangeRateMapper.getAccountList(userId);
+		List<AccountListDTO> accListDto = new ArrayList<>();
+		for(AccountListVO vo : accListVO) {
+			accListDto.add(new AccountListDTO(vo.getAccountId(), vo.getAccountName(), vo.getBalance(), vo.getAccountCurrency(), vo.getIsDeleted()));
+		}
 		return accListDto;
 	}
 
 	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, String accountId) {
-		Double rate = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode, LocalDateTime.parse(getCurrentDate()));
-		Long krwBalance = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
-		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(accountId, currencyCode);
+		log.info(" =============== 잘 나오고 있는지 확인1");
+		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode, LocalDateTime.now());
+		Double rate = exchangeRateVO.getBaseExchangeRate();
+		log.info(" =============== 잘 나오고 있는지 확인 : {}", rate);
 
-		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
+		AccountVO accountVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
+		Long krwBalance = accountVo.getBalance();
+		log.info(" =============== 잘 나오고 있는지 확인3");
+
+		ForeignAccountBalanceVO foreignBalanceVO = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(accountId, currencyCode);
+		Double foreignBalance = foreignBalanceVO.getBalance();
+		log.info(" =============== 잘 나오고 있는지 확인4");
+
+		ExchangeBalanceDTO exchangeBalanceDTO = ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
+		log.info(" =============== 잘 나오고 있는 지 확인 : {}" ,exchangeBalanceDTO);
+
+		return exchangeBalanceDTO;
 	}
 }
