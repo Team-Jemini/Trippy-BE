@@ -59,7 +59,9 @@ public enum SuccessCode {
 	FIND_ACCOUNTS_LIST_SUCCESS(HttpStatus.OK, "계좌 목록 조회 성공"),
 
 	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
-	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공");
+	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공"),
+
+	TRANSFER_SUCCESS(HttpStatus.OK, "송금 성공");
 
 	private final HttpStatus httpStatus;
 	private final String message;
