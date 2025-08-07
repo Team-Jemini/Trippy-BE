@@ -1,7 +1,6 @@
 package org.scoula.domain.account.group;
 
 import org.scoula.domain.BaseTime;
-import org.scoula.domain.account.AccountForeign;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.DeletedStatus;
 import org.scoula.domain.account.member.Role;
@@ -26,7 +25,7 @@ public class GroupAccountVO extends BaseTime {
 	private AccountType accountType;
 	private Long ownerId;
 	private Long balance;
-	private AccountForeign accountForeign;
+	private String accountCurrency;
 	private DeletedStatus isDeleted;
 	private Role role;
 }
