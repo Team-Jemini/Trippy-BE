@@ -17,6 +17,6 @@ public record GroupAccountDetailResponseDTO(
 	AccountForeign accountForeign,
 	DeletedStatus isDeleted,
 	Role role,
-	List<AccountTransactionResponseDTO> transactions
+	List<DailyAccountTransactionDTO> transactions
 ) {
 }

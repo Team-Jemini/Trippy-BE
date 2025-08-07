@@ -2,7 +2,7 @@ package org.scoula.controller.account.dto.response;
 
 import java.util.List;
 
-import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDTO;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.DeletedStatus;
 
@@ -15,6 +15,6 @@ public record PersonalAccountDetailResponseDTO(
 	Long balance,
 	String accountCurrency,
 	DeletedStatus isDeleted,
-	List<AccountTransactionResponseDTO> transactions
+	List<DailyAccountTransactionDTO> transactions
 ) {
 }
