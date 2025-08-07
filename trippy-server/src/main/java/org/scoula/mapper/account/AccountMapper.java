@@ -11,5 +11,5 @@ public interface AccountMapper {
     boolean existsByAccountId(String accountId);
     List<AccountVO> findAllByUserIdOrderByUpdatedAt(Long userId);
 
-    void saveTransaction(AccountVO account); // Todo: TransactionVO 로 바꿀 것
+
 }

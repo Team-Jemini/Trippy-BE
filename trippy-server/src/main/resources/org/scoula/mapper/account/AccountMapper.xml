@@ -38,8 +38,5 @@
         ORDER BY updated_at DESC
     </select>
 
-    <insert id="saveTransaction" useGeneratedKeys="true" keyProperty="transactionId">
-        INSERT INTO transaction (account_id, user_id, transaction_type, amount, title, category, latitude, longitude, balance_after, status, currency_code, created_at, updated_at)
-        VALUES (#{accountID}, #{userId}, #{transactionType}, #{amount}, #{title}, #{category}, #{latitude}, #{longitude}, #{balanceAfter}, #{status}, #{currencyCode}, NOW(), NOW())
-    </insert>
+
 </mapper>
