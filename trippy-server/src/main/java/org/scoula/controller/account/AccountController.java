@@ -28,7 +28,7 @@ public class AccountController {
 
 	final AccountService accountService;
 
-	@ApiOperation(value = "[JWT]계좌 상세 조회", notes = "계좌 상세 조회.")
+	@ApiOperation(value = "[JWT]개인 계좌 상세 조회", notes = "계좌 상세 조회.")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "계좌 상세 조회 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
@@ -43,7 +43,7 @@ public class AccountController {
 			accountService.getPersonalAccountDetail(accountId, userId));
 	}
 
-	@ApiOperation(value = "[JWT]계좌 거래 내역 조회", notes = "계좌 거래 내역 조회.")
+	@ApiOperation(value = "[JWT]개인 계좌 상세 조회 with 필터", notes = "계좌 거래 내역 조회.")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "계좌 거래 내역 조회 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
