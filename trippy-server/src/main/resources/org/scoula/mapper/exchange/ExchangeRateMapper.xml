@@ -49,10 +49,11 @@
 
     <!-- 환전 기능 -->
     <select id="findTodayRateByCurrencyCode" resultMap="exchangeRateMap">
-        select exchange_rate_id, currency_code, currency_name, rate_buy, rate_sell, base_exchange_rate, exchange_rate_date, created_at, updated_at
+        select currency_code, currency_name, rate_buy, rate_sell, base_exchange_rate, exchange_rate_date, created_at, updated_at
         from exchange_rate
-        where currency_code = #{currencyCode} and exchange_rate_date = #{exchangeRateDate}
+        where currency_code = #{currencyCode}
     </select>
+
     <select id="findKrwBalanceByAccountId" resultMap="accountMap">
         select balance, account_id, account_name, account_type, owner_id, account_currency, is_deleted, created_at, updated_at
         from account

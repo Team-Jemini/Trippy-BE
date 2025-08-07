@@ -14,10 +14,12 @@ public interface ExchangeRateMapper {
     List<ExchangeRateVO> getExchangeRateList();
 
 
-    /* 환전 기능 */
+    /**
+     * 환전 기능
+     */
     List<AccountListVO> getAccountList(Long userId);
 
-    ExchangeRateVO findTodayRateByCurrencyCode(String currencyCode, LocalDateTime exchangeRateDate);
+    ExchangeRateVO findTodayRateByCurrencyCode(String currencyCode);
     AccountVO findKrwBalanceByAccountId(String accountId);
     ForeignAccountBalanceVO findForeignBalanceByAccountIdAndCurrency(String accountId, String currency);
 

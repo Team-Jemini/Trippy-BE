@@ -49,7 +49,8 @@ public class ExchangeRateService {
 
 	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, String accountId) {
 		log.info(" =============== 잘 나오고 있는지 확인1");
-		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode, LocalDateTime.now());
+		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
+		log.info("exchangeRateVO : {}", exchangeRateVO);
 		Double rate = exchangeRateVO.getBaseExchangeRate();
 		log.info(" =============== 잘 나오고 있는지 확인 : {}", rate);
 
