@@ -14,7 +14,7 @@ public class CardCommandService {
 	private final CardMapper cardMapper;
 
 	public void deleteCard(Long cardId) {
-		int deleted = cardMapper.deleteCardById(cardId);
+		int deleted = cardMapper.deleteById(cardId);
 		if (deleted == 0) {
 			throw new NotFoundException(ErrorCode.CARD_NOT_FOUND);
 		}

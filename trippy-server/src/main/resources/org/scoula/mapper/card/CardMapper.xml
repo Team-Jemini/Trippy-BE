@@ -32,7 +32,7 @@
     </select>
 
     <!-- 카드 삭제 -->
-    <delete id="deleteCardById" parameterType="long">
+    <delete id="deleteById" parameterType="long">
         DELETE FROM card WHERE card_id = #{cardId}
     </delete>
 
