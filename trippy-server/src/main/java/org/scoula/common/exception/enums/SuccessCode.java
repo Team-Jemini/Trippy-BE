@@ -61,7 +61,7 @@ public enum SuccessCode {
 	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
 	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공"),
 
-	TRANSFER_SUCCESS(HttpStatus.OK, "송금 성공");
+	TRANSFER_SUCCESS(HttpStatus.OK, "송금이 성공적으로 완료되었습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

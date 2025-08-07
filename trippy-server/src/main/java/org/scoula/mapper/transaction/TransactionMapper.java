@@ -9,7 +9,7 @@ import org.scoula.domain.transaction.TransactionVO;
 @Mapper
 public interface TransactionMapper {
 
-	void saveTransaction(TransactionVO transactionVO); // Todo: TransactionVO 로 바꿀 것
+	void saveTransaction(TransactionVO transactionVO);
 	List<TransactionVO> getAccountTransaction(String accountId);
 
 	List<TransactionVO> filterAccountTransactions(@Param("accountId") String accountId,

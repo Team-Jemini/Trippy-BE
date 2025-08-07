@@ -25,7 +25,7 @@ public class TransferController {
     })
     @PostMapping()
     public SuccessResponse<TransferResponseDTO> transfer(
-            @ApiParam(value = "송금 정보", required = true)
+            @ApiParam(value = "사용자 ID", required = true)
             @RequestParam Long userId,
             @RequestBody TransferRequestDTO request) {
         return SuccessResponse.success(SuccessCode.TRANSFER_SUCCESS, transferService.transfer(userId, request));
