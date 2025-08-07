@@ -17,5 +17,8 @@ public interface CardMapper {
 	List<CardVO> findByUserId(Long userId);
 	int deleteCardById(Long cardId);
 	int updateCardNickname(@Param("cardId") Long cardId, @Param("cardNickname") String cardNickname);
+	Long findUserIdByCardId(@Param("cardId") Long cardId);
+	void unsetMainCardByUserId(@Param("userId") Long userId);
+	void setMainCard(@Param("cardId") Long cardId);
 
 }

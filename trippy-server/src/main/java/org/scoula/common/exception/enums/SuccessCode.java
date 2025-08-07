@@ -29,6 +29,7 @@ public enum SuccessCode {
 	FIND_CODEF_CARD_QUERY_SUCCESS(HttpStatus.OK, "CODEF 카드 정보 조회 성공"),
 	DELETE_CARD_SUCCESS(HttpStatus.OK, "카드 삭제 성공"),
 	UPDATE_CARD_NICKNAME_SUCCESS(HttpStatus.OK, "카드 별명 등록 성공"),
+	SET_MAIN_CARD_SUCCESS(HttpStatus.OK, "주카드 설정이 완료되었습니다."),
 
 
 

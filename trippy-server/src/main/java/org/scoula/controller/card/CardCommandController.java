@@ -44,4 +44,18 @@ public class CardCommandController {
 	}
 
 
+	@ApiOperation(value = "주카드 설정", notes = "해당 카드 ID를 주카드로 설정하는 API")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "주카드 설정 성공", response = SuccessNonDataResponse.class),
+		@ApiResponse(code = 404, message = "카드가 존재하지 않습니다.", response = ErrorResponse.class)
+	})
+	@PutMapping("/{cardId}/main")
+	public SuccessNonDataResponse setMainCard(
+		@ApiParam(value = "주카드로 설정할 카드 ID", required = true)
+		@PathVariable Long cardId
+	) {
+		cardCommandService.setMainCard(cardId);
+		return SuccessNonDataResponse.success(SuccessCode.SET_MAIN_CARD_SUCCESS);
+	}
+
 }

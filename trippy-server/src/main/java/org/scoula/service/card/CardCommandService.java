@@ -33,4 +33,15 @@ public class CardCommandService {
 			throw new NotFoundException(ErrorCode.CARD_NOT_FOUND);
 		}
 	}
+
+
+	public void setMainCard(Long cardId) {
+		Long userId = cardMapper.findUserIdByCardId(cardId);
+		if (userId == null) {
+			throw new NotFoundException(ErrorCode.CARD_NOT_FOUND);
+		}
+
+		cardMapper.unsetMainCardByUserId(userId);
+		cardMapper.setMainCard(cardId);
+	}
 }

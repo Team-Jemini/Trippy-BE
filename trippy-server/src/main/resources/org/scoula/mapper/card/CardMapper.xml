@@ -42,5 +42,20 @@
         WHERE card_id = #{cardId}
     </update>
 
+    <select id="findUserIdByCardId" resultType="long">
+        SELECT user_id FROM card WHERE card_id = #{cardId}
+    </select>
+
+    <update id="unsetMainCardByUserId">
+        UPDATE card
+        SET is_main_card = false
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="setMainCard">
+        UPDATE card
+        SET is_main_card = true
+        WHERE card_id = #{cardId}
+    </update>
 
 </mapper>
