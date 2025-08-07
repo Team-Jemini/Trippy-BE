@@ -28,4 +28,20 @@ public class CardCommandController {
 		cardCommandService.deleteCard(cardId);
 		return SuccessNonDataResponse.success(SuccessCode.DELETE_CARD_SUCCESS);
 	}
+
+	@ApiOperation(value = "카드 별명 수정", notes = "카드에 등록된 별명을 수정합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "별명 수정 성공", response = SuccessNonDataResponse.class),
+		@ApiResponse(code = 404, message = "카드가 존재하지 않습니다.", response = ErrorResponse.class)
+	})
+	@PutMapping("/{cardId}/nickname")
+	public SuccessNonDataResponse updateCardNickname(
+		@ApiParam(value = "카드 ID", required = true) @PathVariable Long cardId,
+		@ApiParam(value = "새 카드 별명", required = true) @RequestParam String cardNickname
+	) {
+		cardCommandService.updateCardNickname(cardId, cardNickname);
+		return SuccessNonDataResponse.success(SuccessCode.UPDATE_CARD_NICKNAME_SUCCESS);
+	}
+
+
 }

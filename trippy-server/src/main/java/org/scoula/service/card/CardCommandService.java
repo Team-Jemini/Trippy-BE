@@ -16,7 +16,21 @@ public class CardCommandService {
 	public void deleteCard(Long cardId) {
 		int deleted = cardMapper.deleteCardById(cardId);
 		if (deleted == 0) {
-			throw new NotFoundException(ErrorCode.ACCOUNT_NOT_FOUND); // 카드용 에러코드 있으면 추가해도 됨
+			throw new NotFoundException(ErrorCode.CARD_NOT_FOUND);
+		}
+	}
+
+	public void createCardNickname(Long cardId, String cardNickname) {
+		int updated = cardMapper.updateCardNickname(cardId, cardNickname);
+		if (updated == 0) {
+			throw new NotFoundException(ErrorCode.CARD_NOT_FOUND);
+		}
+	}
+
+	public void updateCardNickname(Long cardId, String cardNickname) {
+		int updated = cardMapper.updateCardNickname(cardId, cardNickname);
+		if (updated == 0) {
+			throw new NotFoundException(ErrorCode.CARD_NOT_FOUND);
 		}
 	}
 }

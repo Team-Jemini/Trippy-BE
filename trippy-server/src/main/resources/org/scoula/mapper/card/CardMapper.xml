@@ -36,5 +36,11 @@
         DELETE FROM card WHERE card_id = #{cardId}
     </delete>
 
+    <update id="updateCardNickname">
+        UPDATE card
+        SET card_nickname = #{cardNickname}
+        WHERE card_id = #{cardId}
+    </update>
+
 
 </mapper>
