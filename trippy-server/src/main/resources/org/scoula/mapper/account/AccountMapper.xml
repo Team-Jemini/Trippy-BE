@@ -20,6 +20,21 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <select id="getPersonalAccountDetail" resultType="org.scoula.domain.account.AccountVO">
+        SELECT *
+        FROM account
+        WHERE account_id = #{accountId}
+          and user_id = #{userId}
+          and account_type = 'person'
+    </select>
+
+    <select id="isAccountUser" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM account
+        WHERE account_id = #{accountId}
+          AND user_id = #{userId}
+    </select>
+
     <insert id="saveAccount">
         INSERT INTO account (account_id, user_id, account_name, account_type, owner_id, balance, account_currency, is_deleted)
         VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountCurrency}, #{isDeleted})

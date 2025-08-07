@@ -45,6 +45,26 @@
         WHERE account_id = #{accountId}
         ORDER BY created_at DESC
     </select>
+    <select id="filterAccountTransactions" resultType="org.scoula.domain.transaction.TransactionVO">
+        SELECT account_id,
+               user_id,
+               transaction_id,
+               transaction_type,
+               amount,
+               title,
+               category,
+               latitude,
+               longitude,
+               balance_after,
+               status,
+               currency_code,
+               created_at,
+               updated_at
+        FROM transaction
+        WHERE account_id = #{accountId}
+          and transaction_type = #{transactionType}
+        ORDER BY created_at DESC
+    </select>
 
     <insert id="saveTransaction" useGeneratedKeys="true" keyProperty="transactionId">
         INSERT INTO transaction (account_id, user_id, transaction_type, amount, title, category, latitude, longitude, balance_after, status, currency_code, created_at, updated_at)

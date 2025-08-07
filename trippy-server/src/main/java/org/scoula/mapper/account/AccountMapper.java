@@ -11,6 +11,7 @@ public interface AccountMapper {
     void saveAccount(AccountVO account);
     boolean existsByAccountId(String accountId);
     List<AccountVO> findAllByUserIdOrderByUpdatedAt(Long userId);
-
+	AccountVO getPersonalAccountDetail(@Param("accountId") String accountId, @Param("userId") Long userId);
+	boolean isAccountUser(@Param("userId") Long userId, @Param("accountId") String accountId);
     void updateBalance(@Param("accountId") String accountId, @Param("balance") Long balance);
 }
