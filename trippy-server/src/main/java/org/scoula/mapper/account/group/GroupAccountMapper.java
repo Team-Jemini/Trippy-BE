@@ -42,6 +42,7 @@ public interface GroupAccountMapper {
 	GroupAccountVO getGroupAccountDetail(@Param("accountId") String accountId,
 		@Param("userId") Long userId);
 
-
 	void sendSettlementRequests(List<NotificationVO> notifications);
+
+	boolean isGroupAccountUser(@Param("userId") Long userId, @Param("accountId") String accountId);
 }
