@@ -114,15 +114,31 @@ public class UserService {
 	 * @return
 	 */
 	public TokenPair refresh(TokenRequestDto tokenRequestDto) {
-		if (!jwtService.verifyToken(tokenRequestDto.refreshToken()))
-			throw new UnAuthorizedException(ErrorCode.TOKEN_TIME_EXPIRED_EXCEPTION);
+		final String refreshToken = tokenRequestDto.refreshToken();
 
-		final String userId = jwtService.getUserIdInToken(tokenRequestDto.refreshToken());
+		// 1) 유효한 JWT인지(파싱 가능/서명 OK) + 만료면 여기서 예외로 끝
+		jwtService.verifyToken(refreshToken);
+
+		// 2) 이 토큰이 '진짜' RefreshToken인지 (sub=REFRESH_TOKEN)
+		if (!jwtService.isRefreshToken(refreshToken)) {
+			throw new BadRequestException(ErrorCode.INVALID_REFRESH_TOKEN_EXCEPTION);
+		}
+
+		// 3) userId 추출 후 유저 존재 확인
+		final String userId = jwtService.getUserIdInToken(refreshToken);
 		validateUserExists(Long.parseLong(userId));
 
-		if (!jwtService.compareRefreshToken(userId, tokenRequestDto.refreshToken()))
+		// 4) Redis 저장된 RefreshToken과 일치하는지 (토큰 로테이션 강제)
+		if (!jwtService.compareRefreshToken(userId, refreshToken)) {
 			throw new UnAuthorizedException(ErrorCode.TOKEN_TIME_EXPIRED_EXCEPTION);
+		}
 
+		// 5) (옵션) 기존 AccessToken 즉시 블랙리스트 처리
+		if (tokenRequestDto.accessToken() != null && !tokenRequestDto.accessToken().isBlank()) {
+			jwtService.blacklistAccessToken(tokenRequestDto.accessToken());
+		}
+
+		// 6) 새 토큰 페어 발급 (generateTokenPair가 이전 refresh 삭제 + 새 refresh 저장까지 수행)
 		return jwtService.generateTokenPair(userId);
 	}
 

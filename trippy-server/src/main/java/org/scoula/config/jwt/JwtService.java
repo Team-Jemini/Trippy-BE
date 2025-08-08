@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.scoula.common.dto.TokenPair;
-import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,8 +35,10 @@ public class JwtService {
 	private static final String REFRESH_TOKEN = "REFRESH_TOKEN";
 	public static final int MINUTE_IN_MILLISECONDS = 60 * 1000;
 	public static final long DAYS_IN_MILLISECONDS = 24 * 60 * 60 * 1000L;
-	public static final int ACCESS_TOKEN_EXPIRATION_MINUTE = 10;
-	public static final int REFRESH_TOKEN_EXPIRATION_DAYS = 14;
+	// public static final int ACCESS_TOKEN_EXPIRATION_MINUTE = 10;
+	// public static final int REFRESH_TOKEN_EXPIRATION_DAYS = 14;
+	public static final int ACCESS_TOKEN_EXPIRATION_DAYS = 30; //30 days
+	public static final int REFRESH_TOKEN_EXPIRATION_DAYS = 60; //60days
 	private final RedisTemplate<String, String> redisTemplate;
 
 	@PostConstruct
@@ -78,14 +79,13 @@ public class JwtService {
 		}
 	}
 
-	public boolean verifyToken(final String token) {
+	public void verifyToken(final String token) {
 		try {
 			getBody(token);
-			return true;
 		} catch (ExpiredJwtException e) {
 			throw new UnAuthorizedException(TOKEN_TIME_EXPIRED_EXCEPTION);
 		} catch (Exception e) {
-			return false;
+			throw new UnAuthorizedException(INVALID_TOKEN_EXCEPTION);
 		}
 	}
 
@@ -137,7 +137,7 @@ public class JwtService {
 		return Jwts.claims()
 			.setSubject(ACCESS_TOKEN)
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_MINUTE * MINUTE_IN_MILLISECONDS));
+			.setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_DAYS * DAYS_IN_MILLISECONDS));
 	}
 
 	private Claims getBody(final String token) {
@@ -155,6 +155,21 @@ public class JwtService {
 
 	public void deleteRefreshToken(final String userId) {
 		redisTemplate.delete(userId);
+	}
+
+	public void blacklistAccessToken(String accessToken) {
+		try {
+			Claims claims = getBody(accessToken);
+			long ttl = claims.getExpiration().getTime() - System.currentTimeMillis();
+			if (ttl > 0) {
+				redisTemplate.opsForValue().set("BL:" + accessToken, "1", ttl, TimeUnit.MILLISECONDS);
+			}
+		} catch (ExpiredJwtException e) {
+		}
+	}
+
+	public boolean isBlacklisted(String accessToken) {
+		return Boolean.TRUE.equals(redisTemplate.hasKey("BL:" + accessToken));
 	}
 }
 

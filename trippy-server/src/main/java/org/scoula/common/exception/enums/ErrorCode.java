@@ -9,6 +9,7 @@ public enum ErrorCode {
 
 	//400 BAD REQUEST
 	INVALID_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰을 입력했습니다."),
+	INVALID_REFRESH_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 리프레시 토큰을 입력했습니다."),
 	INVALID_TOKEN_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 토큰 타입입니다. Access Token을 사용해주세요."),
 	SIGHTSEEING_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "관광바우처 정보가 잘못되었습니다."),
 	INVALID_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
@@ -23,6 +24,7 @@ public enum ErrorCode {
 	//401 UNAUTHORIZED _인증
 	TOKEN_NOT_CONTAINED_EXCEPTION(HttpStatus.UNAUTHORIZED, "Access Token이 필요합니다."),
 	TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다. 다시 로그인 해주세요."),
+	BLACKLISTED_TOKEN_EXCEPTION(HttpStatus.UNAUTHORIZED, "만료된 엑세스 토큰입니다."),
 
 	//404 NOT FOUND
 	ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계좌입니다."),

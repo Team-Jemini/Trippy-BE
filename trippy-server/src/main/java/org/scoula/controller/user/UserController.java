@@ -5,6 +5,7 @@ import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.dto.TokenPair;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;
@@ -20,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "User")
 @RestController
