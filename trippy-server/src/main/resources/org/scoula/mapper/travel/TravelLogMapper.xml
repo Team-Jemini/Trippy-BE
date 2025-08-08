@@ -38,5 +38,18 @@
         ORDER BY t.travel_begin_date DESC
     </select>
 
+    <insert id="save" parameterType="org.scoula.domain.travel.TravelLogVO">
+        INSERT INTO travel_log (
+            user_id, title, travel_begin_date, travel_end_date,
+            destination, is_generated, travel_img, member_count,
+            created_at, updated_at
+        )
+        VALUES (
+                   #{userId}, #{title}, #{travelBeginDate}, #{travelEndDate},
+                   #{destination}, #{isGenerated}, #{travelImg}, #{memberCount},
+                   NOW(), NOW()
+               )
+    </insert>
+
 
 </mapper>
