@@ -27,7 +27,6 @@ public class CardQueryController {
 	})
 	@GetMapping("/summary")
 	public SuccessResponse<List<CardSummaryResponseDTO>> getCardSummaries(
-		@ApiParam(value = "유저 ID", required = true, example = "101")
 		@RequestParam Long userId
 	) {
 		List<CardSummaryResponseDTO> summaries = cardQueryService.getCardSummaries(userId);
@@ -41,7 +40,6 @@ public class CardQueryController {
 	})
 	@GetMapping("/detail")
 	public SuccessResponse<List<CardDetailResponseDTO>> getCardDetails(
-		@ApiParam(value = "유저 ID", required = true, example = "101")
 		@RequestParam Long userId
 	) {
 		List<CardDetailResponseDTO> details = cardQueryService.getCardDetails(userId);
