@@ -1,13 +1,5 @@
 package org.scoula.service.card;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
-
-import javax.imageio.ImageIO;
-
-
 import lombok.RequiredArgsConstructor;
 
 import org.scoula.common.exception.enums.ErrorCode;

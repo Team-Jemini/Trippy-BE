@@ -1,25 +1,19 @@
 
 package org.scoula.controller.card;
 
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.scoula.service.card.QrCodeService;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import org.scoula.controller.card.dto.response.QrCodeResponseDTO;
-import org.scoula.common.dto.SuccessResponse;
-import org.scoula.common.exception.enums.SuccessCode;
-import org.springframework.web.bind.annotation.*;
 
+import org.scoula.controller.card.dto.response.QrCodeResponseDTO;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cards")
@@ -34,7 +28,6 @@ public class QrCodeController {
 	public SuccessResponse<List<QrCodeResponseDTO>> activateQrCodes(
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId
 	) {
-		List<QrCodeResponseDTO> qrCodes = qrCodeService.activateAndGenerateQrCodes(userId);
-		return SuccessResponse.success(SuccessCode.QR_CODE_SUCCESS, qrCodes);
+		return SuccessResponse.success(SuccessCode.QR_CODE_SUCCESS, qrCodeService.activateAndGenerateQrCodes(userId));
 	}
 }
