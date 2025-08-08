@@ -1,5 +1,6 @@
 package org.scoula.config.swagger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -21,6 +23,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
+	private List<Parameter> globalParameterList() {
+		List<Parameter> parameters = new ArrayList<>();
+		// 필요한 경우에만 전역 파라미터 추가
+		return parameters;
+	}
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
