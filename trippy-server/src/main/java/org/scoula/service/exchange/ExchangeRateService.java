@@ -59,4 +59,27 @@ public class ExchangeRateService {
 
 		return exchangeBalanceDTO;
 	}
+
+	public void exchange(Long krwAmount,
+						 String krwAccountId,
+						 Long userId,
+						 double foreignAmount,
+						 String foreignAccountId,
+						 String currencyCode) {
+
+		/**
+		 * 거래내역 추가
+		 */
+		exchangeRateMapper.insertNewTransactionKrw(krwAmount, krwAccountId, userId);
+
+		/**
+		 * 외화 잔액 수정
+		 */
+		exchangeRateMapper.updateForeignAmount(foreignAmount, foreignAccountId, currencyCode);
+
+		/**
+		 * 원화 잔액 수정
+		 */
+		exchangeRateMapper.updateKrwAmount(krwAmount, krwAccountId, userId);
+	}
 }

@@ -25,7 +25,7 @@ import java.util.List;
 public class ExchangeController {
 
     private final ExchangeRateAPIService ExchangeRateAPIService;
-    private final ExchangeRateService ExchangeRateservice;
+    private final ExchangeRateService ExchangeRateService;
 
     @ApiOperation(value = "[JWT]환율 환전 관련", notes = "환율 관련 API")
     @ApiResponses(value = {
@@ -40,19 +40,32 @@ public class ExchangeController {
 
     @GetMapping("/getRateList")
     public SuccessResponse<List<ExchangeRateVO>> getExchangeRates() {
-        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateservice.getExchangeRates());
+        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateService.getExchangeRates());
         // JSON 형태로 출력
     }
 
 
     @GetMapping("/getAccountList")
     public SuccessResponse<List<AccountListDTO>> getAccountList(@RequestParam Long userId) {
-        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateservice.getAccountList(userId));
+        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, ExchangeRateService.getAccountList(userId));
     }
 
     @GetMapping("/getRateBal")
     public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam String userId, @RequestParam String accountId) {
-        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS, ExchangeRateservice.getRatesAndBalance(currencyCode, accountId, userId));
+        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS, ExchangeRateService.getRatesAndBalance(currencyCode, accountId, userId));
+    }
+
+    @PostMapping("/exchange")
+    public SuccessNonDataResponse exchange(@RequestParam Long krwAmount,
+                                           @RequestParam String krwAccountId,
+                                           @RequestParam Long userId,
+                                           @RequestParam String currencyCode,
+                                           @RequestParam String foreignAccountId,
+                                           @RequestParam double foreignAmount) {
+
+        ExchangeRateService.exchange(krwAmount, krwAccountId, userId, foreignAmount, foreignAccountId, currencyCode);
+
+        return SuccessNonDataResponse.success(SuccessCode.EXCHANGE_SUCCESS);
     }
 
 }

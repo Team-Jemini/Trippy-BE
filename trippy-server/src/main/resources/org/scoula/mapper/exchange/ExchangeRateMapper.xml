@@ -43,6 +43,28 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <resultMap id="transactionMap" type="org.scoula.domain.transaction.TransactionVO">
+        <id property="transactionId" column="transaction_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="transactionType" column="transaction_type"
+                typeHandler="org.scoula.common.typehandler.transaction.TransactionTypeTypeHandler"/>
+        <result property="amount" column="amount"/>
+        <result property="title" column="title"/>
+        <result property="category" column="category"
+                typeHandler="org.scoula.common.typehandler.transaction.TransactionCategoryTypeHandler"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
+        <result property="balanceAfter" column="balance_after"/>
+        <result property="status" column="status"
+                typeHandler="org.scoula.common.typehandler.transaction.TransactionStatusTypeHandler"/>
+        <result property="currencyCode" column="currency_code"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+
     <select id="getExchangeRateList" resultType="org.scoula.domain.exchange.ExchangeRateVO">
         select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date from exchange_rate
     </select>
@@ -88,5 +110,28 @@
         and f.currency_code = #{currencyCode}
         limit 1
     </select>
+
+    <insert id="insertNewTransactionKrw">
+        insert into transaction (account_id, user_id, amount, currency_code, transaction_type, balance_after)
+            values (#{accountId},
+                    #{userId},
+                    #{amount},
+                    'KRW',
+                    '환전',
+                    (select balance - #{amount} from account where account_id = #{accountId} limit 1))
+    </insert>
+
+    <update id="updateForeignAmount">
+        update foreign_account_balance
+        set balance = balance + #{foreignAmount}
+        where account_id = #{accountId}
+        and currency_code = #{currencyCode}
+    </update>
+    <update id="updateKrwAmount">
+        update account
+        set balance = balance - #{krwAmount}
+        where account_id = #{accountId}
+    </update>
+
 
 </mapper>
