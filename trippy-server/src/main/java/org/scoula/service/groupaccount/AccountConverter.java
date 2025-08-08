@@ -97,7 +97,7 @@ public class AccountConverter {
 			accountVO.getAccountType(),
 			accountVO.getOwnerId(),
 			accountVO.getBalance(),
-			accountVO.getAccountForeign(),
+			accountVO.getAccountCurrency(),
 			accountVO.getIsDeleted(),
 			accountVO.getRole(),
 			transactions
