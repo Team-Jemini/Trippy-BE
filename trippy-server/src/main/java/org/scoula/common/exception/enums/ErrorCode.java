@@ -8,6 +8,8 @@ import lombok.Getter;
 public enum ErrorCode {
 
 	//400 BAD REQUEST
+	INVALID_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰을 입력했습니다."),
+	INVALID_TOKEN_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 토큰 타입입니다. Access Token을 사용해주세요."),
 	SIGHTSEEING_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "관광바우처 정보가 잘못되었습니다."),
 	INVALID_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 	INVALID_INVITE_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 초대 링크입니다."),
@@ -15,6 +17,8 @@ public enum ErrorCode {
 	NOT_GROUP_ACCOUNT(HttpStatus.BAD_REQUEST, "모임계좌가 아닌 계좌입니다."),
 	ACCOUNT_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "해지된 계좌입니다."),
 	NOT_GROUP_ACCOUNT_LEADER_EXCEPTION(HttpStatus.BAD_REQUEST, "모임계좌 모임주가 아닌 사용자입니다."),
+	INVALID_RESIDENT_NUMBER_EXCEPTION(HttpStatus.BAD_REQUEST, "주민번호가 잘못되었습니다."),
+	INVALID_PASSWORD_EXCEPTION(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),
 
 	//401 UNAUTHORIZED _인증
 	TOKEN_NOT_CONTAINED_EXCEPTION(HttpStatus.UNAUTHORIZED, "Access Token이 필요합니다."),
