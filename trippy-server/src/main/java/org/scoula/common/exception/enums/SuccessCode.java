@@ -16,6 +16,7 @@ public enum SuccessCode {
 	SAVE_EXCHANGE_RATE_SUCCESS(HttpStatus.OK, "환율 정보 저장 성공입니다."),
 	FIND_EXCHANGE_RATE_SUCCESS(HttpStatus.OK, "환율 정보 찾기 성공"),
 	FIND_EXCHANGE_BALANCE_SUCCESS(HttpStatus.OK, "환율 잔액 찾기 성공"),
+	FIND_ACCOUNT_LIST_SUCCESS(HttpStatus.OK, "계좌 리스트 찾기 성공"),
 
 	//주민등록, 여권
 	RESIDENT_CARD_OCR_SUCCESS(HttpStatus.OK, "주민등록증 정보 인식이 완료되었습니다."),

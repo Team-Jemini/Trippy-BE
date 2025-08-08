@@ -30,7 +30,7 @@ public record ExchangeRateApiDTO(
 		return Double.parseDouble(withoutComma);
 	}
 
-	public ExchangeRateVO toExchangeRateVO(String baseExchangeRate) {
+	public ExchangeRateVO toExchangeRateVO(String baseExchangeRate, LocalDateTime exchangeRateDate) {
 		return ExchangeRateVO.builder()
 			.exchangeRateId(exchangeRateId)
 			.currencyCode(currencyCode)
