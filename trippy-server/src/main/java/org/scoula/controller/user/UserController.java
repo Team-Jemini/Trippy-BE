@@ -5,7 +5,6 @@ import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.dto.TokenPair;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.scoula.config.resolver.UserId;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;
@@ -21,7 +20,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "User")
 @RestController
@@ -33,10 +31,9 @@ public class UserController {
 
 	@ApiOperation(value = "회원가입 API", notes = "이름, 주민등록번호, 휴대폰번호, 비밀번호로 회원가입")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "회원가입 성공"),
-		@ApiResponse(code = 400, message = "잘못된 요청 데이터 입니다. (주민등록번호 validation)"),
-		@ApiResponse(code = 400, message = "유효하지 않은 토근값입니다."),
-		@ApiResponse(code = 500, message = "서버 내부 오류입니다.")
+		@ApiResponse(code = 200, message = "회원가입 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "주민번호가 잘못되었습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
 	})
 	@PostMapping("/signup")
 	public SuccessResponse<TokenPair> signUp(@RequestBody SignUpDTO signUpDTO) {
@@ -45,9 +42,12 @@ public class UserController {
 
 	@ApiOperation(value = "[JWT]비밀번호 확인", notes = "비밀번호 확인하기 API입니다.")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "비밀번호 확인 성공"),
-		@ApiResponse(code = 400, message = "유효하지 않은 토근값입니다."),
-		@ApiResponse(code = 500, message = "서버 내부 오류")
+		@ApiResponse(code = 200, message = "비밀번호 확인 성공", response = SuccessNonDataResponse.class),
+		@ApiResponse(code = 400, message = "비밀번호가 잘못되었습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 400, message = "잘못된 토큰 타입입니다. Access Token을 사용해주세요", response = ErrorResponse.class),
+		@ApiResponse(code = 400, message = "유효하지 않은 토큰을 입력했습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 400, message = "만료된 엑세스 토큰입니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
 	})
 	@PostMapping("/password")
 	public SuccessNonDataResponse checkPassword(@RequestParam Long userId, @RequestBody CheckPasswordDTO checkPasswordDTO) {
@@ -57,9 +57,11 @@ public class UserController {
 
 	@ApiOperation(value = "토큰 갱신 API", notes = "토큰 갱신 API")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "토큰 갱신 성공입니다."),
+		@ApiResponse(code = 200, message = "토큰 갱신 성공입니다.", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "유효하지 않은 토큰을 입력했습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 400, message = "유효하지 않은 리프레시 토큰을 입력했습니다.", response = ErrorResponse.class),
 		@ApiResponse(code = 401, message = "토큰이만료되었습니다. 다시 로그인해주세요.", response = ErrorResponse.class),
-		@ApiResponse(code = 404, message = "존재하지 않는 유저입니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 404, message = "만료된 엑세스 토큰입니다.", response = ErrorResponse.class),
 		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
 	})
 	@PostMapping("/refresh")
