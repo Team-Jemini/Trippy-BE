@@ -1,14 +1,16 @@
-package org.scoula.controller.travel.log.dto.res;
+package org.scoula.controller.travel.log.dto.req;
+
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 
-public record TravelLogDTO(
-        Long travelId,
+@Builder
+public record TravelLogCreateDTO (
         Long userId,
         String title,
         LocalDateTime travelBeginDate,
         LocalDateTime travelEndDate,
         String destination,
         Boolean isGenerated,
-        String travelImg,
-        Integer memberCount
+        String travelImg
 ) {}
