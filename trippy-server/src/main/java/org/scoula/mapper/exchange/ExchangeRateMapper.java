@@ -12,13 +12,10 @@ import java.util.List;
 public interface ExchangeRateMapper {
     List<ExchangeRateVO> getExchangeRateList();
 
-    /**
-     * 환전 기능
-     */
     List<AccountListVO> getAccountList(Long userId);
 
     ExchangeRateVO findTodayRateByCurrencyCode(String currencyCode);
     AccountListVO findKrwBalanceByAccountId(String accountId);
-    Double findForeignBalanceByAccountIdAndCurrency(@Param("userId") String userId, @Param("currencyCode") String currencyCode);
+    Double findForeignBalanceByAccountIdAndCurrency(@Param("userId") Long userId, @Param("currencyCode") String currencyCode);
 
 }

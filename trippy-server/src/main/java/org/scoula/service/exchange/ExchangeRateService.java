@@ -11,6 +11,7 @@ import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.domain.exchange.ForeignAccountBalanceVO;
 import org.scoula.mapper.account.AccountMapper;
 import org.scoula.mapper.exchange.ExchangeRateMapper;
+import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ import static org.springframework.security.web.savedrequest.FastHttpDateFormat.g
 public class ExchangeRateService {
 
 	private final ExchangeRateMapper exchangeRateMapper;
-//	private final AccountMapper accountMapper;
+	private final UserService userService;
 
 	/***
 	 * DB에서 환율 데이터 조회
@@ -37,18 +38,21 @@ public class ExchangeRateService {
 	/***
 	 * 환전
 	 */
-
 	public List<AccountListDTO> getAccountList(Long userId) {
+		userService.validateUserExists(userId);
+
 		List<AccountListVO> accListVO = exchangeRateMapper.getAccountList(userId);
 		List<AccountListDTO> accListDto = new ArrayList<>();
-		for(AccountListVO vo : accListVO) {
-			accListDto.add(new AccountListDTO(vo.getAccountId(), vo.getAccountName(), vo.getBalance(), vo.getAccountCurrency(), vo.getIsDeleted()));
+		for (AccountListVO vo : accListVO) {
+			accListDto.add(
+				new AccountListDTO(vo.getAccountId(), vo.getAccountName(), vo.getBalance(), vo.getAccountCurrency(),
+					vo.getIsDeleted()));
 		}
 		return accListDto;
 	}
 
-	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, String accountId, String userId) {
-		ExchangeRateVO  exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
+	public ExchangeBalanceDTO getRatesAndBalance(Long userId, String currencyCode, String accountId) {
+		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
 		Double rate = exchangeRateVO.getBaseExchangeRate();
 
 		AccountListVO accountListVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
