@@ -142,6 +142,23 @@
         WHERE a.account_id = #{accountId}
           AND am.user_id = #{userId}
     </select>
+    <select id="findAllByUserIdOrderByUpdatedAt" resultMap="GroupAccountResultMap">
+        SELECT am.user_id,
+               a.account_id,
+               a.account_name,
+               a.account_type,
+               a.owner_id,
+               a.balance,
+               a.account_currency,
+               a.is_deleted,
+               am.role,
+               a.created_at,
+               a.updated_at
+        FROM account a
+                 JOIN account_member am ON a.account_id = am.account_id
+        WHERE a.user_id = #{userId}
+        ORDER BY a.updated_at DESC
+    </select>
 
 
 </mapper>
