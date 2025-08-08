@@ -5,8 +5,5 @@
 -- airTicket
 
 -- voucher
-
-SELECT *
-FROM transaction
-WHERE account_id = '0707-000060001-6511'
-  AND user_id = 1;
+alter table account
+    change account_foreign account_currency VARCHAR(20)

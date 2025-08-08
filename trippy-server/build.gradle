@@ -134,6 +134,9 @@ dependencies {
 
     // JSON 사용을 위한 의존성 추가
     implementation 'org.json:json:20240303'
+
+    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.google.zxing:javase:3.5.3'
 }
 
 

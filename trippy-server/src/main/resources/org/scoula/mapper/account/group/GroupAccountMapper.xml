@@ -11,8 +11,7 @@
                 typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
         <result property="ownerId" column="owner_id"/>
         <result property="balance" column="balance"/>
-        <result property="accountForeign" column="account_foreign"
-                typeHandler="org.scoula.common.typehandler.account.AccountForeignTypeHandler"/>
+        <result property="accountCurrency" column="account_currency"/>
         <result property="isDeleted" column="is_deleted"
                 typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
         <!-- BaseTime -->
@@ -28,8 +27,7 @@
                 typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
         <result property="ownerId" column="owner_id"/>
         <result property="balance" column="balance"/>
-        <result property="accountForeign" column="account_foreign"
-                typeHandler="org.scoula.common.typehandler.account.AccountForeignTypeHandler"/>
+        <result property="accountCurrency" column="account_currency"/>
         <result property="isDeleted" column="is_deleted"
                 typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
         <result property="role" column="role"
@@ -40,9 +38,9 @@
 
 
     <insert id="createGroupAccount">
-        INSERT into account(account_id, user_id, account_name, account_type, owner_id, balance, account_foreign,
+        INSERT into account(account_id, user_id, account_name, account_type, owner_id, balance, account_currency,
                             is_deleted)
-        VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountForeign},
+        VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountCurrency},
                 #{isDeleted})
     </insert>
 
@@ -83,7 +81,7 @@
                account_type,
                owner_id,
                balance,
-               account_foreign,
+               account_currency,
                is_deleted,
                created_at,
                updated_at
@@ -127,7 +125,7 @@
                a.account_type,
                a.owner_id,
                a.balance,
-               a.account_foreign,
+               a.account_currency,
                a.is_deleted,
                am.role,
                a.created_at,
@@ -136,6 +134,30 @@
                  JOIN account_member am ON a.account_id = am.account_id
         WHERE a.account_id = #{accountId}
           AND am.user_id = #{userId}
+    </select>
+    <select id="isGroupAccountUser" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM account a
+                 JOIN account_member am ON a.account_id = am.account_id
+        WHERE a.account_id = #{accountId}
+          AND am.user_id = #{userId}
+    </select>
+    <select id="findAllByUserIdOrderByUpdatedAt" resultMap="GroupAccountResultMap">
+        SELECT am.user_id,
+               a.account_id,
+               a.account_name,
+               a.account_type,
+               a.owner_id,
+               a.balance,
+               a.account_currency,
+               a.is_deleted,
+               am.role,
+               a.created_at,
+               a.updated_at
+        FROM account a
+                 JOIN account_member am ON a.account_id = am.account_id
+        WHERE a.user_id = #{userId}
+        ORDER BY a.updated_at DESC
     </select>
 
 

@@ -1,12 +1,16 @@
 package org.scoula.service.groupaccount;
 
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
-import org.scoula.domain.account.AccountForeign;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.account.DeletedStatus;
@@ -26,7 +30,7 @@ public class AccountConverter {
 			.accountType(accountType)
 			.ownerId(userId)
 			.balance(0L)
-			.accountForeign(AccountForeign.kor)
+			.accountCurrency("KOR")
 			.isDeleted(DeletedStatus.N)
 			.build();
 	}
@@ -54,6 +58,7 @@ public class AccountConverter {
 			vo.getTransactionId(),
 			vo.getTransactionType().name(),
 			vo.getAmount(),
+			vo.getBalanceAfter(),
 			vo.getTitle(),
 			vo.getCategory().name(),
 			vo.getStatus().name(),
@@ -71,7 +76,19 @@ public class AccountConverter {
 	public static GroupAccountDetailResponseDTO toGroupAccountDetailResponseDTO(
 		GroupAccountVO accountVO, List<TransactionVO> transactionVOs) {
 
-		List<AccountTransactionResponseDTO> transactions = toTransactionResponseDTOList(transactionVOs);
+		List<AccountTransactionResponseDTO> flatTransactions = toTransactionResponseDTOList(transactionVOs);
+
+		Map<LocalDate, List<AccountTransactionResponseDTO>> grouped = flatTransactions.stream()
+			.collect(Collectors.groupingBy(
+				tx -> tx.createdAt().toLocalDate(),
+				LinkedHashMap::new,
+				Collectors.toList()
+			));
+
+		// Map → DTO 변환
+		List<DailyAccountTransactionDTO> transactions = grouped.entrySet().stream()
+			.map(entry -> new DailyAccountTransactionDTO(entry.getKey(), entry.getValue()))
+			.collect(Collectors.toList());
 
 		return new GroupAccountDetailResponseDTO(
 			accountVO.getUserId(),
@@ -80,9 +97,39 @@ public class AccountConverter {
 			accountVO.getAccountType(),
 			accountVO.getOwnerId(),
 			accountVO.getBalance(),
-			accountVO.getAccountForeign(),
+			accountVO.getAccountCurrency(),
 			accountVO.getIsDeleted(),
 			accountVO.getRole(),
+			transactions
+		);
+	}
+
+	public static PersonalAccountDetailResponseDTO toPersonalAccountDetailResponseDTO(
+		AccountVO accountVO, List<TransactionVO> transactionVOs) {
+
+		List<AccountTransactionResponseDTO> flatTransactions = toTransactionResponseDTOList(transactionVOs);
+
+		Map<LocalDate, List<AccountTransactionResponseDTO>> grouped = flatTransactions.stream()
+			.collect(Collectors.groupingBy(
+				tx -> tx.createdAt().toLocalDate(),
+				LinkedHashMap::new,
+				Collectors.toList()
+			));
+
+		// Map → DTO 변환
+		List<DailyAccountTransactionDTO> transactions = grouped.entrySet().stream()
+			.map(entry -> new DailyAccountTransactionDTO(entry.getKey(), entry.getValue()))
+			.collect(Collectors.toList());
+
+		return new PersonalAccountDetailResponseDTO(
+			accountVO.getUserId(),
+			accountVO.getAccountId(),
+			accountVO.getAccountName(),
+			accountVO.getAccountType(),
+			accountVO.getOwnerId(),
+			accountVO.getBalance(),
+			accountVO.getAccountCurrency(),
+			accountVO.getIsDeleted(),
 			transactions
 		);
 	}

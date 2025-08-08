@@ -1,12 +1,12 @@
-package org.scoula.controller.groupAccount.dto.response;
+package org.scoula.controller.account.dto.response;
 
 import java.util.List;
 
+import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDTO;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.DeletedStatus;
-import org.scoula.domain.account.member.Role;
 
-public record GroupAccountDetailResponseDTO(
+public record PersonalAccountDetailResponseDTO(
 	Long userId,
 	String accountId,
 	String accountName,
@@ -15,7 +15,6 @@ public record GroupAccountDetailResponseDTO(
 	Long balance,
 	String accountCurrency,
 	DeletedStatus isDeleted,
-	Role role,
 	List<DailyAccountTransactionDTO> transactions
 ) {
 }

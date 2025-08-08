@@ -6,6 +6,7 @@ public record AccountTransactionResponseDTO(
 	Long transactionId,
 	String transactionType,
 	Long amount,
+	Long balanceAfter,
 	String title,
 	String category,
 	String status,

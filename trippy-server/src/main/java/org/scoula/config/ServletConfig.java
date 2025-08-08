@@ -21,6 +21,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @ComponentScan(basePackages = {
     "org.scoula.exception",
     "org.scoula.controller",
+    "org.scoula.external",
     "org.scoula.config.swagger"
 })
 public class ServletConfig implements WebMvcConfigurer {
