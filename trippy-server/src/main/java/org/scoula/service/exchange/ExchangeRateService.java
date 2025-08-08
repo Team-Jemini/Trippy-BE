@@ -47,19 +47,15 @@ public class ExchangeRateService {
 		return accListDto;
 	}
 
-	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, String accountId) {
+	public ExchangeBalanceDTO getRatesAndBalance(String currencyCode, String accountId, String userId) {
 		ExchangeRateVO  exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
 		Double rate = exchangeRateVO.getBaseExchangeRate();
 
 		AccountListVO accountListVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
 		Long krwBalance = accountListVo.getBalance();
 
-		String foreignAccountId = "200-300-400001"; // 외화 계좌는 지정되어 있다고 가정.
-		ForeignAccountBalanceVO foreignBalanceVO = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(foreignAccountId, currencyCode);
-		Double foreignBalance = foreignBalanceVO.getBalance();
-
+		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(userId, currencyCode);
 		ExchangeBalanceDTO exchangeBalanceDTO = ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
-
 
 		return exchangeBalanceDTO;
 	}

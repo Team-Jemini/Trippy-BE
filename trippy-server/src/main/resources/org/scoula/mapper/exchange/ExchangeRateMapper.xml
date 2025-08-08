@@ -66,24 +66,26 @@
           and account_currency = 'KOR'
     </select>
 
+    <select id="findTodayRateByCurrencyCode" resultMap="exchangeRateMap">
+        select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date, created_at, updated_at
+        from exchange_rate
+        where currency_code = #{currencyCode}
+        order by exchange_rate_date desc
+            limit 1
+    </select>
+
     <select id="findKrwBalanceByAccountId" resultMap="accountMap">
         select account_id, user_id, account_name, account_type, owner_id, balance, account_currency, is_deleted, created_at, updated_at
         from account
         where account_id = #{accountId}
     </select>
 
-    <select id="findForeignBalanceByAccountIdAndCurrency" resultMap="foreignAccountBalanceMap">
-        select balance_id, account_id, currency_code, balance, created_at, updated_at
-        from foreign_account_balance
-        where account_id = #{accountId}
-        and currency_code = #{currencyCode}
-    </select>
-
-    <select id="findTodayRateByCurrencyCode" resultMap="exchangeRateMap">
-        select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date, created_at, updated_at
-        from exchange_rate
-        where currency_code = #{currencyCode}
-        order by exchange_rate_date desc
+    <select id="findForeignBalanceByAccountIdAndCurrency" resultType="java.lang.Double">
+        select f.balance
+        from foreign_account_balance as f
+        inner join account as a on f.account_id = a.account_id
+        where a.user_id = #{userId}
+        and f.currency_code = #{currencyCode}
         limit 1
     </select>
 

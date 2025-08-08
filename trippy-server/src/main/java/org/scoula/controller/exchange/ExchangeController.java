@@ -51,8 +51,8 @@ public class ExchangeController {
     }
 
     @GetMapping("/getRateBal")
-    public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam String accountId) {
-        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS, ExchangeRateservice.getRatesAndBalance(currencyCode, accountId));
+    public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam String currencyCode, @RequestParam String userId, @RequestParam String accountId) {
+        return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS, ExchangeRateservice.getRatesAndBalance(currencyCode, accountId, userId));
     }
 
 }
