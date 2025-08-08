@@ -7,8 +7,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.scoula.common.dto.ErrorResponse;
+import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.controller.account.dto.request.AccountRequestDTO;
 import org.scoula.controller.account.dto.response.AccountResponseDTO;
 import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
@@ -74,6 +76,21 @@ public class AccountController {
 	) {
 		return SuccessResponse.success(SuccessCode.FILTER_ACCOUNT_TRANSACTION_SUCCESS,
 			accountService.filterAccountTransactions(accountId, userId, transactionType));
+	}
+
+	@ApiOperation(value = "개인 계좌 등록", notes = "개인 계좌 등록 API입니다.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "계좌가 성공적으로 등록되었습니다.", response = SuccessResponse.class),
+			@ApiResponse(code = 400, message = "잘못된 요청입니다."),
+			@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
+	})
+	@PostMapping(value = "/save")
+	public SuccessNonDataResponse saveCodefAccount(
+			@ApiParam(value = "사용자 ID", required = true)
+			@RequestParam Long userId,
+			@RequestBody List<AccountRequestDTO> request) {
+		accountService.saveAccounts(userId, request);
+		return SuccessNonDataResponse.success(SuccessCode.SAVE_ACCOUNT_DATA_SUCCESS);
 	}
 }
 

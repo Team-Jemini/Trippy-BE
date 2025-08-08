@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.TrippyException;
+import org.scoula.controller.account.dto.request.AccountRequestDTO;
 import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.domain.account.AccountVO;
@@ -112,54 +113,28 @@ public class AccountService {
 					((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
 
 			return accountList.stream()
-					.map(accountMap -> AccountResponseDTO.from(AccountVO.from(accountMap, userId), userId))
+					.map(accountMap -> AccountResponseDTO.from(AccountVO.fromCodefResponse(accountMap, userId), userId))
 					.toList();
 
 		} catch (IOException e) {
 			throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
 		}
-
-
 	}
 
-    public void saveAccounts(final Long userId) {
+    public void saveAccounts(final Long userId, List<AccountRequestDTO> requestList) {
         try {
             userService.validateUserExists(userId);
 
-            String accountListJson = codefAccountService.getAccountList();
-
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> responseMap = mapper.readValue(accountListJson, Map.class);
-
-            List<Map<String, Object>> accountList = (List<Map<String, Object>>)
-                    ((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
-
-            for (Map<String, Object> account : accountList) {
-                String accountId = (String) account.get("resAccount");
+            for (AccountRequestDTO request : requestList) {
+                String accountId = request.accountId();
                 if (accountMapper.existsByAccountId(accountId)) {
                     log.info("중복 계좌 건너뜀: {}", accountId);
                     continue;
                 }
 
-                // 잔액 데이터 String -> Long 타입으로 형 변환
-                String balanceStr = (String) account.get("resAccountBalance");
-                Long balance = 0L;
-                if (balanceStr != null && !balanceStr.isEmpty()) {
-                    balance = Long.parseLong(balanceStr);
-                }
+                AccountVO account = AccountVO.from(request, userId);
 
-                AccountVO vo = AccountVO.builder()
-                        .userId(userId)
-                        .accountId((String) account.get("resAccount"))
-                        .accountName((String) account.get("resAccountName"))
-                        .accountType(AccountType.valueOf("person"))
-                        .ownerId(userId)
-                        .balance(balance)
-                        .accountCurrency((String) account.get("resAccountCurrency"))
-                        .isDeleted(DeletedStatus.N)
-                        .build();
-
-                accountMapper.saveAccount(vo);
+                accountMapper.saveAccount(account);
             }
 
         } catch (Exception e) {
