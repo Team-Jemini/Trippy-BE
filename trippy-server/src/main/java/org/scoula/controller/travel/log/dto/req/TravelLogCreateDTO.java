@@ -6,10 +6,11 @@ import java.time.LocalDateTime;
 
 @Builder
 public record TravelLogCreateDTO (
+        Long userId,
         String title,
         LocalDateTime travelBeginDate,
         LocalDateTime travelEndDate,
         String destination,
         Boolean isGenerated,
-        Integer memberCount
+        String travelImg
 ) {}

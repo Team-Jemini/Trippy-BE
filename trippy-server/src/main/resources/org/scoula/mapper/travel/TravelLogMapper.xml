@@ -18,7 +18,7 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <select id="getAllTravelLogs" parameterType="long" resultType="org.scoula.domain.travel.TravelLogVO">
+    <select id="getAllTravelLogs" parameterType="long" resultType="map">
         SELECT
             t.travel_id AS travelId,
             t.user_id AS userId,
@@ -41,12 +41,12 @@
     <insert id="save" parameterType="org.scoula.domain.travel.TravelLogVO">
         INSERT INTO travel_log (
             user_id, title, travel_begin_date, travel_end_date,
-            destination, is_generated, travel_img, member_count,
+            destination, is_generated, travel_img,
             created_at, updated_at
         )
         VALUES (
                    #{userId}, #{title}, #{travelBeginDate}, #{travelEndDate},
-                   #{destination}, #{isGenerated}, #{travelImg}, #{memberCount},
+                   #{destination}, #{isGenerated}, #{travelImg},
                    NOW(), NOW()
                )
     </insert>

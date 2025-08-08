@@ -38,20 +38,42 @@ public class TravelLogController {
         return SuccessResponse.success(SuccessCode.FIND_TRAVEL_LOG_SUCCESS, travelLogService.getTravelLogs(userId));
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @ApiOperation(value = "[JWT] 여행 로그 생성", notes = "여행 로그를 새로 생성하는 API입니다.")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "여행 로그 생성 성공", response = SuccessNonDataResponse.class),
+//            @ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
+//    })
+//    public SuccessNonDataResponse createTravelLog(
+//            @RequestParam Long userId,
+//            @RequestPart("travelLog") TravelLogCreateDTO travelLogCreateDTO,
+//            @RequestPart(value = "travelImg", required = false) MultipartFile travelImg
+//    ) {
+//        travelLogService.createTravelLog(userId, travelLogCreateDTO, travelImg);
+//        return SuccessNonDataResponse.success(SuccessCode.CREATE_TRAVEL_LOG_SUCCESS);
+//    }
+
+    @PostMapping(value = "/travel-log", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiOperation(value = "[JWT] 여행 로그 생성", notes = "여행 로그를 새로 생성하는 API입니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "여행 로그 생성 성공", response = SuccessNonDataResponse.class),
             @ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
     })
     public SuccessNonDataResponse createTravelLog(
+            @ApiParam(value = "유저 ID", required = true, example = "101")
             @RequestParam Long userId,
-            @RequestPart("travelLog") TravelLogCreateDTO travelLogCreateDTO,
-            @RequestPart(value = "travelImg", required = false) MultipartFile travelImg
+
+            @ApiParam(value = "여행 이미지 파일")
+            @RequestPart(value = "travelImg", required = false)
+            MultipartFile travelImg,
+
+            @ApiParam(value = "여행 로그 JSON (예: {\"title\":\"제주도 가족 여행\", \"travelBeginDate\":\"2025-09-01T12:00:00\", \"travelEndDate\":\"2025-09-04T12:00:00\", \"destination\":\"제주도\", \"isGenerated\":false})", required = true)
+            @RequestPart TravelLogCreateDTO travelLogCreateDTO
     ) {
         travelLogService.createTravelLog(userId, travelLogCreateDTO, travelImg);
         return SuccessNonDataResponse.success(SuccessCode.CREATE_TRAVEL_LOG_SUCCESS);
     }
+
 
 
 }
