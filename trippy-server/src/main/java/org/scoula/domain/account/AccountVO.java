@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @Data
 @Getter
 @NoArgsConstructor
@@ -24,4 +26,23 @@ public class AccountVO extends BaseTime {
 	private Long balance;
 	private String accountCurrency;
 	private DeletedStatus isDeleted;
+
+	public static AccountVO from(Map<String, Object> codefAccount, Long userId) {
+		String balanceStr = (String) codefAccount.get("resAccountBalance");
+		Long balance = 0L;
+		if (balanceStr != null && !balanceStr.isEmpty()) {
+			balance = Long.parseLong(balanceStr);
+		}
+
+		return new AccountVO(
+				userId,
+				(String) codefAccount.get("resAccount"),
+				(String) codefAccount.get("resAccountName"),
+				AccountType.person,
+				userId,
+				balance,
+				(String) codefAccount.get("resAccountCurrency"),
+				DeletedStatus.N
+		);
+	}
 }

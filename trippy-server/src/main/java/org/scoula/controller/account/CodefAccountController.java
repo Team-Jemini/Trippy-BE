@@ -24,7 +24,7 @@ public class CodefAccountController {
             @ApiResponse(code = 400, message = "잘못된 요청입니다."),
             @ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
     })
-    @PostMapping(value = "/sync")
+    @PostMapping(value = "")
     public SuccessNonDataResponse saveCodefAccount(@RequestParam Long userId) {
         accountService.saveAccounts(userId);
         return SuccessNonDataResponse.success(SuccessCode.GET_CODEF_DATA_SUCCESS);

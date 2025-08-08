@@ -1,5 +1,6 @@
 package org.scoula.service.account;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.scoula.common.exception.enums.ErrorCode;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.scoula.controller.account.dto.response.AccountDTO;
+import org.scoula.controller.account.dto.response.AccountResponseDTO;
 import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.domain.account.AccountType;
 import org.scoula.external.codef.accounts.service.CodefAccountService;
@@ -84,11 +85,11 @@ public class AccountService {
 	}
 
 
-    public List<AccountDTO> getAccountsList(final Long userId) {
+    public List<AccountResponseDTO> getAccountsList(final Long userId) {
         userService.validateUserExists(userId);
 
-        List<AccountDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
-                .map(vo -> AccountDTO.from(vo, userId))
+        List<AccountResponseDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
+                .map(vo -> AccountResponseDTO.from(vo, userId))
                 .toList();
 
         if (accounts.isEmpty()) {
@@ -97,6 +98,29 @@ public class AccountService {
 
         return accounts;
     }
+
+	public List<AccountResponseDTO> getCodefAccounts(final Long userId) {
+		userService.validateUserExists(userId);
+
+		String accountListJson = codefAccountService.getAccountList();
+
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Map<String, Object> responseMap = mapper.readValue(accountListJson, Map.class);
+
+			List<Map<String, Object>> accountList = (List<Map<String, Object>>)
+					((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
+
+			return accountList.stream()
+					.map(accountMap -> AccountResponseDTO.from(AccountVO.from(accountMap, userId), userId))
+					.toList();
+
+		} catch (IOException e) {
+			throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
+		}
+
+
+	}
 
     public void saveAccounts(final Long userId) {
         try {

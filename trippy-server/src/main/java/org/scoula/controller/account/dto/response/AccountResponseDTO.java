@@ -1,11 +1,10 @@
 package org.scoula.controller.account.dto.response;
 
-import org.scoula.domain.account.AccountForeign;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.account.DeletedStatus;
 
-public record AccountDTO(
+public record AccountResponseDTO(
         Long userId,
         String accountId,
         String accountName,
@@ -15,8 +14,8 @@ public record AccountDTO(
         String accountCurrency,
         DeletedStatus isDeleted
 ) {
-    public static AccountDTO from(AccountVO vo, Long userId) {
-        return new AccountDTO(
+    public static AccountResponseDTO from(AccountVO vo, Long userId) {
+        return new AccountResponseDTO(
                 userId,
                 vo.getAccountId(),
                 vo.getAccountName(),

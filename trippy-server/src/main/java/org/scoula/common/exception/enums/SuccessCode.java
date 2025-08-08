@@ -38,7 +38,8 @@ public enum SuccessCode {
 	CREATE_SIGHTSEEING_SUCCESS(HttpStatus.OK, "관광예약 생성 성공"),
 
 	//CODEF
-	GET_CODEF_DATA_SUCCESS(HttpStatus.OK, "내 자산 추가 성공"),
+	GET_CODEF_DATA_SUCCESS(HttpStatus.OK, "내 보유 계좌 Codef 조회 성공"),
+	SAVE_ACCOUNT_DATA_SUCCESS(HttpStatus.OK, "내 계좌 등록 성공"),
 
 	//모임
 	CREATE_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임 계좌가 성공적으로 생성되었습니다."),
