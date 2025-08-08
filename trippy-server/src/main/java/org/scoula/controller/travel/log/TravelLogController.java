@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "Travel Log")
+@Api(tags = "Travel")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/travel-log")
