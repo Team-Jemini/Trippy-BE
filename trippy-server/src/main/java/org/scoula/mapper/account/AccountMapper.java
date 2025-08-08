@@ -7,6 +7,7 @@ import org.scoula.domain.account.AccountVO;
 
 import java.util.List;
 
+
 @Mapper
 public interface AccountMapper {
     void saveAccount(AccountVO account);
