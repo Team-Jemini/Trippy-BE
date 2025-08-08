@@ -1,8 +1,4 @@
 package org.scoula.controller.travel.log.dto.res;
-
-
-import org.scoula.domain.travel.TravelLogVO;
-
 import java.time.LocalDateTime;
 
 public record TravelLogDTO(
@@ -14,21 +10,5 @@ public record TravelLogDTO(
         String destination,
         Boolean isGenerated,
         String travelImg,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
-) {
-    public static TravelLogDTO from(TravelLogVO vo) {
-        return new TravelLogDTO(
-                vo.getTravelId(),
-                vo.getUserId(),
-                vo.getTitle(),
-                vo.getTravelBeginDate(),
-                vo.getTravelEndDate(),
-                vo.getDestination(),
-                vo.getIsGenerated(),
-                vo.getTravelImg(),
-                vo.getCreatedAt(),
-                vo.getUpdatedAt()
-        );
-    }
-}
+        Integer memberCount
+) {}

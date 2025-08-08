@@ -18,12 +18,38 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <select id="getAllTravelLogs" parameterType="long" resultType="org.scoula.domain.travel.TravelLogVO">
-        SELECT *
-        FROM travel_log
-        WHERE user_id = #{userId}
-        ORDER BY travel_begin_date DESC
+    <select id="getAllTravelLogs" parameterType="long" resultType="map">
+        SELECT
+            t.travel_id AS travelId,
+            t.user_id AS userId,
+            t.title,
+            t.travel_begin_date AS travelBeginDate,
+            t.travel_end_date AS travelEndDate,
+            t.destination,
+            t.is_generated AS isGenerated,
+            t.travel_img AS travelImg,
+            t.created_at AS createdAt,
+            t.updated_at AS updatedAt,
+            IFNULL(COUNT(m.user_id), 0) AS memberCount
+        FROM travel_log t
+                 LEFT JOIN account_member m ON t.travel_id = m.travel_id
+        WHERE t.user_id = #{userId}
+        GROUP BY t.travel_id
+        ORDER BY t.travel_begin_date DESC
     </select>
+
+    <insert id="save" parameterType="org.scoula.domain.travel.TravelLogVO">
+        INSERT INTO travel_log (
+            user_id, title, travel_begin_date, travel_end_date,
+            destination, is_generated, travel_img,
+            created_at, updated_at
+        )
+        VALUES (
+                   #{userId}, #{title}, #{travelBeginDate}, #{travelEndDate},
+                   #{destination}, #{isGenerated}, #{travelImg},
+                   NOW(), NOW()
+               )
+    </insert>
 
 
 </mapper>
