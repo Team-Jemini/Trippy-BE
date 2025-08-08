@@ -84,7 +84,7 @@ public class GroupAccountController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
-	@GetMapping("/invite/token-info")
+	@PostMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
 		@ApiParam(value = "초대 토큰", required = true) @RequestBody AcceptInviteTokenRequestDTO token) {

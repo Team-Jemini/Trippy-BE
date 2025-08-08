@@ -27,8 +27,7 @@
                 typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
         <result property="ownerId" column="owner_id"/>
         <result property="balance" column="balance"/>
-        <result property="accountForeign" column="account_foreign"
-                typeHandler="org.scoula.common.typehandler.account.AccountForeignTypeHandler"/>
+        <result property="accountCurrency" column="account_currency"/>
         <result property="isDeleted" column="is_deleted"
                 typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
         <result property="role" column="role"
@@ -41,7 +40,7 @@
     <insert id="createGroupAccount">
         INSERT into account(account_id, user_id, account_name, account_type, owner_id, balance, account_currency,
                             is_deleted)
-        VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountForeign},
+        VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountCurrency},
                 #{isDeleted})
     </insert>
 
