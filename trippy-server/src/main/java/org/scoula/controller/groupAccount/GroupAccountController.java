@@ -56,7 +56,6 @@ public class GroupAccountController {
 		required = true, dataType = "string", paramType = "header")
 	@PostMapping("/create")
 	public SuccessResponse<GroupAccountCreateResponseDTO> createGroupAccount(
-		@ApiParam(value = "모임계좌", required = true)
 		@RequestParam Long userId,
 		@RequestBody GroupAccountCreateRequestDTO request) {
 
@@ -72,7 +71,7 @@ public class GroupAccountController {
 	})
 	@PostMapping("/invite/reissue")
 	public SuccessResponse<InviteResponseDTO> reissueInviteTokenURL(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "초대 요청 정보", required = true) @RequestBody InviteRequestDTO request) {
 
 		return SuccessResponse.success(SuccessCode.CREATE_INVITE_TOKEN_SUCCESS,
@@ -87,7 +86,7 @@ public class GroupAccountController {
 	})
 	@PostMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "초대 토큰", required = true) @RequestBody AcceptInviteTokenRequestDTO token) {
 
 		return SuccessResponse.success(SuccessCode.PARSE_INVITE_TOKEN_SUCCESS,
@@ -102,7 +101,7 @@ public class GroupAccountController {
 	})
 	@PostMapping("/join")
 	public SuccessNonDataResponse joinGroupAccount(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestBody GroupAccountJoinRequestDTO request
 	) {
 		inviteService.joinGroupAccount(userId, request);
@@ -118,7 +117,7 @@ public class GroupAccountController {
 	@GetMapping("/detail")
 	public SuccessResponse<GroupAccountDetailResponseDTO> getGroupAccountDetail(
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId,
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId
+		@RequestParam Long userId
 	) {
 		return SuccessResponse.success(SuccessCode.GET_GROUP_ACCOUNT_DETAIL_SUCCESS,
 			groupAccountService.getGroupAccountDetail(accountId, userId));
@@ -164,7 +163,7 @@ public class GroupAccountController {
 	})
 	@PostMapping("/settle")
 	public SuccessNonDataResponse sendSettlementRequest(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "정산 요청 정보", required = true) @RequestBody SettlementRequestDTO requestDTO) {
 
 		groupAccountService.sendSettlementRequest(userId, requestDTO);

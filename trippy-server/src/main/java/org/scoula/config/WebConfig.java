@@ -1,8 +1,8 @@
 package org.scoula.config;
 
+import org.scoula.config.swagger.SwaggerAuthHeaderFilter;
 import org.scoula.config.swagger.SwaggerConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
@@ -37,7 +37,9 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
 
-        return new Filter[] {characterEncodingFilter};
+        SwaggerAuthHeaderFilter swaggerAuthHeaderFilter = new SwaggerAuthHeaderFilter();
+
+        return new Filter[] { characterEncodingFilter, swaggerAuthHeaderFilter };
     }
 
     final String LOCATION = System.getProperty("java.io.tmpdir") + "/trippy_uploads";
