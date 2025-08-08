@@ -56,7 +56,8 @@ public class ExchangeRateService {
 		Long krwBalance = accountListVo.getBalance();
 		log.info(" =============== 잘 나오고 있는지 확인3 : {}", krwBalance); // 여기까진 출력 됨.
 
-		ForeignAccountBalanceVO foreignBalanceVO = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(accountId, currencyCode);
+		String foreignAccountId = "200-300-400001";
+		ForeignAccountBalanceVO foreignBalanceVO = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(foreignAccountId, currencyCode);
 		Double foreignBalance = foreignBalanceVO.getBalance();
 		log.info(" =============== 잘 나오고 있는지 확인4 : {}", foreignBalance);
 

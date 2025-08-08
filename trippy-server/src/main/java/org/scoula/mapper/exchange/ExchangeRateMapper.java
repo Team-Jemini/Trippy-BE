@@ -19,6 +19,6 @@ public interface ExchangeRateMapper {
 
     ExchangeRateVO findTodayRateByCurrencyCode(String currencyCode);
     AccountListVO findKrwBalanceByAccountId(String accountId);
-    ForeignAccountBalanceVO findForeignBalanceByAccountIdAndCurrency(@Param("accountId") String accountId, @Param("currencyCode") String currencyCode);
+    ForeignAccountBalanceVO findForeignBalanceByAccountIdAndCurrency(@Param("accountId") String foreignAccountId,@Param("currencyCode") String currencyCode);
 
 }
