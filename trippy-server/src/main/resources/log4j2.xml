@@ -43,6 +43,10 @@
             <AppenderRef ref="console"/>
         </Logger>
 
+        <Logger name="io.swagger" level="ERROR" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+
     </Loggers>
 
 </Configuration>
