@@ -12,7 +12,7 @@ import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
-import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
@@ -85,7 +85,7 @@ public class GroupAccountController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
-	@GetMapping("/invite/token-info")
+	@PostMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
 		@ApiParam(value = "초대 토큰", required = true) @RequestBody AcceptInviteTokenRequestDTO token) {
@@ -131,7 +131,7 @@ public class GroupAccountController {
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@GetMapping("/transactions")
-	public SuccessResponse<List<AccountTransactionResponseDTO>> filterAccountTransactions(
+	public SuccessResponse<List<DailyAccountTransactionDTO>> filterAccountTransactions(
 		@ApiParam(value = "개인 계좌 ID", required = true) @RequestParam String accountId,
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
 		@ApiParam(value = "거래 타입", required = true) @RequestParam String transactionType

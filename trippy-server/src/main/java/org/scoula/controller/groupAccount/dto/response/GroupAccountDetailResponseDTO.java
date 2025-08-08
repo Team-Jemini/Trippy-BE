@@ -16,6 +16,6 @@ public record GroupAccountDetailResponseDTO(
 	String accountCurrency,
 	DeletedStatus isDeleted,
 	Role role,
-	List<AccountTransactionResponseDTO> transactions
+	List<DailyAccountTransactionDTO> transactions
 ) {
 }
