@@ -26,6 +26,8 @@ import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.domain.account.AccountType;
 import org.scoula.external.codef.accounts.service.CodefAccountService;
 import org.scoula.service.user.UserService;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.scoula.common.exception.enums.ErrorCode.*;
 
 import java.util.Map;
@@ -33,6 +35,7 @@ import java.util.Map;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountService {
 
 	final AccountMapper accountMapper;
@@ -85,20 +88,19 @@ public class AccountService {
 		}
 	}
 
+	public List<AccountResponseDTO> getAccountsList(final Long userId) {
+		userService.validateUserExists(userId);
 
-    public List<AccountResponseDTO> getAccountsList(final Long userId) {
-        userService.validateUserExists(userId);
+		List<AccountResponseDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
+			.map(vo -> AccountResponseDTO.from(vo, userId))
+			.toList();
 
-        List<AccountResponseDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
-                .map(vo -> AccountResponseDTO.from(vo, userId))
-                .toList();
+		if (accounts.isEmpty()) {
+			throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
+		}
 
-        if (accounts.isEmpty()) {
-            throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
-        }
-
-        return accounts;
-    }
+		return accounts;
+	}
 
 	public List<AccountResponseDTO> getCodefAccounts(final Long userId) {
 		userService.validateUserExists(userId);
@@ -110,35 +112,26 @@ public class AccountService {
 			Map<String, Object> responseMap = mapper.readValue(accountListJson, Map.class);
 
 			List<Map<String, Object>> accountList = (List<Map<String, Object>>)
-					((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
+				((Map<String, Object>)responseMap.get("data")).get("resDepositTrust");
 
 			return accountList.stream()
-					.map(accountMap -> AccountResponseDTO.from(AccountVO.fromCodefResponse(accountMap, userId), userId))
-					.toList();
+				.map(accountMap -> AccountResponseDTO.from(AccountVO.fromCodefResponse(accountMap, userId), userId))
+				.toList();
 
 		} catch (IOException e) {
 			throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
 		}
 	}
 
-    public void saveAccounts(final Long userId, List<AccountRequestDTO> requestList) {
-        try {
-            userService.validateUserExists(userId);
-
-            for (AccountRequestDTO request : requestList) {
-                String accountId = request.accountId();
-                if (accountMapper.existsByAccountId(accountId)) {
-                    log.info("중복 계좌 건너뜀: {}", accountId);
-                    continue;
-                }
-
-                AccountVO account = AccountVO.from(request, userId);
-
-                accountMapper.saveAccount(account);
-            }
-
-        } catch (Exception e) {
-            throw new ServerErrorException(SAVE_ACCOUNTS_LIST_FAILED);
-        }
-    }
+	@Transactional
+	public void saveAccounts(final Long userId, List<AccountRequestDTO> requestList) {
+		userService.validateUserExists(userId);
+		for (AccountRequestDTO accountRequestDTO : requestList) {
+			if (accountMapper.existsByAccountId(accountRequestDTO.accountId())) {
+				log.info("중복 계좌 건너뜀: {}", accountRequestDTO.accountId());
+				continue;
+			}
+			accountMapper.saveAccount(AccountVO.from(accountRequestDTO, userId));
+		}
+	}
 }

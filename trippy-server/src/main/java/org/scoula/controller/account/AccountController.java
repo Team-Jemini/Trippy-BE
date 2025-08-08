@@ -26,7 +26,7 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
 
-	@ApiOperation(value = "내 보유 계좌 조회", notes = "내 보유 계좌 조회 - Codef")
+	@ApiOperation(value = "[JWT]내 보유 계좌 조회", notes = "내 보유 계좌 조회 - Codef")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "내 보유 계좌 조회 성공", response = SuccessResponse.class),
 			@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
@@ -37,7 +37,7 @@ public class AccountController {
 		return SuccessResponse.success(SuccessCode.GET_CODEF_DATA_SUCCESS, accountService.getCodefAccounts(userId));
 	}
 
-    @ApiOperation(value = "내 계좌 목록 조회", notes = "내 계좌 목록 조회 API")
+    @ApiOperation(value = "[JWT]내 계좌 목록 조회", notes = "내 계좌 목록 조회 API")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "내 계좌 목록 조회 성공", response = SuccessResponse.class),
             @ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
