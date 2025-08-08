@@ -112,12 +112,15 @@
     </select>
 
     <insert id="insertNewTransactionKrw">
-        insert into transaction (account_id, user_id, amount, currency_code, transaction_type, balance_after)
+        insert into transaction (account_id, user_id, transaction_type, title, category, amount, currency_code, status, balance_after)
             values (#{accountId},
                     #{userId},
+                    'DEPOSIT',
+                    '환전',
+                    'OTHER',
                     #{amount},
                     'KRW',
-                    '환전',
+                    'SUCCESS',
                     (select balance - #{amount} from account where account_id = #{accountId} limit 1))
     </insert>
 

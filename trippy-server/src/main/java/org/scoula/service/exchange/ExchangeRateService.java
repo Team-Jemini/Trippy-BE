@@ -5,19 +5,13 @@ import lombok.extern.log4j.Log4j2;
 
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
-import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.exchange.AccountListVO;
 import org.scoula.domain.exchange.ExchangeRateVO;
-import org.scoula.domain.exchange.ForeignAccountBalanceVO;
-import org.scoula.mapper.account.AccountMapper;
 import org.scoula.mapper.exchange.ExchangeRateMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.springframework.security.web.savedrequest.FastHttpDateFormat.getCurrentDate;
 
 @Log4j2
 @Service
