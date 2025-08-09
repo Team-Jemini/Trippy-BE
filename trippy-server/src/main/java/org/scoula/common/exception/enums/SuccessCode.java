@@ -57,6 +57,7 @@ public enum SuccessCode {
 	GET_PERSONAL_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "개인계좌 상세 조회 성공"),
 	FILTER_ACCOUNT_TRANSACTION_SUCCESS(HttpStatus.OK, "계좌 거래 내역 조회 성공"),
 	FIND_ACCOUNTS_LIST_SUCCESS(HttpStatus.OK, "계좌 목록 조회 성공"),
+	TRANSFER_SUCCESS(HttpStatus.OK, "송금이 성공적으로 완료되었습니다."),
 
 	//여행로그
 	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공"),
