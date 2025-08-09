@@ -7,6 +7,4 @@ public record ExchangeRequest(
         String currencyCode,
         String foreignAccountId,
         double foreignAmount
-) {
-
-}
+) { }

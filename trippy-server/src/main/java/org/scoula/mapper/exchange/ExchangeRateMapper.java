@@ -21,15 +21,14 @@ public interface ExchangeRateMapper {
 
 
     boolean insertNewTransactionKrw(@Param("amount") Long KrwAmount,
-    						  @Param("accountId") String accountId,
-                                 @Param("userId") Long userId);
+                                    @Param("accountId") String accountId,
+                                    @Param("userId") Long userId);
 
     boolean updateForeignAmount(@Param("foreignAmount") double foreignAmount,
                                 @Param("accountId") String foreignAccountId,
                                 @Param("currencyCode") String currencyCode);
 
     boolean updateKrwAmount(@Param("krwAmount") Long krwAmount,
-                             @Param("accountId") String krwAccountId,
-                             @Param("userId") Long userId);
-
+                            @Param("accountId") String krwAccountId,
+                            @Param("userId") Long userId);
 }

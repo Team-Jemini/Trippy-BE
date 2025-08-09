@@ -23,7 +23,7 @@ import java.util.List;
 @Api(tags = "Exchange")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/exchange-rate")
+@RequestMapping("/exchange")
 public class ExchangeController {
 
 	private final ExchangeRateAPIService exchangeRateAPIService;
@@ -51,7 +51,6 @@ public class ExchangeController {
 		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, exchangeRateService.getExchangeRates());
 	}
 
-
 	@ApiOperation(value = "[JWT] 사용자의 계좌 목록 조회", notes = "사용자의 계좌 목록을 환전 뷰에 맞는 DTO로 반환 API")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "계좌 목록 조회 성공", response = SuccessResponse.class),
@@ -62,7 +61,6 @@ public class ExchangeController {
 		return SuccessResponse.success(SuccessCode.FIND_ACCOUNTS_LIST_SUCCESS,
 			exchangeRateService.getAccountList(userId));
 	}
-
 
 	@ApiOperation(value = "[JWT] 사용자의 오늘환율과 외화잔액 조회", notes = "사용자의 오늘환율과 외화잔액 조회 API")
 	@ApiResponses({
@@ -100,6 +98,5 @@ public class ExchangeController {
 
         return SuccessNonDataResponse.success(SuccessCode.EXCHANGE_SUCCESS);
     }
-
 
 }
