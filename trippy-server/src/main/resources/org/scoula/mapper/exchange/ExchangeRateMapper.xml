@@ -16,26 +16,126 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <resultMap id="accountMap" type="org.scoula.domain.exchange.AccountListVO">
+        <id property="accountId" column="account_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="accountName" column="account_name"/>
+        <result property="accountType" column="account_type"
+                typeHandler="org.scoula.common.typehandler.account.AccountTypeTypeHandler"/>
+        <result property="ownerId" column="owner_id"/>
+        <result property="balance" column="balance"/>
+        <result property="accountCurrency" column="account_currency"/>
+        <result property="isDeleted" column="is_deleted"
+                typeHandler="org.scoula.common.typehandler.account.DeletedStatusTypeHandler"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <resultMap id="foreignAccountBalanceMap" type="org.scoula.domain.exchange.ForeignAccountBalanceVO">
+        <id property="balanceId" column="balance_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="currencyCode" column="currency_code"/>
+        <result property="balance" column="balance"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <resultMap id="transactionMap" type="org.scoula.domain.transaction.TransactionVO">
+        <id property="transactionId" column="transaction_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="transactionType" column="transaction_type"
+                typeHandler="org.scoula.common.typehandler.transaction.TransactionTypeTypeHandler"/>
+        <result property="amount" column="amount"/>
+        <result property="title" column="title"/>
+        <result property="category" column="category"
+                typeHandler="org.scoula.common.typehandler.transaction.TransactionCategoryTypeHandler"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
+        <result property="balanceAfter" column="balance_after"/>
+        <result property="status" column="status"
+                typeHandler="org.scoula.common.typehandler.transaction.TransactionStatusTypeHandler"/>
+        <result property="currencyCode" column="currency_code"/>
+        <!-- BaseTime -->
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+
     <select id="getExchangeRateList" resultType="org.scoula.domain.exchange.ExchangeRateVO">
         select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date from exchange_rate
     </select>
 
     <!-- 환전 기능 -->
-    <select id="findTodayRateByCurrencyCode" resultType="java.lang.Double">
-        selecte base_exchange_rate
+    <select id="getAccountList" resultMap="accountMap">
+        select
+            user_id,
+            account_id,
+            account_name,
+            account_type,
+            owner_id,
+            balance,
+            account_currency,
+            is_deleted,
+            created_at,
+            updated_at
+        from account
+        where user_id = #{userId}
+          and is_deleted = 'N'
+          and account_currency = 'KOR'
+    </select>
+
+    <select id="findTodayRateByCurrencyCode" resultMap="exchangeRateMap">
+        select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date, created_at, updated_at
         from exchange_rate
         where currency_code = #{currencyCode}
+        order by exchange_rate_date desc
+            limit 1
     </select>
-    <select id="findKrwBalanceByAccountId" resultType="java.lang.Long">
-        select balance
+
+    <select id="findKrwBalanceByAccountId" resultMap="accountMap">
+        select account_id, user_id, account_name, account_type, owner_id, balance, account_currency, is_deleted, created_at, updated_at
         from account
         where account_id = #{accountId}
     </select>
+
     <select id="findForeignBalanceByAccountIdAndCurrency" resultType="java.lang.Double">
-        select balance
-        from foreign_account_balance
+        select f.balance
+        from foreign_account_balance as f
+        inner join account as a on f.account_id = a.account_id
+        where a.user_id = #{userId}
+        and f.currency_code = #{currencyCode}
+        limit 1
+    </select>
+
+    <insert id="insertNewTransactionKrw">
+        insert into transaction (account_id, user_id, transaction_type, title, category, amount, currency_code, status, balance_after)
+            values (#{accountId},
+                    #{userId},
+                    'DEPOSIT',
+                    '환전',
+                    'OTHER',
+                    #{amount},
+                    'KRW',
+                    '환전',
+                    (select balance - #{amount} from account where account_id = #{accountId} limit 1))
+    </insert>
+
+    <update id="updateForeignAmount">
+        update foreign_account_balance
+        set balance = balance + #{foreignAmount}
         where account_id = #{accountId}
         and currency_code = #{currencyCode}
-    </select>
+    </update>
+    <update id="updateKrwAmount">
+        update account
+        set balance = balance - #{krwAmount}
+        where account_id = #{accountId}
+    </update>
+
 
 </mapper>
