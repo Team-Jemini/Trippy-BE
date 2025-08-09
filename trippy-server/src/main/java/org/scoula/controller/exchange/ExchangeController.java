@@ -1,8 +1,6 @@
 package org.scoula.controller.exchange;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -15,6 +13,7 @@ import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
+import org.scoula.domain.exchange.ExchangeRequest;
 import org.scoula.external.exchange.ExchangeRateAPIService;
 import org.scoula.service.exchange.ExchangeRateService;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,7 @@ import java.util.List;
 @Api(tags = "Exchange")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/exchange-rate")
+@RequestMapping("/exchange")
 public class ExchangeController {
 
 	private final ExchangeRateAPIService exchangeRateAPIService;
@@ -65,16 +64,39 @@ public class ExchangeController {
 
 	@ApiOperation(value = "[JWT] 사용자의 오늘환율과 외화잔액 조회", notes = "사용자의 오늘환율과 외화잔액 조회 API")
 	@ApiResponses({
-		@ApiResponse(code = 200, message = "환율 잔액 찾기 성공", response = SuccessResponse.class),
-		@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
-		@ApiResponse(code = 401, message = "인증 실패", response = ErrorResponse.class),
-		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
+			@ApiResponse(code = 200, message = "환율 잔액 찾기 성공", response = SuccessResponse.class),
+			@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = ErrorResponse.class),
+			@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/rate-balance")
 	public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam Long userId,
-		@RequestParam String currencyCode, @RequestParam String accountId) {
+																  @RequestParam String currencyCode, @RequestParam String accountId) {
 		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS,
-			exchangeRateService.getRatesAndBalance(userId, currencyCode, accountId));
+				exchangeRateService.getRatesAndBalance(userId, currencyCode, accountId));
 	}
+
+
+	@ApiOperation(value = "[JWT] 사용자의 환전 거래 실행", notes = "사용자의 환전 거래 실행 API")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "환전 성공", response = SuccessResponse.class),
+			@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
+			@ApiResponse(code = 401, message = "환전 실패", response = ErrorResponse.class),
+			@ApiResponse(code = 404, message = "환전할 금액이 부족합니다.", response = ErrorResponse.class)
+	})
+    @PostMapping("/exchange")
+    public SuccessNonDataResponse exchange(@RequestBody ExchangeRequest exchangeRequest) {
+
+		Long krwAmount = exchangeRequest.krwAmount();
+		String krwAccountId = exchangeRequest.krwAccountId();
+		Long userId = exchangeRequest.userId();
+		double foreignAmount = exchangeRequest.foreignAmount();
+		String foreignAccountId = exchangeRequest.foreignAccountId();
+		String currencyCode = exchangeRequest.currencyCode();
+
+        exchangeRateService.exchange(krwAmount, krwAccountId, userId, foreignAmount, foreignAccountId, currencyCode);
+
+        return SuccessNonDataResponse.success(SuccessCode.EXCHANGE_SUCCESS);
+    }
 
 }

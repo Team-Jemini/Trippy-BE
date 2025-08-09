@@ -5,22 +5,15 @@ import lombok.extern.log4j.Log4j2;
 
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
-import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.exchange.AccountListVO;
 import org.scoula.domain.exchange.ExchangeRateVO;
-import org.scoula.domain.exchange.ForeignAccountBalanceVO;
-import org.scoula.mapper.account.AccountMapper;
 import org.scoula.mapper.exchange.ExchangeRateMapper;
 import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.security.web.savedrequest.FastHttpDateFormat.getCurrentDate;
 
 @Service
 @Log4j2
@@ -74,5 +67,28 @@ public class ExchangeRateService {
 		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(userId, currencyCode);
 
 		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
+	}
+
+	@Transactional
+	public void exchange(Long krwAmount,
+						 String krwAccountId,
+						 Long userId,
+						 double foreignAmount,
+						 String foreignAccountId,
+						 String currencyCode) {
+		/**
+		 * 거래내역 추가
+		 */
+		exchangeRateMapper.insertNewTransactionKrw(krwAmount, krwAccountId, userId);
+
+		/**
+		 * 외화 잔액 수정
+		 */
+		exchangeRateMapper.updateForeignAmount(foreignAmount, foreignAccountId, currencyCode);
+
+		/**
+		 * 원화 잔액 수정
+		 */
+		exchangeRateMapper.updateKrwAmount(krwAmount, krwAccountId, userId);
 	}
 }
