@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import org.scoula.mapper.account.AccountMapper;
 import org.scoula.service.user.UserService;
-import org.scoula.common.exception.model.ServerErrorException;
+import org.scoula.common.exception.model.BadRequestException;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.scoula.common.exception.enums.ErrorCode.*;
 
 @Service
@@ -18,19 +20,21 @@ public class TransferService {
     private final UserService userService;
     private final AccountMapper accountMapper;
     private final TransactionMapper transactionMapper;
+
+    @Transactional
     public TransferResponseDTO transfer(final Long userId, final TransferRequestDTO requestDTO) {
         // userID validate
         userService.validateUserExists(userId);
 
         // 출금 계좌 validate
         if (!accountMapper.existsByAccountId(requestDTO.fromAccountId())) {
-            throw new ServerErrorException(ACCOUNT_NOT_FOUND);
+            throw new BadRequestException(ACCOUNT_NOT_FOUND);
         }
 
         // 출금 계좌 잔액 확인
         Long fromBalance = accountMapper.findBalanceByAccountId(requestDTO.fromAccountId());
         if (fromBalance < requestDTO.amount()) {
-            throw new ServerErrorException(LACK_BALANCE_EXCEPTION);
+            throw new BadRequestException(LACK_BALANCE_EXCEPTION);
         }
 
         // 출금 계좌 잔액 차감
