@@ -16,6 +16,7 @@ import static org.scoula.common.exception.enums.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TransferService {
     private final UserService userService;
     private final AccountMapper accountMapper;
