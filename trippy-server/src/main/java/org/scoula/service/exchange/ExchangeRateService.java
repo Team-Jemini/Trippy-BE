@@ -69,6 +69,7 @@ public class ExchangeRateService {
 		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
 	}
 
+	@Transactional
 	public void exchange(Long krwAmount,
 						 String krwAccountId,
 						 Long userId,

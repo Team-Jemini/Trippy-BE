@@ -13,6 +13,7 @@ import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
+import org.scoula.domain.exchange.ExchangeRequest;
 import org.scoula.external.exchange.ExchangeRateAPIService;
 import org.scoula.service.exchange.ExchangeRateService;
 import org.springframework.web.bind.annotation.*;
@@ -78,14 +79,22 @@ public class ExchangeController {
 	}
 
 
-
+	@ApiOperation(value = "[JWT] 사용자의 환전 거래 실행", notes = "사용자의 환전 거래 실행 API")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "환전 성공", response = SuccessResponse.class),
+			@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
+			@ApiResponse(code = 401, message = "환전 실패", response = ErrorResponse.class),
+			@ApiResponse(code = 404, message = "환전할 금액이 부족합니다.", response = ErrorResponse.class)
+	})
     @PostMapping("/exchange")
-    public SuccessNonDataResponse exchange(@RequestParam Long krwAmount,
-                                           @RequestParam String krwAccountId,
-                                           @RequestParam Long userId,
-                                           @RequestParam String currencyCode,
-                                           @RequestParam String foreignAccountId,
-                                           @RequestParam double foreignAmount) {
+    public SuccessNonDataResponse exchange(@RequestBody ExchangeRequest exchangeRequest) {
+
+		Long krwAmount = exchangeRequest.krwAmount();
+		String krwAccountId = exchangeRequest.krwAccountId();
+		Long userId = exchangeRequest.userId();
+		double foreignAmount = exchangeRequest.foreignAmount();
+		String foreignAccountId = exchangeRequest.foreignAccountId();
+		String currencyCode = exchangeRequest.currencyCode();
 
         exchangeRateService.exchange(krwAmount, krwAccountId, userId, foreignAmount, foreignAccountId, currencyCode);
 

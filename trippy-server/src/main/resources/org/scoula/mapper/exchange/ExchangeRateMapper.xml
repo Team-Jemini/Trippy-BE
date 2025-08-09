@@ -35,6 +35,7 @@
 
     <resultMap id="foreignAccountBalanceMap" type="org.scoula.domain.exchange.ForeignAccountBalanceVO">
         <id property="balanceId" column="balance_id"/>
+        <result property="userId" column="user_id"/>
         <result property="accountId" column="account_id"/>
         <result property="currencyCode" column="currency_code"/>
         <result property="balance" column="balance"/>
