@@ -16,17 +16,9 @@ import org.scoula.domain.BaseTime;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class ForeignAccountBalanceVO extends BaseTime {
-<<<<<<< HEAD
     private Long balanceId;
     private String userId;
     private String accountId;
     private String currencyCode;
     private Double balance;
-
-=======
-	private String userId;
-	private String accountId;
-	private String currencyCode;
-	private Double balance;
->>>>>>> cc60e989b5326a1a10f630d7a3ef5285c6071263
 }
