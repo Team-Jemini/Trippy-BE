@@ -1,14 +1,13 @@
 package org.scoula.service.account;
 
 import java.io.IOException;
-import static org.scoula.common.exception.enums.ErrorCode.*;
-
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.scoula.common.exception.enums.ErrorCode.*;
 import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.ServerErrorException;
 import org.scoula.common.exception.model.TrippyException;
@@ -19,7 +18,6 @@ import org.scoula.controller.account.dto.response.PersonalAccountDetailResponseD
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDTO;
 
-import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
 import org.scoula.domain.account.DeletedStatus;
 import org.scoula.domain.transaction.TransactionVO;
@@ -40,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountService {
 
 	final AccountMapper accountMapper;
@@ -103,12 +102,12 @@ public class AccountService {
 		}
 	}
 
-    public List<AccountResponseDTO> getAccountsList(final Long userId) {
-        userService.validateUserExists(userId);
+	public List<AccountResponseDTO> getAccountsList(final Long userId) {
+		userService.validateUserExists(userId);
 
-        List<AccountResponseDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
-                .map(vo -> AccountResponseDTO.from(vo, userId))
-                .toList();
+		List<AccountResponseDTO> accounts = accountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
+			.map(vo -> AccountResponseDTO.from(vo, userId))
+			.toList();
 
 		if (accounts.isEmpty()) {
 			throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
@@ -127,11 +126,11 @@ public class AccountService {
 			Map<String, Object> responseMap = mapper.readValue(accountListJson, Map.class);
 
 			List<Map<String, Object>> accountList = (List<Map<String, Object>>)
-					((Map<String, Object>) responseMap.get("data")).get("resDepositTrust");
+				((Map<String, Object>)responseMap.get("data")).get("resDepositTrust");
 
 			return accountList.stream()
-					.map(accountMap -> AccountResponseDTO.from(AccountVO.fromCodefResponse(accountMap, userId), userId))
-					.toList();
+				.map(accountMap -> AccountResponseDTO.from(AccountVO.fromCodefResponse(accountMap, userId), userId))
+				.toList();
 
 		} catch (IOException e) {
 			throw new ServerErrorException(GET_ACCOUNTS_LIST_FAILED);
@@ -139,7 +138,7 @@ public class AccountService {
 	}
 
 	@Transactional
-    public void saveAccounts(final Long userId, List<AccountRequestDTO> requestList) {
+	public void saveAccounts(final Long userId, List<AccountRequestDTO> requestList) {
 		userService.validateUserExists(userId);
 		for (AccountRequestDTO accountRequestDTO : requestList) {
 			if (accountMapper.existsByAccountId(accountRequestDTO.accountId())) {
