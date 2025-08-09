@@ -9,6 +9,8 @@ public enum SuccessCode {
 
 	//토큰
 	REFRESH_SUCCESS(HttpStatus.OK, "토큰 갱신 성공입니다."),
+	SIGNUP_SUCCESS(HttpStatus.OK, "회원가입 성공"),
+	CHECK_PASSWORD_SUCCESS(HttpStatus.OK, "비밀번호 확인 성공"),
 
 	//환율
 	SAVE_EXCHANGE_RATE_SUCCESS(HttpStatus.OK, "환율 정보 저장 성공입니다."),
@@ -21,9 +23,8 @@ public enum SuccessCode {
 	RESIDENT_CARD_OCR_SUCCESS(HttpStatus.OK, "주민등록증 정보 인식이 완료되었습니다."),
 	RESIDENT_CARD_SUCCESS(HttpStatus.OK, "주민등록증 조회를 성공하였습니다."),
 	RESIDENT_CARD_ADD_SUCCESS(HttpStatus.OK, "주민등록증 등록에 성공하였습니다."),
-
-	//항공권, 숙소, 관광
-	FIND_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 전체조회 성공"),
+	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
+	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공"),
 
 	//카드
 	FIND_CODEF_CARD_SUCCESS(HttpStatus.OK, "CODEF 카드 정보 저장 완료"),
@@ -31,9 +32,10 @@ public enum SuccessCode {
 	DELETE_CARD_SUCCESS(HttpStatus.OK, "카드 삭제 성공"),
 	UPDATE_CARD_NICKNAME_SUCCESS(HttpStatus.OK, "카드 별명 등록 성공"),
 	SET_MAIN_CARD_SUCCESS(HttpStatus.OK, "주카드 설정이 완료되었습니다."),
+	QR_CODE_SUCCESS(HttpStatus.OK, "QR코드가 생성되었습니다"),
 
-
-
+	//항공권, 숙소, 관광
+	FIND_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 전체조회 성공"),
 	FIND_DETAIL_AIR_TICKET_SUCCESS(HttpStatus.OK, "항공권 상세조회 성공"),
 	FIND_VOUCHER_SUCCESS(HttpStatus.OK, "바우처(숙소,관광) 전체조회 성공"),
 	FIND_DETAIL_ACCOMMODATION_SUCCESS(HttpStatus.OK, "숙소예약 상세조회 성공"),
@@ -54,14 +56,12 @@ public enum SuccessCode {
 	//계좌
 	GET_PERSONAL_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "개인계좌 상세 조회 성공"),
 	FILTER_ACCOUNT_TRANSACTION_SUCCESS(HttpStatus.OK, "계좌 거래 내역 조회 성공"),
+	FIND_ACCOUNTS_LIST_SUCCESS(HttpStatus.OK, "계좌 목록 조회 성공"),
 
 	//여행로그
 	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공"),
-
-	FIND_ACCOUNTS_LIST_SUCCESS(HttpStatus.OK, "계좌 목록 조회 성공"),
-
-	PASSPORT_GET_SUCCESS(HttpStatus.OK, "여권 조회 성공"),
-	PASSPORT_ADD_SUCCESS(HttpStatus.OK, "여권 등록 성공");
+	FIND_TRAVEL_REPORT_SUCCESS(HttpStatus.OK, "여행 리포트 조회 성공"),
+	CREATE_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 생성 성공");
 
 	private final HttpStatus httpStatus;
 	private final String message;

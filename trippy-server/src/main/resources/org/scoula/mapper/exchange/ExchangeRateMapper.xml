@@ -120,7 +120,7 @@
                     'OTHER',
                     #{amount},
                     'KRW',
-                    'SUCCESS',
+                    '환전',
                     (select balance - #{amount} from account where account_id = #{accountId} limit 1))
     </insert>
 

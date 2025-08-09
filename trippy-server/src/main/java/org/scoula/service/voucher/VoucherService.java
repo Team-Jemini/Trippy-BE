@@ -66,7 +66,7 @@ public class VoucherService {
 			throw new NotFoundException(ErrorCode.ACCOMMODATION_NOT_FOUND_EXCEPTION);
 		}
 
-		return AccommodationDetailDto.from(accommodationVO, userService.geteUserName(userId));
+		return AccommodationDetailDto.from(accommodationVO, userService.getUserName(userId));
 	}
 
 	/***

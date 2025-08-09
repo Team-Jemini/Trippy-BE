@@ -64,7 +64,7 @@ public class VoucherController {
 	})
 	@PostMapping(value = "/sightseeing", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public SuccessNonDataResponse postSightseeing(
-		@ApiParam(value = "사용자 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@RequestPart(value = "sightSeeingVoucherImg", required = false) MultipartFile sightSeeingVoucherImg,
 		@ApiParam(value = "관광 바우처 JSON (예: {\"name\":\"그랜드캐니언\", \"viewingDate\":\"2025-09-01T14:00\"})") @RequestPart SightSeeingDto sightSeeingDto) {
 		voucherService.createSightseeing(userId, sightSeeingDto, sightSeeingVoucherImg);

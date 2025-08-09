@@ -2,15 +2,20 @@ package org.scoula.service.groupaccount;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.groupAccount.dto.request.GroupAccountCreateRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.AccountVO;
@@ -23,6 +28,7 @@ import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.mapper.account.group.GroupAccountMapper;
 import org.scoula.mapper.account.member.AccountMemberMapper;
 import org.scoula.mapper.transaction.TransactionMapper;
+import org.scoula.service.user.UserService;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +44,7 @@ public class GroupAccountService {
 	private final GroupAccountMapper groupAccountMapper;
 	private final TransactionMapper transactionMapper;
 	private final AccountMemberMapper memberMapper;
+	private final UserService userService;
 
 	/****
 	 * 모임계좌 생성
@@ -180,23 +187,44 @@ public class GroupAccountService {
 		}
 	}
 
-	public List<AccountTransactionResponseDTO> filterAccountTransactions(String accountId, Long userId,
+	public List<DailyAccountTransactionDTO> filterAccountTransactions(String accountId, Long userId,
 		String transactionType) {
 
 		isAccountuserValid(accountId, userId);
 
+		List<AccountTransactionResponseDTO> flatList;
+
 		if (transactionType.equals("ALL")) {
-			return AccountConverter.toTransactionResponseDTOList(
+			flatList = AccountConverter.toTransactionResponseDTOList(
 				transactionMapper.getAccountTransaction(accountId));
+		} else {
+			flatList = AccountConverter.toTransactionResponseDTOList(
+				transactionMapper.filterAccountTransactions(accountId, transactionType));
 		}
 
-		return AccountConverter.toTransactionResponseDTOList(
-			transactionMapper.filterAccountTransactions(accountId, transactionType));
+		// createdAt 기준으로 날짜별 그룹핑
+		Map<LocalDate, List<AccountTransactionResponseDTO>> grouped = flatList.stream()
+			.collect(
+				Collectors.groupingBy(tx -> tx.createdAt().toLocalDate(), LinkedHashMap::new, Collectors.toList()));
+
+		return grouped.entrySet().stream()
+			.map(entry -> new DailyAccountTransactionDTO(entry.getKey(), entry.getValue()))
+			.collect(Collectors.toList());
 	}
 
 	private void isAccountuserValid(String accountId, Long userId) {
 		if (!groupAccountMapper.isGroupAccountUser(userId, accountId)) {
 			throw new TrippyException(ErrorCode.ACCOUNT_NOT_FOUND);
 		}
+	}
+
+	public List<GroupAccountDTO> getGroupAccountsList(Long userId) {
+		userService.validateUserExists(userId);
+
+		List<GroupAccountDTO> accounts = groupAccountMapper.findAllByUserIdOrderByUpdatedAt(userId).stream()
+			.map(vo -> GroupAccountDTO.from(vo, userId))
+			.toList();
+
+		return accounts;
 	}
 }

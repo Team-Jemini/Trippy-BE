@@ -45,4 +45,6 @@ public interface GroupAccountMapper {
 	void sendSettlementRequests(List<NotificationVO> notifications);
 
 	boolean isGroupAccountUser(@Param("userId") Long userId, @Param("accountId") String accountId);
+
+	List<GroupAccountVO> findAllByUserIdOrderByUpdatedAt(Long userId);
 }
