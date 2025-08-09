@@ -37,4 +37,10 @@
         WHERE user_id = #{userId}
     </select>
 
+    <insert id="save" parameterType="org.scoula.domain.user.UserVO"
+            useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+        INSERT INTO users (name, password, phone, birth, gender)
+        VALUES (#{name}, #{password}, #{phone}, #{birth}, #{gender})
+    </insert>
+
 </mapper>

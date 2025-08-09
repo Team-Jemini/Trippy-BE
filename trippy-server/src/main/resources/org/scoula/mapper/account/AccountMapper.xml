@@ -52,4 +52,17 @@
         WHERE user_id = #{userId}
         ORDER BY updated_at DESC
     </select>
+
+    <select id="findBalanceByAccountId" resultType="long" parameterType="String">
+        SELECT balance
+        FROM account
+        WHERE account_id = #{accountId}
+    </select>
+
+    <update id="updateBalance">
+        UPDATE account
+        SET balance = #{balance}, updated_at = NOW()
+        WHERE account_id = #{accountId}
+    </update>
+
 </mapper>

@@ -2,7 +2,6 @@ package org.scoula.controller.groupAccount.dto.response;
 
 import java.util.List;
 
-import org.scoula.domain.account.AccountForeign;
 import org.scoula.domain.account.AccountType;
 import org.scoula.domain.account.DeletedStatus;
 import org.scoula.domain.account.member.Role;
@@ -14,9 +13,9 @@ public record GroupAccountDetailResponseDTO(
 	AccountType accountType,
 	Long ownerId,
 	Long balance,
-	AccountForeign accountForeign,
+	String accountCurrency,
 	DeletedStatus isDeleted,
 	Role role,
-	List<AccountTransactionResponseDTO> transactions
+	List<DailyAccountTransactionDTO> transactions
 ) {
 }

@@ -74,7 +74,7 @@ public class ExchangeRateAPIService {
 
 			//API DTO -> 환율 VO
 			for (ExchangeRateApiDTO dto : apiDtoList) {
-				ExchangeRateVO exchangeRateVO = dto.toExchangeRateVO(dto.baseExchangeRate());
+				ExchangeRateVO exchangeRateVO = dto.toExchangeRateVO(dto.baseExchangeRate(), exchangeRateDate);
 				exchangeRateApiMapper.save(exchangeRateVO);
 			}
 		} catch (Exception e) {

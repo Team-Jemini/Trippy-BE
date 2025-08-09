@@ -11,4 +11,6 @@ public interface UserMapper {
 	Boolean existsById(Long userId);
 
 	String findUserName(Long userId);
+
+	void save(UserVO userVO);
 }

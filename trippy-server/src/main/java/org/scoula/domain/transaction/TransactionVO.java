@@ -1,5 +1,6 @@
 package org.scoula.domain.transaction;
 
+import org.scoula.controller.transfer.dto.request.TransferRequestDTO;
 import org.scoula.domain.BaseTime;
 
 import lombok.AllArgsConstructor;
@@ -16,9 +17,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class TransactionVO extends BaseTime {
-	private String accountId;
-	private Long userId;
 	private Long transactionId;
+	private Long userId;
+	private String accountId;
 	private TransactionType transactionType;  // deposit or withdraw
 	private Long amount;
 	private String title;
@@ -28,4 +29,38 @@ public class TransactionVO extends BaseTime {
 	private Long balanceAfter;                // 거래이후 잔액
 	private TransactionStatus status;         // SUCCESS, PENDING, FAIL
 	private String currencyCode;
+
+	public static TransactionVO fromForWithdraw(Long userId, TransferRequestDTO request, Long balanceAfter) {
+		return new TransactionVO(
+				null,
+				userId,
+				request.fromAccountId(),
+				TransactionType.WITHDRAW,
+				request.amount(),
+				request.title(),
+				TransactionCategory.OTHER,
+				null,
+				null,
+				balanceAfter,
+				TransactionStatus.SUCCESS,
+				request.currencyCode()
+		);
+	}
+
+	public static TransactionVO fromForDeposit(Long userId, TransferRequestDTO request, Long balanceAfter) {
+		return new TransactionVO(
+				null,
+				userId,
+				request.toAccountId(),
+				TransactionType.DEPOSIT,
+				request.amount(),
+				request.title(),
+				TransactionCategory.INCOME,
+				null,
+				null,
+				balanceAfter,
+				TransactionStatus.SUCCESS,
+				request.currencyCode()
+		);
+	}
 }

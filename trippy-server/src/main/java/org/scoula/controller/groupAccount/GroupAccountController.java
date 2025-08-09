@@ -12,8 +12,9 @@ import org.scoula.controller.groupAccount.dto.request.GroupAccountJoinRequestDTO
 import org.scoula.controller.groupAccount.dto.request.InviteRequestDTO;
 import org.scoula.controller.groupAccount.dto.request.SettlementRequestDTO;
 import org.scoula.controller.groupAccount.dto.response.AcceptInviteResponseDTO;
-import org.scoula.controller.groupAccount.dto.response.AccountTransactionResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountMemberResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
@@ -55,7 +56,6 @@ public class GroupAccountController {
 		required = true, dataType = "string", paramType = "header")
 	@PostMapping("/create")
 	public SuccessResponse<GroupAccountCreateResponseDTO> createGroupAccount(
-		@ApiParam(value = "모임계좌", required = true)
 		@RequestParam Long userId,
 		@RequestBody GroupAccountCreateRequestDTO request) {
 
@@ -71,7 +71,7 @@ public class GroupAccountController {
 	})
 	@PostMapping("/invite/reissue")
 	public SuccessResponse<InviteResponseDTO> reissueInviteTokenURL(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "초대 요청 정보", required = true) @RequestBody InviteRequestDTO request) {
 
 		return SuccessResponse.success(SuccessCode.CREATE_INVITE_TOKEN_SUCCESS,
@@ -84,9 +84,9 @@ public class GroupAccountController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다"),
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
-	@GetMapping("/invite/token-info")
+	@PostMapping("/invite/token-info")
 	public SuccessResponse<AcceptInviteResponseDTO> acceptInvite(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "초대 토큰", required = true) @RequestBody AcceptInviteTokenRequestDTO token) {
 
 		return SuccessResponse.success(SuccessCode.PARSE_INVITE_TOKEN_SUCCESS,
@@ -101,7 +101,7 @@ public class GroupAccountController {
 	})
 	@PostMapping("/join")
 	public SuccessNonDataResponse joinGroupAccount(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestBody GroupAccountJoinRequestDTO request
 	) {
 		inviteService.joinGroupAccount(userId, request);
@@ -117,7 +117,7 @@ public class GroupAccountController {
 	@GetMapping("/detail")
 	public SuccessResponse<GroupAccountDetailResponseDTO> getGroupAccountDetail(
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId,
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId
+		@RequestParam Long userId
 	) {
 		return SuccessResponse.success(SuccessCode.GET_GROUP_ACCOUNT_DETAIL_SUCCESS,
 			groupAccountService.getGroupAccountDetail(accountId, userId));
@@ -130,7 +130,7 @@ public class GroupAccountController {
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@GetMapping("/transactions")
-	public SuccessResponse<List<AccountTransactionResponseDTO>> filterAccountTransactions(
+	public SuccessResponse<List<DailyAccountTransactionDTO>> filterAccountTransactions(
 		@ApiParam(value = "개인 계좌 ID", required = true) @RequestParam String accountId,
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
 		@ApiParam(value = "거래 타입", required = true) @RequestParam String transactionType
@@ -163,12 +163,24 @@ public class GroupAccountController {
 	})
 	@PostMapping("/settle")
 	public SuccessNonDataResponse sendSettlementRequest(
-		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
+		@RequestParam Long userId,
 		@ApiParam(value = "정산 요청 정보", required = true) @RequestBody SettlementRequestDTO requestDTO) {
 
 		groupAccountService.sendSettlementRequest(userId, requestDTO);
 
 		return SuccessNonDataResponse.success(SuccessCode.SETTLE_GROUP_ACCOUNT_SUCCESS);
+	}
+
+	@ApiOperation(value = "모암 계좌 목록 조회", notes = "모임 계좌 목록 조회")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "모임 계좌 목록 조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
+	})
+	@GetMapping("/list")
+	public SuccessResponse<List<GroupAccountDTO>> getAccountsList(@RequestParam Long userId) {
+		return SuccessResponse.success(SuccessCode.FIND_ACCOUNTS_LIST_SUCCESS,
+			groupAccountService.getGroupAccountsList(userId));
 	}
 
 	//1/n 송금하기

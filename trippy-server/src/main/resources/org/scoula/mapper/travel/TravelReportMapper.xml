@@ -19,4 +19,35 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+
+    <select id="getTravelReport" resultType="org.scoula.domain.travel.TravelReportVO">
+        SELECT
+            tr.settlement_id AS settlementId,
+            tr.account_id AS accountId,
+            tr.user_id AS userId,
+            tl.travel_id AS travelId,
+            tl.destination,
+            DATE_FORMAT(tl.travel_begin_date, '%Y-%m-%d') AS travelBeginDate,
+            DATE_FORMAT(tl.travel_end_date, '%Y-%m-%d') AS travelEndDate,
+            tr.total_expense AS totalExpense,
+            tr.total_food AS totalFood,
+            tr.total_activity AS totalActivity,
+            tr.total_acc AS totalAcc,
+            tr.total_transport AS totalTransport,
+            tr.total_shop AS totalShop,
+            tx.title AS maxSpendingTitle,
+            tx.amount AS maxSpendingAmount
+        FROM travel_log tl
+                 JOIN travel_report tr ON tl.travel_id = tr.travel_id
+                 LEFT JOIN (
+            SELECT t.account_id, t.title, t.amount, t.created_at
+            FROM transaction t
+            WHERE t.transaction_type = '지출'
+            ORDER BY t.amount DESC
+                LIMIT 1
+        ) tx
+                           ON tx.account_id = tr.account_id
+                               AND tx.created_at BETWEEN tl.travel_begin_date AND tl.travel_end_date
+        WHERE tl.travel_id = #{travelId}
+    </select>
 </mapper>
