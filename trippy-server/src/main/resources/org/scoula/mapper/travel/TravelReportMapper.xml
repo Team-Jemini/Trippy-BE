@@ -50,4 +50,57 @@
                                AND tx.created_at BETWEEN tl.travel_begin_date AND tl.travel_end_date
         WHERE tl.travel_id = #{travelId}
     </select>
+
+    <select id="selectTravelLogInfo" resultType="org.scoula.domain.travel.TravelLogInfoVO">
+        SELECT
+            tl.travel_id           AS travelId,
+            tl.user_id             AS userId,
+            tl.account_id          AS accountId,
+            tl.travel_begin_date   AS travelBeginDate,
+            tl.travel_end_date     AS travelEndDate
+        FROM travel_log tl
+        WHERE tl.travel_id = #{travelId}
+            LIMIT 1
+    </select>
+
+    <select id="selectExpenseSummary" parameterType="map"
+            resultType="org.scoula.domain.travel.TravelReportVO">
+        SELECT
+            COALESCE(SUM(CASE WHEN t.transaction_type = 'withdraw'
+                                  THEN ABS(t.amount) ELSE 0 END), 0) AS totalExpense,
+            COALESCE(SUM(CASE WHEN t.transaction_type = 'withdraw'
+                AND LOWER(t.category) = 'food'
+                                  THEN ABS(t.amount) ELSE 0 END), 0) AS totalFood,
+            COALESCE(SUM(CASE WHEN t.transaction_type = 'withdraw'
+                AND LOWER(t.category) = 'activity'
+                                  THEN ABS(t.amount) ELSE 0 END), 0) AS totalActivity,
+            COALESCE(SUM(CASE WHEN t.transaction_type = 'withdraw'
+                AND LOWER(t.category) = 'acc'
+                                  THEN ABS(t.amount) ELSE 0 END), 0) AS totalAcc,
+            COALESCE(SUM(CASE WHEN t.transaction_type = 'withdraw'
+                AND LOWER(t.category) = 'transport'
+                                  THEN ABS(t.amount) ELSE 0 END), 0) AS totalTransport,
+            COALESCE(SUM(CASE WHEN t.transaction_type = 'withdraw'
+                AND LOWER(t.category) = 'shop'
+                                  THEN ABS(t.amount) ELSE 0 END), 0) AS totalShop
+        FROM `transaction` t
+        WHERE t.account_id = #{param.accountId}
+          AND t.user_id    = #{param.userId}
+          AND t.created_at BETWEEN #{param.startDateTime} AND #{param.endDateTime}
+    </select>
+
+    <!-- travel_report 저장 -->
+    <insert id="insertTravelReport"
+            parameterType="org.scoula.domain.travel.TravelReportVO"
+            useGeneratedKeys="true" keyProperty="settlementId">
+        INSERT INTO travel_report(
+            account_id, user_id, travel_id,
+            total_expense, total_food, total_activity, total_acc, total_transport, total_shop
+        ) VALUES (
+                     #{accountId}, #{userId}, #{travelId},
+                     #{totalExpense}, #{totalFood}, #{totalActivity}, #{totalAcc}, #{totalTransport}, #{totalShop}
+                 )
+    </insert>
+
+
 </mapper>
