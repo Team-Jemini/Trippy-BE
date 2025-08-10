@@ -11,5 +11,5 @@ public record TravelLogDTO(
         String destination,
         Boolean isGenerated,
         String travelImg,
-        Integer memberCount
+        Long memberCount
 ) {}

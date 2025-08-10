@@ -1,20 +1,24 @@
 package org.scoula.mapper.travel;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
+import org.scoula.controller.travel.report.dto.req.ExpenseSummaryParam;
+import org.scoula.controller.travel.report.dto.req.TravelReportInsertParam;
+import org.scoula.controller.travel.report.dto.req.TravelReportSummary;
 import org.scoula.domain.travel.TravelLogVO;
 import org.scoula.domain.travel.TravelReportVO;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TravelReportMapper {
-    TravelReportVO getTravelReport(Long travelId);
-//    // travel_log에서 account_id + 기간 조회
-//    TravelLogVO selectTravelLogInfo(@Param("travelId") Long travelId);
-//
-//    // 기간 내 거래 합계 조회 (withdraw 기준)
-//    TravelReportVO selectExpenseSummary(@Param("param") ExpenseSummaryParam param);
-//
-//    int insertTravelReport(TravelReportVO vo);
+    TravelReportVO getTravelReport(@Param("travelId") Long travelId);
+
+    TravelLogVO selectTravelLog(@Param("travelId") Long travelId);
+
+    Map<String, Object> selectExpenseSummary(@Param("param") ExpenseSummaryParam p);
+
+    int insertTravelReport(@Param("param") TravelReportInsertParam p);
 }

@@ -46,7 +46,7 @@ public class TravelLogService {
 				(String)log.get("destination"),
 				(Boolean)log.get("isGenerated"),
 				(String)log.get("travelImg"),
-				((Number)log.get("memberCount")).intValue()
+				((Number)log.get("memberCount")).longValue()
 			))
 			.toList();
 	}
