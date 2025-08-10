@@ -33,5 +33,18 @@
         WHERE user_id = #{userId}
           AND role = 'leader'
     </select>
+    <select id="selectMemberInfo" resultMap="accountMemberMap">
+        SELECT a.account_id,
+               a.user_id,
+               u.name,
+               a.role,
+               a.main_account_id,
+               a.created_at,
+               a.updated_at
+        FROM account_member a
+                 inner join users u on a.user_id = u.user_id
+        where a.account_id = #{accountId}
+          and a.user_id = #{userId}
+    </select>
 
 </mapper>
