@@ -33,16 +33,16 @@ public class TravelReportController {
 
 
 
-    @ApiOperation(value = "[JWT] 여행 리포트 생성", notes = "travel_log의 account_id와 기간을 사용해 집계하고 저장합니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "여행 소비 리포트 저장 성공")
-    })
-    @PostMapping
-    public SuccessResponse<String> createTravelReport(@RequestBody TravelReportCreateRequestDTO request) {
-        long settlementId = travelReportService.createTravelReport(request);
-        return SuccessResponse.success(
-                SuccessCode.CREATE_TRAVEL_REPORT_SUCCESS,
-                "travel_report 저장 완료 (settlementId=" + settlementId + ")"
-        );
-    }
+//    @ApiOperation(value = "[JWT] 여행 리포트 생성", notes = "travel_log의 account_id와 기간을 사용해 집계하고 저장합니다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "여행 소비 리포트 저장 성공")
+//    })
+//    @PostMapping
+//    public SuccessResponse<String> createTravelReport(@RequestBody TravelReportRequestDTO request) {
+//        long settlementId = travelReportService.createTravelReport(request);
+//        return SuccessResponse.success(
+//                SuccessCode.CREATE_TRAVEL_REPORT_SUCCESS,
+//                "travel_report 저장 완료 (settlementId=" + settlementId + ")"
+//        );
+//    }
 }

@@ -39,6 +39,7 @@ public class TravelLogService {
 			.map(log -> new TravelLogDTO(
 				((Number)log.get("travelId")).longValue(),
 				((Number)log.get("userId")).longValue(),
+				((String)log.get("accountId")),
 				(String)log.get("title"),
 				(LocalDateTime)log.get("travelBeginDate"),
 				(LocalDateTime)log.get("travelEndDate"),
@@ -58,6 +59,7 @@ public class TravelLogService {
 
 		TravelLogVO travelLog = TravelLogVO.builder()
 			.userId(userId)
+			.accountId(dto.accountId())
 			.title(dto.title())
 			.travelBeginDate(dto.travelBeginDate())
 			.travelEndDate(dto.travelEndDate())

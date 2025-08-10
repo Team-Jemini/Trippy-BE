@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Builder
 public record TravelLogCreateDTO (
         Long userId,
+        String accountId,
         String title,
         LocalDateTime travelBeginDate,
         LocalDateTime travelEndDate,

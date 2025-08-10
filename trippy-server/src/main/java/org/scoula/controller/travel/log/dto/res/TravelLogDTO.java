@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 public record TravelLogDTO(
         Long travelId,
         Long userId,
+        String accountId,
         String title,
         LocalDateTime travelBeginDate,
         LocalDateTime travelEndDate,
