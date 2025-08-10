@@ -2,6 +2,7 @@ package org.scoula.controller.card;
 
 import org.scoula.service.card.CodefCardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.scoula.common.exception.enums.SuccessCode;
 
 @RestController
 @RequestMapping("/cards")
+@CrossOrigin(origins = {"http://localhost:5173"}, allowCredentials = "true")
 @Api(tags = "Payment")
 public class CodefTestController {
 
