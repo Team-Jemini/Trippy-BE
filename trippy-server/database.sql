@@ -302,3 +302,7 @@ CREATE TABLE sightseeing
 --
 alter table account
     change account_foreign account_currency VARCHAR(20)
+
+
+select count(*) from account
+where user_id = 1 and account_type = 'group' and is_deleted = 'N';
