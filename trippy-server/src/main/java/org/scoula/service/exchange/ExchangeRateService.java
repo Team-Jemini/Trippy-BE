@@ -67,9 +67,8 @@ public class ExchangeRateService {
 		Long krwBalance = accountListVo.getBalance();
 
 		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(userId, currencyCode);
-		ExchangeBalanceDTO exchangeBalanceDTO = ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
 
-		return exchangeBalanceDTO;
+		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
 	}
 
 	@Transactional
@@ -79,19 +78,9 @@ public class ExchangeRateService {
 						 double foreignAmount,
 						 String foreignAccountId,
 						 String currencyCode) {
-		/**
-		 * 거래내역 추가
-		 */
+
 		exchangeRateMapper.insertNewTransactionKrw(krwAmount, krwAccountId, userId);
-
-		/**
-		 * 외화 잔액 수정
-		 */
 		exchangeRateMapper.updateForeignAmount(foreignAmount, foreignAccountId, currencyCode);
-
-		/**
-		 * 원화 잔액 수정
-		 */
 		exchangeRateMapper.updateKrwAmount(krwAmount, krwAccountId, userId);
 	}
 }
