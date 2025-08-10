@@ -93,5 +93,13 @@
                  )
     </insert>
 
+    <update id="markTravelLogGenerated">
+        UPDATE travel_log
+        SET is_generated = 1,
+            updated_at   = NOW()
+        WHERE travel_id    = #{travelId}
+          AND is_generated = 0
+    </update>
+
 
 </mapper>

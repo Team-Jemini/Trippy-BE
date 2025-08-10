@@ -21,4 +21,6 @@ public interface TravelReportMapper {
     Map<String, Object> selectExpenseSummary(@Param("param") ExpenseSummaryParam p);
 
     int insertTravelReport(@Param("param") TravelReportInsertParam p);
+
+    int markTravelLogGenerated(@Param("travelId") Long travelId);
 }

@@ -80,6 +80,10 @@ public class TravelReportService {
 
         log.info("[TR] step3 inserted rows={}, travelId={}, accountId={}, userId={}",
                 rows, travelLog.getTravelId(), travelLog.getAccountId(), travelLog.getUserId());
+
+        int upd = travelReportMapper.markTravelLogGenerated(travelLog.getTravelId());
+        log.info("[TR] step4 mark generated travelId={}, updatedRows={}", travelLog.getTravelId(), upd);
+
     }
 
     private static long n(Map<String, Object> m, String k) {
