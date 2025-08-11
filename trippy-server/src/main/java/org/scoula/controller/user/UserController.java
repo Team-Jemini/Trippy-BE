@@ -7,7 +7,7 @@ import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.dto.TokenPair;
 import org.scoula.common.exception.enums.SuccessCode;
-import org.scoula.controller.user.dto.request.AllUsersTokenDTO;
+import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;
@@ -73,7 +73,7 @@ public class UserController {
 		return SuccessResponse.success(SuccessCode.REFRESH_SUCCESS, userService.refresh(tokenRequestDto));
 	}
 
-	@ApiOperation(value = "전체 유저 조회 API", notes = "모든 유저의 ID, 이름, 액세스 토큰을 조회합니다.")
+	@ApiOperation(value = "전체 유저의 엑세스 토큰값 조회 API", notes = "모든 유저의 ID, 이름, 액세스 토큰을 조회합니다.")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "전체 유저 조회 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
