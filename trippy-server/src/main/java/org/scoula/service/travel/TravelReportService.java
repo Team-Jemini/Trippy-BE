@@ -1,7 +1,6 @@
 package org.scoula.service.travel;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
 import org.scoula.controller.travel.report.dto.req.ExpenseSummaryParam;
 import org.scoula.controller.travel.report.dto.req.TravelReportInsertParam;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TravelReportService {
@@ -33,12 +31,15 @@ public class TravelReportService {
      */
     @Transactional
     public void createTravelReport(final TravelReportRequestDTO req) {
-        if (req.travelId() == null) throw new IllegalArgumentException("travelId는 필수입니다.");
+        if (req.travelId() == null)
+            throw new ApiException(TRAVEL_ID_REQUIRED);
 
         final TravelLogVO travelLog = travelReportMapper.selectTravelLog(req.travelId());
-        if (travelLog == null) throw new IllegalArgumentException("해당 travelId가 존재하지 않습니다. travelId=" + req.travelId());
+        if (travelLog == null)
+            throw new ApiException(TRAVEL_LOG_NOT_FOUND, req.travelId());
+
         if (travelLog.getAccountId() == null || travelLog.getAccountId().isBlank())
-            throw new IllegalStateException("travel_log.account_id가 비어 있습니다. travelId=" + req.travelId());
+            throw new ApiException(TRAVEL_LOG_ACCOUNT_ID_EMPTY, req.travelId());
 
         // 2) 집계 → Map
         Map<String, Object> sum = travelReportMapper.selectExpenseSummary(
@@ -50,12 +51,12 @@ public class TravelReportService {
                 )
         );
 
-        long totalExpense   = n(sum, "totalExpense");
-        long totalFood      = n(sum, "totalFood");
-        long totalActivity  = n(sum, "totalActivity");
-        long totalAcc       = n(sum, "totalAcc");
-        long totalTransport = n(sum, "totalTransport");
-        long totalShop      = n(sum, "totalShop");
+        long totalExpense   = ((Number) sum.getOrDefault("totalExpense",   0L)).longValue();
+        long totalFood      = ((Number) sum.getOrDefault("totalFood",      0L)).longValue();
+        long totalActivity  = ((Number) sum.getOrDefault("totalActivity",  0L)).longValue();
+        long totalAcc       = ((Number) sum.getOrDefault("totalAcc",       0L)).longValue();
+        long totalTransport = ((Number) sum.getOrDefault("totalTransport", 0L)).longValue();
+        long totalShop      = ((Number) sum.getOrDefault("totalShop",      0L)).longValue();
 
         // 3)+4) 저장 (travel_report 컬럼이 INT라면 안전하게 변환)
         var insert = new TravelReportInsertParam(
@@ -73,10 +74,5 @@ public class TravelReportService {
 
         int upd = travelReportMapper.markTravelLogGenerated(travelLog.getTravelId());
 
-    }
-
-    private static long n(Map<String, Object> m, String k) {
-        Object v = (m == null) ? null : m.get(k);
-        return (v == null) ? 0L : ((Number) v).longValue();
     }
 }

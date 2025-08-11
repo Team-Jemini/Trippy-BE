@@ -23,13 +23,6 @@ public class TravelLogService {
 	private final UserService userService;
 	private final S3Service s3Service;
 
-	//    public List<TravelLogDTO> getTravelLogs(final Long userId) {
-	//        userService.validateUserExists(userId);
-	//
-	//        return travelLogMapper.getAllTravelLogs(userId).stream()
-	//                .map(TravelLogDTO::from)
-	//                .toList();
-	//    }
 	public List<TravelLogDTO> getTravelLogs(final Long userId) {
 		userService.validateUserExists(userId);
 
