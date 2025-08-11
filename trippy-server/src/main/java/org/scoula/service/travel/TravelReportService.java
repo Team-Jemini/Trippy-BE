@@ -40,10 +40,6 @@ public class TravelReportService {
         if (travelLog.getAccountId() == null || travelLog.getAccountId().isBlank())
             throw new IllegalStateException("travel_log.account_id가 비어 있습니다. travelId=" + req.travelId());
 
-        log.info("[TR] step1 travelId={}, accountId={}, userId={}, begin={}, end={}",
-                travelLog.getTravelId(), travelLog.getAccountId(), travelLog.getUserId(),
-                travelLog.getTravelBeginDate(), travelLog.getTravelEndDate());
-
         // 2) 집계 → Map
         Map<String, Object> sum = travelReportMapper.selectExpenseSummary(
                 new ExpenseSummaryParam(
@@ -61,9 +57,6 @@ public class TravelReportService {
         long totalTransport = n(sum, "totalTransport");
         long totalShop      = n(sum, "totalShop");
 
-        log.info("[TR] step2 summary=exp:{}, food:{}, act:{}, acc:{}, trans:{}, shop:{}",
-                totalExpense, totalFood, totalActivity, totalAcc, totalTransport, totalShop);
-
         // 3)+4) 저장 (travel_report 컬럼이 INT라면 안전하게 변환)
         var insert = new TravelReportInsertParam(
                 travelLog.getAccountId(),
@@ -78,11 +71,7 @@ public class TravelReportService {
         );
         int rows = travelReportMapper.insertTravelReport(insert);
 
-        log.info("[TR] step3 inserted rows={}, travelId={}, accountId={}, userId={}",
-                rows, travelLog.getTravelId(), travelLog.getAccountId(), travelLog.getUserId());
-
         int upd = travelReportMapper.markTravelLogGenerated(travelLog.getTravelId());
-        log.info("[TR] step4 mark generated travelId={}, updatedRows={}", travelLog.getTravelId(), upd);
 
     }
 

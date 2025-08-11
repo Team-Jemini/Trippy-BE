@@ -41,7 +41,6 @@ public class TravelReportController {
     })
     @PostMapping
     public SuccessResponse<String> createTravelReport(@RequestBody TravelReportRequestDTO request) {
-        log.info("[TR] controller POST /travel-report body={}", request);
         travelReportService.createTravelReport(request);
         return SuccessResponse.success(SuccessCode.CREATE_TRAVEL_REPORT_SUCCESS, "travel_report 저장 완료");
     }
