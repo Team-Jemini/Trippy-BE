@@ -1,6 +1,8 @@
 package org.scoula.service.user;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.scoula.common.dto.TokenPair;
 import org.scoula.common.exception.enums.ErrorCode;
@@ -8,6 +10,7 @@ import org.scoula.common.exception.model.BadRequestException;
 import org.scoula.common.exception.model.NotFoundException;
 import org.scoula.common.exception.model.UnAuthorizedException;
 import org.scoula.config.jwt.JwtService;
+import org.scoula.controller.user.dto.request.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;
@@ -140,6 +143,17 @@ public class UserService {
 
 		// 6) 새 토큰 페어 발급 (generateTokenPair가 이전 refresh 삭제 + 새 refresh 저장까지 수행)
 		return jwtService.generateTokenPair(userId);
+	}
+
+	public List<AllUsersTokenDTO> getAllUsersToken(){
+		List<UserVO> users = userMapper.findAll();
+
+		return users.stream()
+			.map(user -> {
+				// 각 유저마다 새로운 액세스 토큰 생성
+				String accessToken = jwtService.createAccessToken(String.valueOf(user.getUserId()));
+				return AllUsersTokenDTO.from(user, accessToken);
+			}).collect(Collectors.toList());
 	}
 
 	/***
