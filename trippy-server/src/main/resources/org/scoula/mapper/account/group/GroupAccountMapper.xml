@@ -128,7 +128,7 @@
                a.account_currency,
                a.is_deleted,
                am.role,
-               a.created_at,
+               am.created_at,
                a.updated_at
         FROM account a
                  JOIN account_member am ON a.account_id = am.account_id
