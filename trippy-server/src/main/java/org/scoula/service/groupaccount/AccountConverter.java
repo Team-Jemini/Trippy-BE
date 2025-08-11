@@ -100,6 +100,7 @@ public class AccountConverter {
 			accountVO.getAccountCurrency(),
 			accountVO.getIsDeleted(),
 			accountVO.getRole(),
+			accountVO.getCreatedAt(),
 			transactions
 		);
 	}

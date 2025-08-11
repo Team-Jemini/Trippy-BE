@@ -128,7 +128,7 @@
                a.account_currency,
                a.is_deleted,
                am.role,
-               a.created_at,
+               am.created_at,
                a.updated_at
         FROM account a
                  JOIN account_member am ON a.account_id = am.account_id
@@ -155,8 +155,7 @@
                a.created_at,
                a.updated_at
         FROM account a
-                 JOIN account_member am ON a.account_id = am.account_id
-        WHERE a.user_id = #{userId}
+                 JOIN account_member am ON a.account_id = am.account_id and am.user_id = #{userId}
         ORDER BY a.updated_at DESC
     </select>
 

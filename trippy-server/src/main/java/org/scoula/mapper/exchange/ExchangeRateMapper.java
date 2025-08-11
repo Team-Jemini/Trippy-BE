@@ -2,6 +2,7 @@ package org.scoula.mapper.exchange;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.domain.exchange.AccountListVO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 

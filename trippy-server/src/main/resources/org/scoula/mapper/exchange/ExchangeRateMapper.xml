@@ -72,17 +72,7 @@
 
     <!-- 환전 기능 -->
     <select id="getAccountList" resultMap="accountMap">
-        select
-            user_id,
-            account_id,
-            account_name,
-            account_type,
-            owner_id,
-            balance,
-            account_currency,
-            is_deleted,
-            created_at,
-            updated_at
+        select *
         from account
         where user_id = #{userId}
           and is_deleted = 'N'
