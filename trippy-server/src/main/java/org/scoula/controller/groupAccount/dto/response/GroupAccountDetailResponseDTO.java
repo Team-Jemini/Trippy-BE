@@ -1,5 +1,6 @@
 package org.scoula.controller.groupAccount.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.scoula.domain.account.AccountType;
@@ -16,6 +17,7 @@ public record GroupAccountDetailResponseDTO(
 	String accountCurrency,
 	DeletedStatus isDeleted,
 	Role role,
+	LocalDateTime createdAt,
 	List<DailyAccountTransactionDTO> transactions
 ) {
 }
