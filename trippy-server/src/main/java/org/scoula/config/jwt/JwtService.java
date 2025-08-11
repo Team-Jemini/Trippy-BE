@@ -95,7 +95,7 @@ public class JwtService {
 	}
 
 	public TokenPair generateTokenPair(final String userId) {
-		deleteRefreshToken(userId);
+		// deleteRefreshToken(userId);
 		final String accessToken = createAccessToken(userId);
 		final String refreshToken = createRefreshToken(userId);
 		saveRefreshToken(userId, refreshToken);
