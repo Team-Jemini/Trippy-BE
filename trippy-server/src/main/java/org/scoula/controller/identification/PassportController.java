@@ -13,9 +13,10 @@ import org.scoula.controller.identification.dto.req.PassportReq;
 import org.scoula.service.identification.PassportService;
 import org.springframework.web.bind.annotation.*;
 
+@Api("Passport")
 @RestController
 @RequiredArgsConstructor
-@Api("Passport")
+@RequestMapping("/passport")
 public class PassportController {
 
 	private final PassportService passportService;
@@ -26,7 +27,7 @@ public class PassportController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다."),
 		@ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
 	})
-	@GetMapping("/passport")
+	@GetMapping()
 	public SuccessResponse<PassportDTO> getPassport(
 		@RequestParam Long userId
 	) {
@@ -39,7 +40,7 @@ public class PassportController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다."),
 		@ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
 	})
-	@PostMapping("/passport")
+	@PostMapping()
 	public SuccessResponse<Integer> addPassport(
 		@RequestParam Long userId,
 		@RequestBody PassportReq passportReq
