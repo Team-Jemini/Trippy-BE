@@ -11,6 +11,7 @@ public enum SuccessCode {
 	REFRESH_SUCCESS(HttpStatus.OK, "토큰 갱신 성공입니다."),
 	SIGNUP_SUCCESS(HttpStatus.OK, "회원가입 성공"),
 	CHECK_PASSWORD_SUCCESS(HttpStatus.OK, "비밀번호 확인 성공"),
+	GET_ALL_USERS_SUCCESS(HttpStatus.OK, "유저 토큰 전체 조회 성공"),
 
 	//환율
 	SAVE_EXCHANGE_RATE_SUCCESS(HttpStatus.OK, "환율 정보 저장 성공입니다."),

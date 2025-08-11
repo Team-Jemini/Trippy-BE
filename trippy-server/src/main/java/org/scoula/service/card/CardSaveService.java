@@ -12,8 +12,8 @@ public class CardSaveService {
 	private final CardMapper cardMapper;
 
 	public void saveCard(CardVO cardVO) {
-		cardVO.setUserId(1L); // 예시
-		cardVO.setAccountId("dummyAccountId"); // 예시
+		//cardVO.setUserId(1L); // 예시
+		//cardVO.setAccountId("dummyAccountId"); // 예시
 
 		cardMapper.insertCard(cardVO);
 	}

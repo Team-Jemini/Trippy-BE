@@ -1,14 +1,18 @@
 package org.scoula.controller.user;
 
+import java.util.List;
+
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.dto.TokenPair;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.controller.user.dto.request.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;
 import org.scoula.service.user.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,5 +71,15 @@ public class UserController {
 	@PostMapping("/refresh")
 	public SuccessResponse<TokenPair> refresh(@RequestBody final TokenRequestDto tokenRequestDto) {
 		return SuccessResponse.success(SuccessCode.REFRESH_SUCCESS, userService.refresh(tokenRequestDto));
+	}
+
+	@ApiOperation(value = "전체 유저 조회 API", notes = "모든 유저의 ID, 이름, 액세스 토큰을 조회합니다.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "전체 유저 조회 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
+	})
+	@GetMapping("/users")
+	public SuccessResponse<List<AllUsersTokenDTO>> getAllUsers() {
+		return SuccessResponse.success(SuccessCode.GET_ALL_USERS_SUCCESS, userService.getAllUsersToken());
 	}
 }
