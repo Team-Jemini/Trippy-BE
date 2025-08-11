@@ -16,7 +16,6 @@ import org.scoula.common.exception.enums.SuccessCode;
 
 @RestController
 @RequestMapping("/cards")
-@CrossOrigin(origins = {"http://localhost:5173"}, allowCredentials = "true")
 @Api(tags = "Payment")
 public class CodefTestController {
 
