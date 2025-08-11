@@ -71,12 +71,8 @@ public class InviteService {
 
 		groupAccountmapper.groupAccountJoin(
 			AccountConverter.toAccountMemberVO(response.accountId(), userId, request.mainAccountId()));
-
-		log.info("joinGroupAccount 가입 성공");
+		
 		AccountMemberVO memberVO = memberMapper.selectMemberInfo(userId, response.accountId());
-
-		log.info("==============================");
-		log.info("memberVO: {}", memberVO);
 		return new GroupAccountJoinedResponseDTO(memberVO.getAccountId(), response.accountName(),
 			memberVO.getCreatedAt());
 	}

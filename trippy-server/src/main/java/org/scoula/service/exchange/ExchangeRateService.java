@@ -12,6 +12,8 @@ import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,13 +42,15 @@ public class ExchangeRateService {
 	public List<AccountListDTO> getAccountList(Long userId) {
 		userService.validateUserExists(userId);
 
-		var list = Optional.ofNullable(exchangeRateMapper.getAccountList(userId))
-			.orElseGet(List::of);
+		List<AccountListVO> accountList = exchangeRateMapper.getAccountList(userId);
 
-		return list.stream()
+		return Optional.ofNullable(accountList)
+			.orElse(Collections.emptyList())
+			.stream()
 			.map(AccountListDTO::from)
 			.toList();
 	}
+
 
 	/***
 	 * 오늘의 환율, 해당 계좌의 KRW 잔액, 지정 외화의 잔액을 한 번에 반환.
@@ -56,9 +60,7 @@ public class ExchangeRateService {
 	 * @return
 	 */
 	public ExchangeBalanceDTO getRatesAndBalance(Long userId, String currencyCode, String accountId) {
-		userService.validateUserExists(userId);
-		
-		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
+		ExchangeRateVO  exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
 		Double rate = exchangeRateVO.getBaseExchangeRate();
 
 		AccountListVO accountListVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
@@ -76,19 +78,9 @@ public class ExchangeRateService {
 						 double foreignAmount,
 						 String foreignAccountId,
 						 String currencyCode) {
-		/**
-		 * 거래내역 추가
-		 */
+
 		exchangeRateMapper.insertNewTransactionKrw(krwAmount, krwAccountId, userId);
-
-		/**
-		 * 외화 잔액 수정
-		 */
 		exchangeRateMapper.updateForeignAmount(foreignAmount, foreignAccountId, currencyCode);
-
-		/**
-		 * 원화 잔액 수정
-		 */
 		exchangeRateMapper.updateKrwAmount(krwAmount, krwAccountId, userId);
 	}
 }
