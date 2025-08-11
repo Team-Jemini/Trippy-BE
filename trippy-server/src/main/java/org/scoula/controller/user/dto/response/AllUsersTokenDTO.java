@@ -1,4 +1,4 @@
-package org.scoula.controller.user.dto.request;
+package org.scoula.controller.user.dto.response;
 
 import org.scoula.domain.user.UserVO;
 
