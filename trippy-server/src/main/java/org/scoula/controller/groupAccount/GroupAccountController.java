@@ -16,6 +16,7 @@ import org.scoula.controller.groupAccount.dto.response.DailyAccountTransactionDT
 import org.scoula.controller.groupAccount.dto.response.GroupAccountCreateResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountDetailResponseDTO;
+import org.scoula.controller.groupAccount.dto.response.GroupAccountJoinedResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.GroupAccountMemberResponseDTO;
 import org.scoula.controller.groupAccount.dto.response.InviteResponseDTO;
 import org.scoula.service.groupaccount.GroupAccountService;
@@ -100,12 +101,12 @@ public class GroupAccountController {
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다", response = ErrorResponse.class)
 	})
 	@PostMapping("/join")
-	public SuccessNonDataResponse joinGroupAccount(
+	public SuccessResponse<GroupAccountJoinedResponseDTO> joinGroupAccount(
 		@RequestParam Long userId,
 		@ApiParam(value = "모임계좌 ID", required = true) @RequestBody GroupAccountJoinRequestDTO request
 	) {
-		inviteService.joinGroupAccount(userId, request);
-		return SuccessNonDataResponse.success(SuccessCode.JOIN_GROUP_ACCOUNT_SUCCESS);
+		return SuccessResponse.success(SuccessCode.JOIN_GROUP_ACCOUNT_SUCCESS,
+			inviteService.joinGroupAccount(userId, request));
 	}
 
 	@ApiOperation(value = "[JWT] 모임 계좌 상세 조회", notes = "계좌 상세 조회.")
