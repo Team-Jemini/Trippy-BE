@@ -91,7 +91,7 @@
         where user_id = #{userId}
           and is_deleted = 'N'
           and account_currency = 'KRW'
-        and account_type = 'PERSON'
+        and account_type = 'person'
     </select>
 
     <select id="findTodayRateByCurrencyCode" resultMap="exchangeRateMap">
