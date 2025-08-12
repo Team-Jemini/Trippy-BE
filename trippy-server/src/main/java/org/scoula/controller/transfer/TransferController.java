@@ -2,10 +2,12 @@ package org.scoula.controller.transfer;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.transfer.dto.request.TransferRequestDTO;
 import org.scoula.controller.transfer.dto.response.TransferResponseDTO;
 import org.scoula.service.transfer.TransferService;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class TransferController {
 	private final TransferService transferService;
 
-	@ApiOperation(value = "송금하기", notes = "송금하기 API")
+	@ApiOperation(value = "[JWT]송금하기", notes = "송금하기 API")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "송금하기 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 404, message = "잘못된 계좌 번호가 요청되었습니다.", response = ErrorResponse.class),
@@ -26,8 +28,7 @@ public class TransferController {
 	})
 	@PostMapping()
 	public SuccessResponse<TransferResponseDTO> transfer(
-		@ApiParam(value = "사용자 ID", required = true)
-		@RequestParam Long userId,
+		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "송금 정보", required = true) @RequestBody TransferRequestDTO request) {
 		return SuccessResponse.success(SuccessCode.TRANSFER_SUCCESS, transferService.transfer(userId, request));
 	}

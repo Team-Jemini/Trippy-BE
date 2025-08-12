@@ -10,6 +10,7 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.travel.log.dto.req.TravelLogCreateDTO;
 import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
 import org.scoula.service.travel.TravelLogService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,8 +39,7 @@ public class TravelLogController {
 	})
 	@GetMapping
 	public SuccessResponse<List<TravelLogDTO>> getTravelLogs(
-		@ApiParam(value = "유저 ID", required = true, example = "101")
-		@RequestParam Long userId
+		@ApiIgnore @UserId Long userId
 	) {
 		return SuccessResponse.success(SuccessCode.FIND_TRAVEL_LOG_SUCCESS, travelLogService.getTravelLogs(userId));
 	}
@@ -50,14 +51,11 @@ public class TravelLogController {
 	})
 	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public SuccessNonDataResponse createTravelLog(
-		@ApiParam(value = "유저 ID", required = true, example = "101")
-		@RequestParam Long userId,
-
+		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "여행 이미지 파일")
 		@RequestPart(value = "travelImg", required = false)
 		@NotNull @NotBlank
 		MultipartFile travelImg,
-
 		@ApiParam(value = "여행 로그 JSON (예: {\"title\":\"제주도 가족 여행\", \"travelBeginDate\":\"2025-09-01T12:00:00\", \"travelEndDate\":\"2025-09-04T12:00:00\", \"destination\":\"제주도\", \"isGenerated\":false})", required = true)
 		@RequestPart("travelLogCreateDTO") TravelLogCreateDTO travelLogCreateDTO
 	) {
