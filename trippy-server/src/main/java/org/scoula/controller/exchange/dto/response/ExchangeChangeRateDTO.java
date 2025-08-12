@@ -5,6 +5,7 @@ public record ExchangeChangeRateDTO(
 	Double todayExchangeRate,
 	String upOrDown,
 	Double changeAmount,
-	Double changePercentage
+	Double changePercentage,
+	String currencyCode
 ) {
 }
