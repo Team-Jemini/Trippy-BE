@@ -2,6 +2,9 @@ package org.scoula.controller.card;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
+
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.card.dto.response.CardDetailResponseDTO;
 import org.scoula.controller.card.dto.response.CardSummaryResponseDTO;
 import org.scoula.service.card.CardQueryService;
@@ -20,27 +23,27 @@ import org.scoula.common.exception.enums.SuccessCode;
 public class CardQueryController {
 
 	private final CardQueryService cardQueryService;
-	@ApiOperation(value = "카드 요약 목록 조회", notes = "/payment 화면에 필요한 카드 요약 정보 조회 API")
+	@ApiOperation(value = "[JWT] 카드 요약 목록 조회", notes = "/payment 화면에 필요한 카드 요약 정보 조회 API")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "카드 요약 목록 조회 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/summary")
 	public SuccessResponse<List<CardSummaryResponseDTO>> getCardSummaries(
-		@RequestParam Long userId
+		@ApiIgnore @UserId Long userId
 	) {
 		List<CardSummaryResponseDTO> summaries = cardQueryService.getCardSummaries(userId);
 		return SuccessResponse.success(SuccessCode.FIND_CODEF_CARD_QUERY_SUCCESS, summaries);
 	}
 
-	@ApiOperation(value = "카드 상세 목록 조회", notes = "/payment/settings 화면에 필요한 카드 상세 정보 조회 API")
+	@ApiOperation(value = "[JWT]카드 상세 목록 조회", notes = "/payment/settings 화면에 필요한 카드 상세 정보 조회 API")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "카드 상세 목록 조회 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/detail")
 	public SuccessResponse<List<CardDetailResponseDTO>> getCardDetails(
-		@RequestParam Long userId
+		@ApiIgnore @UserId Long userId
 	) {
 		List<CardDetailResponseDTO> details = cardQueryService.getCardDetails(userId);
 		return SuccessResponse.success(SuccessCode.FIND_CODEF_CARD_QUERY_SUCCESS, details);

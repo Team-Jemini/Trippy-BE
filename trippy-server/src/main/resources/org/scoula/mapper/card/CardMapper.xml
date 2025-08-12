@@ -21,9 +21,9 @@
 
     <insert id="insertCard" parameterType="org.scoula.domain.card.CardVO">
         INSERT INTO card (
-            user_id, account_id, card_number, card_name, card_img
+            user_id, account_id, card_number, card_name, card_img, field
         ) VALUES (
-                     #{userId}, #{accountId}, #{cardNumber}, #{cardName}, #{cardImg}
+                     #{userId}, #{accountId}, #{cardNumber}, #{cardName}, #{cardImg}, #{field}
                  )
     </insert>
 

@@ -70,7 +70,8 @@ public enum SuccessCode {
 	FIND_TRAVEL_REPORT_SUCCESS(HttpStatus.OK, "여행 리포트 조회 성공"),
 	CREATE_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 생성 성공"),
 	FIND_TRAVEL_LOG_TRANSACTIONS_SUCCESS(HttpStatus.OK, "여행 기간 동안의 결제 내역 전체 조회 성공"),
-	FIND_TRAVEL_LOG_DETAIL_TRANSACTION_SUCCESS(HttpStatus.OK, "여행 로그 거래 상세 조회 성공");
+	FIND_TRAVEL_LOG_DETAIL_TRANSACTION_SUCCESS(HttpStatus.OK, "여행 로그 거래 상세 조회 성공"),
+	CREATE_TRAVEL_REPORT_SUCCESS(HttpStatus.OK, "여행 리포트 생성 성공");
 
 	private final HttpStatus httpStatus;
 	private final String message;
