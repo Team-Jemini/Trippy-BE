@@ -4,6 +4,7 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.voucher.dto.request.SightSeeingDto;
 import org.scoula.controller.voucher.dto.response.AccommodationDetailDto;
 import org.scoula.controller.voucher.dto.response.VoucherDto;
@@ -26,6 +27,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Voucher", description = "항공권, 숙소, 관광바우처 예약 내역을 관리합니다.")
 @RestController
@@ -41,7 +43,7 @@ public class VoucherController {
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping()
-	public SuccessResponse<VoucherDto> getAirTicket(@RequestParam Long userId) {
+	public SuccessResponse<VoucherDto> getAirTicket(@ApiIgnore @UserId Long userId) {
 		return SuccessResponse.success(SuccessCode.FIND_VOUCHER_SUCCESS, voucherService.getVouchers(userId));
 	}
 
@@ -51,7 +53,7 @@ public class VoucherController {
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/accommodation/{accommodationId}")
-	public SuccessResponse<AccommodationDetailDto> getAirTicket(@RequestParam Long userId,
+	public SuccessResponse<AccommodationDetailDto> getAirTicket(@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "숙소 예약 번호 (ex. 1616070384)", example = "1616070384") @PathVariable String accommodationId) {
 		return SuccessResponse.success(SuccessCode.FIND_DETAIL_ACCOMMODATION_SUCCESS,
 			voucherService.getDetailAccommodation(userId, accommodationId));
@@ -65,7 +67,7 @@ public class VoucherController {
 	})
 	@PostMapping(value = "/sightseeing", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public SuccessNonDataResponse postSightseeing(
-		@RequestParam Long userId,
+		@ApiIgnore @UserId Long userId,
 		@RequestPart(value = "관광 바우처 예약 이미지", required = false) MultipartFile sightSeeingVoucherImg,
 		@ApiParam(value = "관광 바우처 JSON (예: {\"name\":\"그랜드캐니언\", \"viewingDate\":\"2025-09-01T14:00\"})") @RequestPart SightSeeingDto sightSeeingDto) {
 		voucherService.createSightseeing(userId, sightSeeingDto, sightSeeingVoucherImg);

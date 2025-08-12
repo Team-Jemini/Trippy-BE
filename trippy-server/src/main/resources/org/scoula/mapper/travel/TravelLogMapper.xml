@@ -7,6 +7,7 @@
     <resultMap id="travelLogMap" type="org.scoula.domain.travel.TravelLogVO">
         <id property="travelId" column="travel_id"/>
         <result property="userId" column="user_id"/>
+        <result property="accountId" column="account_id"/>
         <result property="title" column="title"/>
         <result property="travelBeginDate" column="travel_begin_date"/>
         <result property="travelEndDate" column="travel_end_date"/>
@@ -22,6 +23,7 @@
         SELECT
             t.travel_id AS travelId,
             t.user_id AS userId,
+            t.account_id AS accountId,
             t.title,
             t.travel_begin_date AS travelBeginDate,
             t.travel_end_date AS travelEndDate,
@@ -40,16 +42,22 @@
 
     <insert id="save" parameterType="org.scoula.domain.travel.TravelLogVO">
         INSERT INTO travel_log (
-            user_id, title, travel_begin_date, travel_end_date,
+            user_id, account_id, title, travel_begin_date, travel_end_date,
             destination, is_generated, travel_img,
             created_at, updated_at
         )
         VALUES (
-                   #{userId}, #{title}, #{travelBeginDate}, #{travelEndDate},
+                   #{userId}, #{accountId}, #{title}, #{travelBeginDate}, #{travelEndDate},
                    #{destination}, #{isGenerated}, #{travelImg},
                    NOW(), NOW()
                )
     </insert>
+
+    <select id="findByTravelId" resultMap="travelLogMap">
+        SELECT *
+        FROM travel_log
+        WHERE travel_id = #{travelId}
+    </select>
 
 
 </mapper>

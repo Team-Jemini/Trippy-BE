@@ -71,4 +71,21 @@
         VALUES (#{accountId}, #{userId}, #{transactionType}, #{amount}, #{title}, #{category}, #{latitude}, #{longitude}, #{balanceAfter}, #{status}, #{currencyCode}, NOW(), NOW())
     </insert>
 
+    <select id="findExpenseTransactionsByAccountId" resultMap="transactionMap">
+        SELECT *
+        FROM transaction
+        WHERE user_id = #{userId}
+          AND account_id = #{accountId}
+          AND created_at BETWEEN #{startDate} AND #{endDate}
+          AND transaction_type = 'WITHDRAW'  -- 지출만 조회
+          AND amount > 0  -- 양수 금액만 (지출)
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findByTransactionId" resultMap="transactionMap">
+        SELECT *
+        FROM transaction
+        WHERE transaction_id = #{transactionId}
+    </select>
+
 </mapper>

@@ -74,10 +74,14 @@
         SELECT *
         FROM exchange_rate
         WHERE DATE(exchange_rate_date) IN (
-            CURDATE(),
-            DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            SELECT d FROM (
+            SELECT DISTINCT DATE(exchange_rate_date) AS d
+            FROM exchange_rate
+            ORDER BY d DESC
+            LIMIT 2
+            ) AS t
             )
-        ORDER BY currency_code, exchange_rate_date DESC
+        ORDER BY currency_code, exchange_rate_date DESC;
     </select>
 
     <!-- 환전 기능 -->

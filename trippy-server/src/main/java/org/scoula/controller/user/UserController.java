@@ -7,6 +7,7 @@ import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.dto.TokenPair;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
@@ -25,6 +26,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "User", description = "유저등록, 비밀번호 확인, 토큰을 관리합니다.")
 @RestController
@@ -55,7 +57,7 @@ public class UserController {
 		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
 	})
 	@PostMapping("/password")
-	public SuccessNonDataResponse checkPassword(@RequestParam Long userId, @ApiParam(value = "비밀번호", required = true) @RequestBody CheckPasswordDTO checkPasswordDTO) {
+	public SuccessNonDataResponse checkPassword(@ApiIgnore @UserId Long userId, @ApiParam(value = "비밀번호", required = true) @RequestBody CheckPasswordDTO checkPasswordDTO) {
 		userService.checkPassword(userId, checkPasswordDTO);
 		return SuccessNonDataResponse.success(SuccessCode.CHECK_PASSWORD_SUCCESS);
 	}
