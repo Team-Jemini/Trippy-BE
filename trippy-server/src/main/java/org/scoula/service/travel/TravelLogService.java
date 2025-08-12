@@ -64,4 +64,25 @@ public class TravelLogService {
 		travelLogMapper.save(travelLog);
 	}
 
+	/**
+	 * 여행 기간이 기존 로그와 겹치지 않으면 true, 겹치면 false 반환 (경계 포함 겹침)
+	 */
+	public boolean isTravelDateAvailable(final Long userId,
+										 final LocalDateTime begin,
+										 final LocalDateTime end) {
+		userService.validateUserExists(userId);
+
+		if (begin == null || end == null) {
+			throw new IllegalArgumentException("begin/end는 필수입니다.");
+		}
+		if (end.isBefore(begin)) {
+			throw new IllegalArgumentException("end는 begin 이후여야 합니다.");
+		}
+
+		// 겹치지 않는 조건: (existing_end < begin) OR (existing_begin > end)
+		// 따라서 겹치는 것의 count: NOT (existing_end < begin OR existing_begin > end)
+		int overlapCount = travelLogMapper.countOverlappingTravelLogs(userId, begin, end);
+		return overlapCount == 0;
+	}
+
 }
