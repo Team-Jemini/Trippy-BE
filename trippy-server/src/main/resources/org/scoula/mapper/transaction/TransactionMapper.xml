@@ -82,4 +82,10 @@
         ORDER BY created_at DESC
     </select>
 
+    <select id="findByTransactionId" resultMap="transactionMap">
+        SELECT *
+        FROM transaction
+        WHERE transaction_id = #{transactionId}
+    </select>
+
 </mapper>
