@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "Group Account")
+@Api(tags = "Group Account", description = "모임통장과 관련된 기능을 관리합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/group-account")
@@ -58,7 +58,7 @@ public class GroupAccountController {
 	@PostMapping("/create")
 	public SuccessResponse<GroupAccountCreateResponseDTO> createGroupAccount(
 		@RequestParam Long userId,
-		@RequestBody GroupAccountCreateRequestDTO request) {
+		@ApiParam(value = "모임 계좌 정보", required = true) @RequestBody GroupAccountCreateRequestDTO request) {
 
 		return SuccessResponse.success(SuccessCode.CREATE_GROUP_ACCOUNT_SUCCESS,
 			groupAccountService.createGroupAccount(request, userId));
@@ -73,7 +73,7 @@ public class GroupAccountController {
 	@PostMapping("/invite/reissue")
 	public SuccessResponse<InviteResponseDTO> reissueInviteTokenURL(
 		@RequestParam Long userId,
-		@ApiParam(value = "초대 요청 정보", required = true) @RequestBody InviteRequestDTO request) {
+		@ApiParam(value = "초대링크 정보", required = true) @RequestBody InviteRequestDTO request) {
 
 		return SuccessResponse.success(SuccessCode.CREATE_INVITE_TOKEN_SUCCESS,
 			inviteService.createInviteTokenURL(userId, request.accountId(), request.accountName()));
@@ -103,7 +103,7 @@ public class GroupAccountController {
 	@PostMapping("/join")
 	public SuccessResponse<GroupAccountJoinedResponseDTO> joinGroupAccount(
 		@RequestParam Long userId,
-		@ApiParam(value = "모임계좌 ID", required = true) @RequestBody GroupAccountJoinRequestDTO request
+		@ApiParam(value = "모임계좌 참여 정보", required = true) @RequestBody GroupAccountJoinRequestDTO request
 	) {
 		return SuccessResponse.success(SuccessCode.JOIN_GROUP_ACCOUNT_SUCCESS,
 			inviteService.joinGroupAccount(userId, request));
@@ -117,7 +117,7 @@ public class GroupAccountController {
 	})
 	@GetMapping("/detail")
 	public SuccessResponse<GroupAccountDetailResponseDTO> getGroupAccountDetail(
-		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId,
+		@ApiParam(value = "모임계좌 ID", required = true, example = "3333-02-123457") @RequestParam String accountId,
 		@RequestParam Long userId
 	) {
 		return SuccessResponse.success(SuccessCode.GET_GROUP_ACCOUNT_DETAIL_SUCCESS,
@@ -132,9 +132,9 @@ public class GroupAccountController {
 	})
 	@GetMapping("/transactions")
 	public SuccessResponse<List<DailyAccountTransactionDTO>> filterAccountTransactions(
-		@ApiParam(value = "개인 계좌 ID", required = true) @RequestParam String accountId,
+		@ApiParam(value = "개인 계좌 ID", required = true, example = "3333-02-123456") @RequestParam String accountId,
 		@ApiParam(value = "유저 ID", required = true) @RequestParam Long userId,
-		@ApiParam(value = "거래 타입", required = true) @RequestParam String transactionType
+		@ApiParam(value = "거래 타입(ex. ALL , DEPOSIT, WITHDRAW)", required = true, example = "ALL") @RequestParam String transactionType
 	) {
 		return SuccessResponse.success(SuccessCode.FILTER_ACCOUNT_TRANSACTION_SUCCESS,
 			groupAccountService.filterAccountTransactions(accountId, userId, transactionType));
@@ -148,13 +148,11 @@ public class GroupAccountController {
 	})
 	@GetMapping("/members")
 	public SuccessResponse<List<GroupAccountMemberResponseDTO>> getGroupAccountMembers(
-		@ApiParam(value = "모임계좌 ID", required = true) @RequestParam String accountId
+		@ApiParam(value = "모임계좌 ID", required = true, example = "3333-02-123457") @RequestParam String accountId
 	) {
 		return SuccessResponse.success(SuccessCode.FIND_GROUP_ACCOUNT_MEMBER_SUCCESS,
 			memberService.getGroupAccountMembers(accountId));
 	}
-
-	//정산 요청하기
 
 	@ApiOperation(value = "[JWT] 정산 요청하기", notes = "정산 요청하기")
 	@ApiResponses(value = {

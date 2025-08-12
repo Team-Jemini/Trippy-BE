@@ -17,4 +17,24 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <!-- 사용자의 알림 목록 조회 (최신순) -->
+    <select id="findAllByUserId" resultMap="notificationMap">
+        SELECT *
+        FROM notification
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+            LIMIT 100
+    </select>
+
+    <select id="findByNotiId" resultMap="notificationMap">
+        SELECT
+            noti_id,
+            title,
+            content,
+            noti_type,
+            amount
+        FROM notification
+        WHERE noti_id = #{notiId}
+    </select>
+
 </mapper>

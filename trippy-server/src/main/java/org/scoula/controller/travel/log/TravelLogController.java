@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.multipart.MultipartFile;
 
-@Api(tags = "Travel")
+@Api(tags = "Travel", description = "여행 소비 리포트를 관리합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/travel-log")
