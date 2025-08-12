@@ -53,5 +53,11 @@
                )
     </insert>
 
+    <select id="findByTravelId" resultMap="travelLogMap">
+        SELECT *
+        FROM travel_log
+        WHERE travel_id = #{travelId}
+    </select>
+
 
 </mapper>
