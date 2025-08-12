@@ -10,8 +10,10 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.controller.exchange.dto.ExchangeRateDTO;
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
+import org.scoula.controller.exchange.dto.response.ExchangeChangeRateDTO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.domain.exchange.ExchangeRequest;
 import org.scoula.external.exchange.ExchangeRateAPIService;
@@ -42,12 +44,12 @@ public class ExchangeController {
 
 	@ApiOperation(value = "[JWT] 저장된 최신 환율 목록 조회", notes = "저장된 최신 환율 목록을 반환하는 API")
 	@ApiResponses({
-		@ApiResponse(code = 200, message = "환율 정보 찾기 성공", response = SuccessResponse.class, responseContainer = "List"),
+		@ApiResponse(code = 200, message = "환율 정보 찾기 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
 		@ApiResponse(code = 404, message = "환율 정보가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/rates")
-	public SuccessResponse<List<ExchangeRateVO>> getExchangeRates() {
+	public SuccessResponse<List<ExchangeChangeRateDTO>> getExchangeRates() {
 		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, exchangeRateService.getExchangeRates());
 	}
 
@@ -64,28 +66,27 @@ public class ExchangeController {
 
 	@ApiOperation(value = "[JWT] 사용자의 오늘환율과 외화잔액 조회", notes = "사용자의 오늘환율과 외화잔액 조회 API")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "환율 잔액 찾기 성공", response = SuccessResponse.class),
-			@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
-			@ApiResponse(code = 401, message = "인증 실패", response = ErrorResponse.class),
-			@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
+		@ApiResponse(code = 200, message = "환율 잔액 찾기 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
+		@ApiResponse(code = 401, message = "인증 실패", response = ErrorResponse.class),
+		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/rate-balance")
 	public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam Long userId,
-																  @RequestParam String currencyCode, @RequestParam String accountId) {
+		@RequestParam String currencyCode, @RequestParam String accountId) {
 		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS,
-				exchangeRateService.getRatesAndBalance(userId, currencyCode, accountId));
+			exchangeRateService.getRatesAndBalance(userId, currencyCode, accountId));
 	}
-
 
 	@ApiOperation(value = "[JWT] 사용자의 환전 거래 실행", notes = "사용자의 환전 거래 실행 API")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "환전 성공", response = SuccessResponse.class),
-			@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
-			@ApiResponse(code = 401, message = "환전 실패", response = ErrorResponse.class),
-			@ApiResponse(code = 404, message = "환전할 금액이 부족합니다.", response = ErrorResponse.class)
+		@ApiResponse(code = 200, message = "환전 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "요청 파라미터 오류", response = ErrorResponse.class),
+		@ApiResponse(code = 401, message = "환전 실패", response = ErrorResponse.class),
+		@ApiResponse(code = 404, message = "환전할 금액이 부족합니다.", response = ErrorResponse.class)
 	})
-    @PostMapping("/exchange")
-    public SuccessNonDataResponse exchange(@RequestBody ExchangeRequest exchangeRequest) {
+	@PostMapping("/exchange")
+	public SuccessNonDataResponse exchange(@RequestBody ExchangeRequest exchangeRequest) {
 
 		Long krwAmount = exchangeRequest.krwAmount();
 		String krwAccountId = exchangeRequest.krwAccountId();
@@ -94,9 +95,9 @@ public class ExchangeController {
 		String foreignAccountId = exchangeRequest.foreignAccountId();
 		String currencyCode = exchangeRequest.currencyCode();
 
-        exchangeRateService.exchange(krwAmount, krwAccountId, userId, foreignAmount, foreignAccountId, currencyCode);
+		exchangeRateService.exchange(krwAmount, krwAccountId, userId, foreignAmount, foreignAccountId, currencyCode);
 
-        return SuccessNonDataResponse.success(SuccessCode.EXCHANGE_SUCCESS);
-    }
+		return SuccessNonDataResponse.success(SuccessCode.EXCHANGE_SUCCESS);
+	}
 
 }
