@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 @Builder
 @ApiModel(description = "Travel Log 생성 요청 DTO")
 public record TravelLogCreateDTO (
-        @ApiModelProperty(value = "사용자 ID", required = true, example = "101")
-        @NotNull(message = "userId는 필수입니다.")
-        Long userId,
 
         @ApiModelProperty(value = "연결된 계좌 ID", required = true, example = "acct_20250729_001")
         @NotBlank(message = "accountId는 필수입니다.")
