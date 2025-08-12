@@ -1,5 +1,6 @@
 package org.scoula.controller.user;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.scoula.common.dto.ErrorResponse;
@@ -8,6 +9,8 @@ import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.dto.TokenPair;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.config.resolver.UserId;
+import org.scoula.controller.user.dto.request.PhoneNumberDTO;
+import org.scoula.controller.user.dto.request.VerifyCodeDTO;
 import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
@@ -45,6 +48,32 @@ public class UserController {
 	@PostMapping("/signup")
 	public SuccessResponse<TokenPair> signUp(@ApiParam(value = "회원가입 정보", required = true) @RequestBody SignUpDTO signUpDTO) {
 		return SuccessResponse.success(SuccessCode.SIGNUP_SUCCESS, userService.signUp(signUpDTO));
+	}
+
+	@ApiOperation(value = "인증번호 요청 API", notes = "인증번호를 요청하는 API입니다.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "전화번호 인증 요청 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "전화번호가 잘못되었습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
+	})
+	@PostMapping("/phoneNumber")
+	public SuccessNonDataResponse sendVerificationCodeMessage(@ApiParam(value = "전화번호", required = true) @RequestBody PhoneNumberDTO phoneNumberDTO) throws IOException {
+		userService.sendVerificationCodeMessage(phoneNumberDTO.phoneNumber());
+		return SuccessNonDataResponse.success(SuccessCode.SEND_VERIFICATION_CODE_SUCCESS);
+	}
+
+	@ApiOperation(value = "전화번호 인증 API", notes = "전화번호를 인증하는 API입니다.")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "전화번호 인증 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 400, message = "인증번호가 일치하지 않습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 400, message = "인증번호가 만료되었습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 400, message = "인증번호가 존재하지 않습니다.", response = ErrorResponse.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
+	})
+	@PostMapping("/phoneNumber/verify")
+	public SuccessNonDataResponse verifyCode(@ApiParam(value = "전화번호 인증확인 정보", required = true) @RequestBody VerifyCodeDTO verifyCodeDTO) throws IOException {
+		userService.verifyCode(verifyCodeDTO.phoneNumber(), verifyCodeDTO.verifyCode());
+		return SuccessNonDataResponse.success(SuccessCode.VERIFICATION_CODE_MATCH_SUCCESS);
 	}
 
 	@ApiOperation(value = "[JWT]비밀번호 확인", notes = "비밀번호 확인하기 API입니다.")
