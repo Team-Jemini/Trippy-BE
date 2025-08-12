@@ -30,33 +30,34 @@ public class AccountVO extends BaseTime {
 
 	public static AccountVO from(AccountRequestDTO request, Long userId) {
 		return new AccountVO(
-				userId,
-				request.accountId(),
-				request.accountName(),
-				request.accountType(),
-				userId,
-				request.balance(),
-				request.accountCurrency(),
-				request.isDeleted()
+			userId,
+			request.accountId(),
+			request.accountName(),
+			request.accountType(),
+			userId,
+			request.balance(),
+			request.accountCurrency(),
+			request.isDeleted()
 		);
 	}
 
 	public static AccountVO fromCodefResponse(Map<String, Object> codefAccount, Long userId) {
-		String balanceStr = (String) codefAccount.get("resAccountBalance");
+
+		String balanceStr = (String)codefAccount.get("resAccountBalance");
 		Long balance = 0L;
 		if (balanceStr != null && !balanceStr.isEmpty()) {
 			balance = Long.parseLong(balanceStr);
 		}
 
 		return new AccountVO(
-				userId,
-				(String) codefAccount.get("resAccount"),
-				(String) codefAccount.get("resAccountName"),
-				AccountType.person,
-				userId,
-				balance,
-				(String) codefAccount.get("resAccountCurrency"),
-				DeletedStatus.N
+			userId,
+			(String)codefAccount.get("resAccount"),
+			(String)codefAccount.get("resAccountName"),
+			AccountType.person,
+			userId,
+			balance,
+			(String)codefAccount.get("resAccountCurrency"),
+			DeletedStatus.N
 		);
 	}
 }
