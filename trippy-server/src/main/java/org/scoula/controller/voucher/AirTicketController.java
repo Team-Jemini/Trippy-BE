@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "Air Ticket")
+@Api(tags = "Voucher", description = "항공권, 숙소, 관광바우처 예약 내역을 관리합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/air-ticket")
@@ -51,7 +52,8 @@ public class AirTicketController {
 		@ApiResponse(code = 404, message = "해당 항공권Id가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/{airLineId}")
-	public SuccessResponse<AirTicketDetailDto> getAirTicket(@RequestParam Long userId, @PathVariable Long airLineId) {
+	public SuccessResponse<AirTicketDetailDto> getAirTicket(@RequestParam Long userId,
+		@ApiParam(value = "항공권 Id", required = true, example = "1") @PathVariable Long airLineId) {
 
 		return SuccessResponse.success(SuccessCode.FIND_DETAIL_AIR_TICKET_SUCCESS,
 			airTicketService.getAirTicketDetail(userId, airLineId));

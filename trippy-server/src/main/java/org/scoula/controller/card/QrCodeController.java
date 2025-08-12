@@ -15,10 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.scoula.controller.card.dto.response.QrCodeResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
+@Api(tags = "Payment", description = "카드, 결제 기능을 관리합니다.")
 @RestController
 @RequestMapping("/cards")
 @RequiredArgsConstructor
-@Api(tags = "Payment")
 public class QrCodeController {
 
 	private final QrCodeService qrCodeService;

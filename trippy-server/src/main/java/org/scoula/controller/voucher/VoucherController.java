@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "Voucher")
+@Api(tags = "Voucher", description = "항공권, 숙소, 관광바우처 예약 내역을 관리합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/voucher")

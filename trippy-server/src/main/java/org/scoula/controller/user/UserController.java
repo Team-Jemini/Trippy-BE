@@ -21,11 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "User")
+@Api(tags = "User", description = "유저등록, 비밀번호 확인, 토큰을 관리합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -40,7 +41,7 @@ public class UserController {
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
 	})
 	@PostMapping("/signup")
-	public SuccessResponse<TokenPair> signUp(@RequestBody SignUpDTO signUpDTO) {
+	public SuccessResponse<TokenPair> signUp(@ApiParam(value = "회원가입 정보", required = true) @RequestBody SignUpDTO signUpDTO) {
 		return SuccessResponse.success(SuccessCode.SIGNUP_SUCCESS, userService.signUp(signUpDTO));
 	}
 
@@ -54,7 +55,7 @@ public class UserController {
 		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
 	})
 	@PostMapping("/password")
-	public SuccessNonDataResponse checkPassword(@RequestParam Long userId, @RequestBody CheckPasswordDTO checkPasswordDTO) {
+	public SuccessNonDataResponse checkPassword(@RequestParam Long userId, @ApiParam(value = "비밀번호", required = true) @RequestBody CheckPasswordDTO checkPasswordDTO) {
 		userService.checkPassword(userId, checkPasswordDTO);
 		return SuccessNonDataResponse.success(SuccessCode.CHECK_PASSWORD_SUCCESS);
 	}
@@ -69,7 +70,7 @@ public class UserController {
 		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
 	})
 	@PostMapping("/refresh")
-	public SuccessResponse<TokenPair> refresh(@RequestBody final TokenRequestDto tokenRequestDto) {
+	public SuccessResponse<TokenPair> refresh(@ApiParam(value = "토큰 정보", required = true) @RequestBody final TokenRequestDto tokenRequestDto) {
 		return SuccessResponse.success(SuccessCode.REFRESH_SUCCESS, userService.refresh(tokenRequestDto));
 	}
 
