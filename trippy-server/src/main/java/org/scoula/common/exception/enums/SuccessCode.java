@@ -68,6 +68,7 @@ public enum SuccessCode {
 	//여행로그
 	FIND_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 조회 성공"),
 	FIND_TRAVEL_REPORT_SUCCESS(HttpStatus.OK, "여행 리포트 조회 성공"),
+	CREATE_TRAVEL_REPORT_SUCCESS(HttpStatus.OK, "여행 리포트 생성 성공"),
 	CREATE_TRAVEL_LOG_SUCCESS(HttpStatus.OK, "여행 로그 생성 성공");
 
 	private final HttpStatus httpStatus;

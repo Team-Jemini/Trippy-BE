@@ -51,7 +51,7 @@ public class TravelLogController {
 	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public SuccessNonDataResponse createTravelLog(
 		@ApiParam(value = "유저 ID", required = true, example = "101")
-		@RequestParam Long userId,
+		@RequestHeader("userId") Long userId,
 
 		@ApiParam(value = "여행 이미지 파일")
 		@RequestPart(value = "travelImg", required = false)

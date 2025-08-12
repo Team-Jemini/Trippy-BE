@@ -23,13 +23,6 @@ public class TravelLogService {
 	private final UserService userService;
 	private final S3Service s3Service;
 
-	//    public List<TravelLogDTO> getTravelLogs(final Long userId) {
-	//        userService.validateUserExists(userId);
-	//
-	//        return travelLogMapper.getAllTravelLogs(userId).stream()
-	//                .map(TravelLogDTO::from)
-	//                .toList();
-	//    }
 	public List<TravelLogDTO> getTravelLogs(final Long userId) {
 		userService.validateUserExists(userId);
 
@@ -39,13 +32,14 @@ public class TravelLogService {
 			.map(log -> new TravelLogDTO(
 				((Number)log.get("travelId")).longValue(),
 				((Number)log.get("userId")).longValue(),
+				((String)log.get("accountId")),
 				(String)log.get("title"),
 				(LocalDateTime)log.get("travelBeginDate"),
 				(LocalDateTime)log.get("travelEndDate"),
 				(String)log.get("destination"),
 				(Boolean)log.get("isGenerated"),
 				(String)log.get("travelImg"),
-				((Number)log.get("memberCount")).intValue()
+				((Number)log.get("memberCount")).longValue()
 			))
 			.toList();
 	}
@@ -58,6 +52,7 @@ public class TravelLogService {
 
 		TravelLogVO travelLog = TravelLogVO.builder()
 			.userId(userId)
+			.accountId(dto.accountId())
 			.title(dto.title())
 			.travelBeginDate(dto.travelBeginDate())
 			.travelEndDate(dto.travelEndDate())
