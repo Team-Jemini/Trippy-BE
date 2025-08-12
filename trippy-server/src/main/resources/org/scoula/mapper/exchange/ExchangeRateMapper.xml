@@ -70,6 +70,16 @@
         select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date from exchange_rate
     </select>
 
+    <select id="getRecentTwoDaysExchangeRates" resultType="org.scoula.domain.exchange.ExchangeRateVO">
+        SELECT *
+        FROM exchange_rate
+        WHERE DATE(exchange_rate_date) IN (
+            CURDATE(),
+            DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            )
+        ORDER BY currency_code, exchange_rate_date DESC
+    </select>
+
     <!-- 환전 기능 -->
     <select id="getAccountList" resultMap="accountMap">
         select *

@@ -58,7 +58,6 @@ public class ExchangeRateAPIService {
 	 * 환율 API로 환율 데이터 가져오는 함수
 	 */
 	@Scheduled(cron = " 0 5 11 * * * ") // 오전 11시 5분 스케쥴러 실행
-	@Transactional
 	public void fetchAndSaveExchangeRates() {
 		LocalDateTime exchangeRateDate = getExchangeRateDate();
 		String formattedDate = getFormattedDate(exchangeRateDate);
