@@ -6,11 +6,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.exchange.dto.ExchangeRateDTO;
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
@@ -60,7 +62,7 @@ public class ExchangeController {
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/accounts")
-	public SuccessResponse<List<AccountListDTO>> getAccountList(@RequestParam Long userId) {
+	public SuccessResponse<List<AccountListDTO>> getAccountList(@ApiIgnore @UserId Long userId) {
 		return SuccessResponse.success(SuccessCode.FIND_ACCOUNTS_LIST_SUCCESS,
 			exchangeRateService.getAccountList(userId));
 	}
@@ -73,7 +75,8 @@ public class ExchangeController {
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
 	@GetMapping("/rate-balance")
-	public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(@RequestParam Long userId,
+	public SuccessResponse<ExchangeBalanceDTO> getRatesAndBalance(
+		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "오늘 환율 통화 코드(JYP, KRW, USD...)", required = true) @RequestParam String currencyCode,
 		@ApiParam(value = "잔액 확인할 외화계좌 정보", required = true, example = "3333-02-123461") @RequestParam String accountId) {
 		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_BALANCE_SUCCESS,
@@ -88,7 +91,8 @@ public class ExchangeController {
 		@ApiResponse(code = 404, message = "환전할 금액이 부족합니다.", response = ErrorResponse.class)
 	})
 	@PostMapping("/exchange")
-	public SuccessNonDataResponse exchange(@RequestParam Long userId,
+	public SuccessNonDataResponse exchange(
+		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "환전 요청 정보", required = true) @RequestBody ExchangeRequest exchangeRequest) {
 		exchangeRateService.exchange(userId, exchangeRequest);
 		return SuccessNonDataResponse.success(SuccessCode.EXCHANGE_SUCCESS);

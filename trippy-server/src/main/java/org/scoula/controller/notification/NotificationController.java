@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.notification.request.NotiDTO;
 import org.scoula.service.notification.NotificationService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Notification", description = "알람 내역을 관리합니다.")
 @RestController
@@ -34,7 +36,7 @@ public class NotificationController {
 		@ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
 	})
 	@GetMapping()
-	public SuccessResponse<List<NotiDTO>> getNoti(@RequestParam Long userId) {
+	public SuccessResponse<List<NotiDTO>> getNoti(@ApiIgnore @UserId Long userId) {
 		return SuccessResponse.success(SuccessCode.GET_ALL_NOTIS_SUCCESS, notificationService.getNotis(userId));
 	}
 
@@ -45,7 +47,7 @@ public class NotificationController {
 		@ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
 	})
 	@GetMapping("/{notiId}")
-	public SuccessResponse<NotiDTO> getDetailNoti(@RequestParam Long userId,
+	public SuccessResponse<NotiDTO> getDetailNoti(@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "알림 단건Id", required = true, example = "1") @PathVariable Long notiId) {
 		return SuccessResponse.success(SuccessCode.GET_DETAIL_NOTI_SUCCESS,
 			notificationService.getDetailNoti(notiId));

@@ -16,4 +16,6 @@ public interface TravelLogMapper {
                                    @Param("begin") LocalDateTime begin,
                                    @Param("end") LocalDateTime end);
     void save(TravelLogVO travelLogVO);
+
+    TravelLogVO findByTravelId(@Param("travelId") Long travelId);
 }

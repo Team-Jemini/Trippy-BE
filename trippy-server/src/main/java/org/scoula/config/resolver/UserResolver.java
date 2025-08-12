@@ -15,7 +15,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserResolver implements HandlerMethodArgumentResolver {
@@ -32,7 +34,7 @@ public class UserResolver implements HandlerMethodArgumentResolver {
 		NativeWebRequest webRequest,
 		WebDataBinderFactory binderFactory) {
 
-		final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+		final HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
 		final String token = request.getHeader("Authorization");
 
 		if (token == null || token.isBlank() || !token.startsWith("Bearer ")) {
@@ -41,11 +43,6 @@ public class UserResolver implements HandlerMethodArgumentResolver {
 
 		final String rawToken = token.substring("Bearer ".length());
 
-		// (1) 블랙리스트 체크: 과거 AccessToken 차단
-		if (jwtService.isBlacklisted(rawToken)) {
-			throw new UnAuthorizedException(ErrorCode.BLACKLISTED_TOKEN_EXCEPTION);
-		}
-
 		try {
 			jwtService.verifyToken(rawToken);
 
@@ -53,7 +50,6 @@ public class UserResolver implements HandlerMethodArgumentResolver {
 			if (!jwtService.isAccessToken(rawToken)) {
 				throw new BadRequestException(ErrorCode.INVALID_TOKEN_TYPE_EXCEPTION);
 			}
-
 			final String userId = jwtService.getUserIdInToken(rawToken);
 			return Long.parseLong(userId);
 

@@ -1,5 +1,6 @@
 package org.scoula.service.travel;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -7,10 +8,14 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.scoula.controller.travel.log.dto.req.TravelLogCreateDTO;
+import org.scoula.controller.travel.log.dto.req.TravelLogTransactionDTO;
+import org.scoula.controller.travel.log.dto.req.TravelLogTransactionListDTO;
 import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
+import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.domain.travel.TravelLogVO;
 import org.scoula.external.s3.S3Service;
 import org.scoula.mapper.travel.TravelLogMapper;
+import org.scoula.service.transaction.TransactionService;
 import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +27,7 @@ public class TravelLogService {
 	private final TravelLogMapper travelLogMapper;
 	private final UserService userService;
 	private final S3Service s3Service;
+	private final TransactionService transactionService;
 
 	public List<TravelLogDTO> getTravelLogs(final Long userId) {
 		userService.validateUserExists(userId);
@@ -64,25 +70,40 @@ public class TravelLogService {
 		travelLogMapper.save(travelLog);
 	}
 
-	/**
-	 * 여행 기간이 기존 로그와 겹치지 않으면 true, 겹치면 false 반환 (경계 포함 겹침)
+	/***
+	 * 여행 기간동안의 거래 내역 조회
+	 * 1. 여행 기간동안의 거래 내역 전체 조회
+	 * 2. 전체 여행 기간동안의  지출 총 합계와, 오늘의 거래 일자로 데이터 조회
+	 * @param userId
+	 * @param travelId
+	 * @return TravelLogTransactionListDTO
 	 */
-	public boolean isTravelDateAvailable(final Long userId,
-										 final LocalDateTime begin,
-										 final LocalDateTime end) {
-		userService.validateUserExists(userId);
+	public TravelLogTransactionListDTO getTravelTransactions(final Long userId, final Long travelId) {
 
-		if (begin == null || end == null) {
-			throw new IllegalArgumentException("begin/end는 필수입니다.");
-		}
-		if (end.isBefore(begin)) {
-			throw new IllegalArgumentException("end는 begin 이후여야 합니다.");
-		}
+		TravelLogVO travelLog = travelLogMapper.findByTravelId(travelId);
+		List<TransactionVO> transactions = transactionService.getUserExpenseTransactions(userId,
+			travelLog.getAccountId(), travelLog.getTravelBeginDate(), travelLog.getTravelEndDate());
 
-		// 겹치지 않는 조건: (existing_end < begin) OR (existing_begin > end)
-		// 따라서 겹치는 것의 count: NOT (existing_end < begin OR existing_begin > end)
-		int overlapCount = travelLogMapper.countOverlappingTravelLogs(userId, begin, end);
-		return overlapCount == 0;
+		Long totalAmount = calculateTotalAmount(transactions);
+		Long todayAmount = calculateTodayAmount(transactions);
+
+		return new TravelLogTransactionListDTO(
+			travelId,
+			todayAmount,
+			totalAmount,
+			transactions.stream().map(TravelLogTransactionDTO::from).toList());
+	}
+
+	private Long calculateTotalAmount(List<TransactionVO> transactions) {
+		return transactions.stream().mapToLong(TransactionVO::getAmount).sum();
+	}
+
+	private Long calculateTodayAmount(List<TransactionVO> transactions) {
+		LocalDate today = LocalDate.now();
+		return transactions.stream()
+			.filter(t -> t.getCreatedAt().toLocalDate().equals(today))
+			.mapToLong(TransactionVO::getAmount)
+			.sum();
 	}
 
 }
