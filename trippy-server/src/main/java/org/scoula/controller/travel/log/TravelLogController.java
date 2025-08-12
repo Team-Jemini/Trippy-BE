@@ -1,5 +1,6 @@
 package org.scoula.controller.travel.log;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -17,6 +18,7 @@ import org.scoula.controller.travel.log.dto.req.TravelLogTransactionListDTO;
 import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
 import org.scoula.service.travel.TravelLogService;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +65,33 @@ public class TravelLogController {
 	) {
 		travelLogService.createTravelLog(userId, travelLogCreateDTO, travelImg);
 		return SuccessNonDataResponse.success(SuccessCode.CREATE_TRAVEL_LOG_SUCCESS);
+	}
+
+	@ApiOperation(
+			value = "[JWT] 여행 날짜 중복 여부 확인",
+			notes = "해당 유저의 기존 여행 로그 기간과 입력한 기간이 겹치는지 확인합니다. (겹치면 false, 가능하면 true)"
+	)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "여행 날짜 가용성 확인 성공")
+	})
+	@GetMapping("/availability")
+	public SuccessResponse<Boolean> checkAvailability(
+			@ApiIgnore @UserId Long userId,
+			@ApiParam(value = "여행 시작일시 (ISO-8601)", required = true, example = "2025-07-10T09:00:00")
+			@RequestParam("begin")
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+			LocalDateTime begin,
+
+			@ApiParam(value = "여행 종료일시 (ISO-8601)", required = true, example = "2025-07-13T18:00:00")
+			@RequestParam("end")
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+			LocalDateTime end
+	) {
+		boolean available = travelLogService.isTravelDateAvailable(userId, begin, end);
+		return SuccessResponse.success(
+				SuccessCode.CHECK_TRAVEL_DATE_AVAILABLE_SUCCESS,
+				available
+		);
 	}
 
 	@ApiOperation(value = "[JWT] [지도뷰 보기] 여행 로그에서의 여행 기간 동안의 결제 내역 전체 조회", notes = "지도에 핀으로 보여질 결제 내역들 리스트 API입니다.")
