@@ -11,4 +11,6 @@ import org.springframework.data.repository.query.Param;
 public interface TravelLogMapper {
     List<Map<String, Object>> getAllTravelLogs(@Param("userId") Long userId);
     void save(TravelLogVO travelLogVO);
+
+    TravelLogVO findByTravelId(@Param("travelId") Long travelId);
 }

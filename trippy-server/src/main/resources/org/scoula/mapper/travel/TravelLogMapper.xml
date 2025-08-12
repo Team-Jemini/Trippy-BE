@@ -7,6 +7,7 @@
     <resultMap id="travelLogMap" type="org.scoula.domain.travel.TravelLogVO">
         <id property="travelId" column="travel_id"/>
         <result property="userId" column="user_id"/>
+        <result property="accountId" column="account_id"/>
         <result property="title" column="title"/>
         <result property="travelBeginDate" column="travel_begin_date"/>
         <result property="travelEndDate" column="travel_end_date"/>
@@ -50,6 +51,12 @@
                    NOW(), NOW()
                )
     </insert>
+
+    <select id="findByTravelId" resultMap="travelLogMap">
+        SELECT *
+        FROM travel_log
+        WHERE travel_id = #{travelId}
+    </select>
 
 
 </mapper>
