@@ -10,7 +10,9 @@ public record TravelLogTransactionDTO(
 	TransactionCategory category,
 	Long amount,
 	LocalDateTime createdAt,
-	String title
+	String title,
+	String latitude,
+	String longitude
 ) {
 	public static TravelLogTransactionDTO from(TransactionVO transaction) {
 		return new TravelLogTransactionDTO(
@@ -18,7 +20,9 @@ public record TravelLogTransactionDTO(
 			transaction.getCategory(),
 			transaction.getAmount(),
 			transaction.getCreatedAt(),
-			transaction.getTitle()
+			transaction.getTitle(),
+			transaction.getLatitude(),
+			transaction.getLongitude()
 		);
 	}
 }
