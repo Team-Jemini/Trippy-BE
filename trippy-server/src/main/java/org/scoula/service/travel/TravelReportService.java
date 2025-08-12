@@ -1,6 +1,8 @@
 package org.scoula.service.travel;
 
 import lombok.RequiredArgsConstructor;
+import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
 import org.scoula.controller.travel.report.dto.req.ExpenseSummaryParam;
 import org.scoula.controller.travel.report.dto.req.TravelReportInsertParam;
@@ -32,14 +34,14 @@ public class TravelReportService {
     @Transactional
     public void createTravelReport(final TravelReportRequestDTO req) {
         if (req.travelId() == null)
-            throw new ApiException(TRAVEL_ID_REQUIRED);
+            throw new TrippyException(ErrorCode.TRAVEL_ID_REQUIRED);
 
         final TravelLogVO travelLog = travelReportMapper.selectTravelLog(req.travelId());
         if (travelLog == null)
-            throw new ApiException(TRAVEL_LOG_NOT_FOUND, req.travelId());
+            throw new TrippyException(ErrorCode.TRAVEL_LOG_NOT_FOUND);
 
         if (travelLog.getAccountId() == null || travelLog.getAccountId().isBlank())
-            throw new ApiException(TRAVEL_LOG_ACCOUNT_ID_EMPTY, req.travelId());
+            throw new TrippyException(ErrorCode.TRAVEL_LOG_ACCOUNT_ID_EMPTY);
 
         // 2) 집계 → Map
         Map<String, Object> sum = travelReportMapper.selectExpenseSummary(
