@@ -121,11 +121,13 @@ public class TransferService {
 		// 송금 받는 사람 검증
 		validateTransferRecipient(member);
 
-		// 송금하기
+		// 송금
 		validateAndProcessMemberWithdrawal(userId, request, member);
 
+		// 입금
 		processGroupDepositForMember(request, member);
 
+		// 알림 생성 및 리스트에 저장
 		noticeList.add(
 			NotificationVO.DepositNotification(member.userId(), request.fromAccountName(), request.amount()));
 	}
