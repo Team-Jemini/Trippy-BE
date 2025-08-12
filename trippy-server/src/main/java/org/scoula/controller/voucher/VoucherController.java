@@ -20,13 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "Voucher")
+@Api(tags = "Voucher", description = "항공권, 숙소, 관광바우처 예약 내역을 관리합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/voucher")
@@ -51,7 +52,7 @@ public class VoucherController {
 	})
 	@GetMapping("/accommodation/{accommodationId}")
 	public SuccessResponse<AccommodationDetailDto> getAirTicket(@RequestParam Long userId,
-		@PathVariable String accommodationId) {
+		@ApiParam(value = "숙소 예약 번호 (ex. 1616070384)", example = "1616070384") @PathVariable String accommodationId) {
 		return SuccessResponse.success(SuccessCode.FIND_DETAIL_ACCOMMODATION_SUCCESS,
 			voucherService.getDetailAccommodation(userId, accommodationId));
 	}
@@ -65,7 +66,7 @@ public class VoucherController {
 	@PostMapping(value = "/sightseeing", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public SuccessNonDataResponse postSightseeing(
 		@RequestParam Long userId,
-		@RequestPart(value = "sightSeeingVoucherImg", required = false) MultipartFile sightSeeingVoucherImg,
+		@RequestPart(value = "관광 바우처 예약 이미지", required = false) MultipartFile sightSeeingVoucherImg,
 		@ApiParam(value = "관광 바우처 JSON (예: {\"name\":\"그랜드캐니언\", \"viewingDate\":\"2025-09-01T14:00\"})") @RequestPart SightSeeingDto sightSeeingDto) {
 		voucherService.createSightseeing(userId, sightSeeingDto, sightSeeingVoucherImg);
 		return SuccessNonDataResponse.success(SuccessCode.CREATE_SIGHTSEEING_SUCCESS);

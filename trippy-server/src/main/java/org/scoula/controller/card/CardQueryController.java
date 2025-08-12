@@ -13,9 +13,9 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 
 
+@Api(tags = "Payment", description = "카드, 결제 기능을 관리합니다.")
 @RestController
 @RequestMapping("/cards")
-@Api(tags = "Payment")
 @RequiredArgsConstructor
 public class CardQueryController {
 

@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "Resident Card")
+@Api(tags = "Resident Card", description = "주민등록증 추가, 조회, OCR 기능을 관리합니다.")
 public class ResidentCardController {
 
 	private final OcrService ocrService;
@@ -59,7 +59,7 @@ public class ResidentCardController {
 	@PostMapping("/residentCard")
 	public SuccessResponse<Integer> addResidentCardInfo(
 		@RequestParam Long userId,
-		@RequestBody ResidentCardReq residentCardReq) {
+		@ApiParam(value = "주민등록증 정보", required = true) @RequestBody ResidentCardReq residentCardReq) {
 		return SuccessResponse.success(SuccessCode.RESIDENT_CARD_ADD_SUCCESS,
 			residentCardService.addResidentCardInfo(userId, residentCardReq));
 	}
