@@ -73,6 +73,7 @@ public class TravelLogController {
 	})
 	@GetMapping("/{travelId}")
 	public SuccessResponse<TravelLogTransactionListDTO> getTravelLogs(
+		//@ApiIgnore @UserId Long userId => 이걸로 바꿀 예정입니다... 그래서 userId 안 받아와도됨 travelId만!
 		@ApiParam(value = "유저 ID", required = true, example = "1")
 		@RequestParam Long userId,
 		@ApiParam(value = "여행 ID", required = true, example = "1")
