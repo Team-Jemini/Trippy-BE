@@ -17,4 +17,6 @@ public interface UserMapper {
 	String findUserName(Long userId);
 
 	void save(UserVO userVO);
+
+	boolean existsLeaderInGroup(Long userId);
 }
