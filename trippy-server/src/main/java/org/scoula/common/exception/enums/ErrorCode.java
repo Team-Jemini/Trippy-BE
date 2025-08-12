@@ -37,7 +37,7 @@ public enum ErrorCode {
 	EXCHANGE_RATE_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "환율 API 호출 중 오류 발생했습니다."),
 	AIR_TICKET_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 항공권Id가 존재하지 않습니다."),
 	ACCOMMODATION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 숙소가 존재하지 않습니다."), //관광 바우처 이미지가 잘못되었습니다
-
+	NOT_FOUND_NOTI_EXCEPTION(HttpStatus.BAD_REQUEST, "존재하지 않는 알람입니다."),
 
 	//405 METHOD_NOT_ALLOWED
 
