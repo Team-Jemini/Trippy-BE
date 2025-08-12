@@ -61,7 +61,6 @@ public class ExchangeRateService {
 
 			ExchangeRateVO todayData = currencyData.get(0);
 			ExchangeRateVO yesterdayData = currencyData.get(1);
-
 			result.add(calculateExchangeRateComparison(todayData, yesterdayData));
 		}
 		return result;

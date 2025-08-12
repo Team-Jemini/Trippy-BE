@@ -2,15 +2,14 @@ package org.scoula.controller.travel.report;
 
 import lombok.RequiredArgsConstructor;
 
+import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.config.resolver.UserId;
+import org.scoula.controller.travel.report.dto.req.TravelReportRequestDTO;
 import org.scoula.controller.travel.report.dto.res.TravelReportDTO;
 import org.scoula.service.travel.TravelReportService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -36,4 +35,15 @@ public class TravelReportController {
 		return SuccessResponse.success(SuccessCode.FIND_TRAVEL_REPORT_SUCCESS,
 			travelReportService.getTravelReport(travelId));
 	}
+
+	@ApiOperation(value = "[JWT] 여행 리포트 생성", notes = "travel_log의 account_id와 기간을 사용해 집계하고 저장합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "여행 소비 리포트 저장 성공")
+	})
+	@PostMapping
+	public SuccessNonDataResponse createTravelReport(@ApiIgnore @UserId Long userId, @RequestBody TravelReportRequestDTO request) {
+		travelReportService.createTravelReport(request);
+		return SuccessNonDataResponse.success(SuccessCode.CREATE_TRAVEL_REPORT_SUCCESS);
+	}
+
 }
