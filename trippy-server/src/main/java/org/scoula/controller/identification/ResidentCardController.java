@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.identification.dto.req.ResidentCardReq;
 import org.scoula.controller.identification.dto.res.ResidentCardDTO;
 import org.scoula.controller.identification.dto.res.ResidentCardOcrDTO;
@@ -12,6 +13,7 @@ import org.scoula.external.codef.identification.OcrService;
 import org.scoula.service.identification.ResidentCardService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
 
@@ -44,7 +46,7 @@ public class ResidentCardController {
 		@ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
 	})
 	@GetMapping("/residentCard")
-	public SuccessResponse<ResidentCardDTO> getResidentCardInfo(@RequestParam Long userId) {
+	public SuccessResponse<ResidentCardDTO> getResidentCardInfo(@ApiIgnore @UserId Long userId) {
 
 		return SuccessResponse.success(SuccessCode.RESIDENT_CARD_SUCCESS,
 			residentCardService.getResidentCardInfo(userId));
@@ -58,7 +60,7 @@ public class ResidentCardController {
 	})
 	@PostMapping("/residentCard")
 	public SuccessResponse<Integer> addResidentCardInfo(
-		@RequestParam Long userId,
+		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "주민등록증 정보", required = true) @RequestBody ResidentCardReq residentCardReq) {
 		return SuccessResponse.success(SuccessCode.RESIDENT_CARD_ADD_SUCCESS,
 			residentCardService.addResidentCardInfo(userId, residentCardReq));
