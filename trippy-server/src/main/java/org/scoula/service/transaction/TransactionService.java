@@ -17,7 +17,12 @@ public class TransactionService {
 
 	private final TransactionMapper transactionMapper;
 
-	public List<TransactionVO> getUserExpenseTransactions(Long userId, String accountId, LocalDateTime startDate, LocalDateTime endDate){
+	public List<TransactionVO> getUserExpenseTransactions(Long userId, String accountId, LocalDateTime startDate,
+		LocalDateTime endDate) {
 		return transactionMapper.findExpenseTransactionsByAccountId(userId, accountId, startDate, endDate);
+	}
+
+	public TransactionVO getTransaction(Long transactionId) {
+		return transactionMapper.findByTransactionId(transactionId);
 	}
 }

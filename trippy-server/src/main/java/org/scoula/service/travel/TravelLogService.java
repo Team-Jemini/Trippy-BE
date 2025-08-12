@@ -111,4 +111,13 @@ public class TravelLogService {
 			.sum();
 	}
 
+	/***
+	 * 여행 기간동안의 거래 내역 상세 조회 ( 단건 조회 )
+	 * @param transactionId
+	 * @return
+	 */
+	public TravelLogTransactionDTO getTravelLogDetailTransaction(final Long transactionId) {
+		return TravelLogTransactionDTO.from(transactionService.getTransaction(transactionId));
+	}
+
 }
