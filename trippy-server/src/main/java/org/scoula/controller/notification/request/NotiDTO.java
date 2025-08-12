@@ -1,5 +1,7 @@
 package org.scoula.controller.notification.request;
 
+import java.time.LocalDateTime;
+
 import org.scoula.domain.notification.NotificationVO;
 
 public record NotiDTO(
@@ -7,7 +9,8 @@ public record NotiDTO(
 	String title,
 	String content,
 	String notiType,
-	Long amount
+	Long amount,
+	LocalDateTime createdAt
 ) {
 	public static NotiDTO from(NotificationVO vo) {
 		return new NotiDTO(
@@ -15,7 +18,8 @@ public record NotiDTO(
 			vo.getTitle(),
 			vo.getContent(),
 			vo.getNotiType().name(),
-			vo.getAmount()
+			vo.getAmount(),
+			vo.getCreatedAt()
 		);
 	}
 }
