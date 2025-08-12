@@ -16,6 +16,7 @@ import org.scoula.controller.transfer.dto.response.TransferResponseDTO;
 import org.scoula.domain.notification.NotificationVO;
 import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.mapper.account.AccountMapper;
+import org.scoula.mapper.account.group.GroupAccountMapper;
 import org.scoula.mapper.notification.NotificationMapper;
 import org.scoula.mapper.transaction.TransactionMapper;
 import org.scoula.service.user.UserService;
@@ -32,6 +33,7 @@ public class TransferService {
 	private final AccountMapper accountMapper;
 	private final TransactionMapper transactionMapper;
 	private final NotificationMapper notificationMapper;
+	private final GroupAccountMapper groupAccountMapper;
 
 	@Transactional
 	public TransferResponseDTO transfer(final Long userId, final TransferRequestDTO requestDTO) {
@@ -88,7 +90,7 @@ public class TransferService {
 		// 4.  요청하는 사람이 모임장인지 조회
 		userService.validateUserIsLeader(userId);
 
-		// 5.  총 요청 금액이 잔액보다 적거나 같은지 확인
+		// 5.  총 요청 금액이 잔액보다 적은지 확인
 		validateSufficientBalance(request.fromAccountId(), request.amount() * request.memberList().size());
 
 		//알림 저장소
@@ -100,6 +102,9 @@ public class TransferService {
 			userService.validateUserExists(member.userId());
 			// 7. 요청 받는 사람의 계좌가 존재하는지 조회
 			validateAccountExists(member.mainAccountId());
+
+			// 8. 요청 받는 사람의 대표계좌인지 조회
+			validateUserMainAccountExists(member.userId(), member.mainAccountId());
 
 			// 8. 출금 계좌의 잔액 구하기
 			Long fromBalance = accountMapper.findBalanceByAccountId(request.fromAccountId());
@@ -136,6 +141,7 @@ public class TransferService {
 			notificationMapper.saveNotification(notice);
 		}
 
+		// 18 반환 데이터 구하기
 		Long totalAmount = request.amount() * request.memberList().size();
 		Long fromBalance = accountMapper.findBalanceByAccountId(request.fromAccountId());
 
@@ -147,7 +153,7 @@ public class TransferService {
 
 		LocalDateTime now = notificationMapper.selectNow();
 
-		// 15.  잔액 및 송금한 계좌 및 유저 아이디 유저 이름, 총 요청 금액 반환
+		// 19.  잔액 및 송금한 계좌 및 유저 아이디 유저 이름, 총 요청 금액 반환
 		return new GroupTransferResponseDTO(request.fromAccountId(), request.fromAccountName(), totalAmount,
 			fromBalance, request.currencyCode(),
 			now, memberList);
@@ -169,6 +175,12 @@ public class TransferService {
 	public void checkAccountDeletionStatus(String accountId) {
 		if (!accountMapper.checkAccountDeletionStatus(accountId)) {
 			throw new BadRequestException(ACCOUNT_ALREADY_DELETED);
+		}
+	}
+
+	public void validateUserMainAccountExists(Long userId, String accountId) {
+		if (!groupAccountMapper.existsByUserIdAndMainAccountId(userId, accountId)) {
+			throw new BadRequestException(ACCOUNT_NOT_USER_MAIN_ACCOUNT);
 		}
 	}
 }
