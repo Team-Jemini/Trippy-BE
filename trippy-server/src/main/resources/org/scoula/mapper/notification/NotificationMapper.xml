@@ -16,6 +16,10 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
+    <insert id="saveNotification">
+        INSERT INTO notification (user_id, title, content, noti_type, amount)
+        VALUES (#{userId}, #{title}, #{content}, #{notiType}, #{amount})
+    </insert>
 
     <!-- 사용자의 알림 목록 조회 (최신순) -->
     <select id="findAllByUserId" resultMap="notificationMap">
@@ -23,16 +27,15 @@
         FROM notification
         WHERE user_id = #{userId}
         ORDER BY created_at DESC
-            LIMIT 100
+        LIMIT 100
     </select>
 
     <select id="findByNotiId" resultMap="notificationMap">
-        SELECT
-            noti_id,
-            title,
-            content,
-            noti_type,
-            amount
+        SELECT noti_id,
+               title,
+               content,
+               noti_type,
+               amount
         FROM notification
         WHERE noti_id = #{notiId}
     </select>

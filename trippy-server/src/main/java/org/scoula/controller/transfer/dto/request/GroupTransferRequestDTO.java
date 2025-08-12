@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 public record GroupTransferRequestDTO(
 	@ApiModelProperty(value = "(보내는 이)계좌 번호", example = "3333-02-123456")
 	String fromAccountId,
+	@ApiModelProperty(value = "(보내는 이)계좌 이름", example = "떠나자")
+	String fromAccountName,
 	@ApiModelProperty(value = "송금액", example = "150000")
 	Long amount,
 	@ApiModelProperty(value = "송금화폐 (ex. KOR)", example = "KOR")

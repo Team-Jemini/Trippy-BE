@@ -1,5 +1,7 @@
 package org.scoula.domain.notification;
 
+import java.text.NumberFormat;
+
 import org.scoula.domain.BaseTime;
 
 import lombok.AllArgsConstructor;
@@ -22,4 +24,18 @@ public class NotificationVO extends BaseTime {
 	private String content;
 	private NotiType notiType;
 	private Long amount;
+
+	public static NotificationVO DepositNotification(Long userId, String accountName, Long amount) {
+		String formattedAmount = NumberFormat.getInstance().format(amount);
+		String title = accountName + " 계좌에서 입금";
+		String content = accountName + " 계좌에서 " + formattedAmount + "원 입금되었습니다";
+
+		return NotificationVO.builder()
+			.userId(userId)
+			.title(title)
+			.content(content)
+			.notiType(NotiType.DEPOSIT)
+			.amount(amount)
+			.build();
+	}
 }

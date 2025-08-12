@@ -1,5 +1,7 @@
 package org.scoula.domain.transaction;
 
+import org.scoula.controller.transfer.dto.request.GroupTransferRequestDTO;
+import org.scoula.controller.transfer.dto.request.TransferMembersListRequestDTO;
 import org.scoula.controller.transfer.dto.request.TransferRequestDTO;
 import org.scoula.domain.BaseTime;
 
@@ -32,35 +34,67 @@ public class TransactionVO extends BaseTime {
 
 	public static TransactionVO fromForWithdraw(Long userId, TransferRequestDTO request, Long balanceAfter) {
 		return new TransactionVO(
-				null,
-				userId,
-				request.fromAccountId(),
-				TransactionType.WITHDRAW,
-				request.amount(),
-				request.title(),
-				TransactionCategory.OTHER,
-				null,
-				null,
-				balanceAfter,
-				TransactionStatus.SUCCESS,
-				request.currencyCode()
+			null,
+			userId,
+			request.fromAccountId(),
+			TransactionType.WITHDRAW,
+			request.amount(),
+			request.title(),
+			TransactionCategory.OTHER,
+			null,
+			null,
+			balanceAfter,
+			TransactionStatus.SUCCESS,
+			request.currencyCode()
 		);
 	}
 
 	public static TransactionVO fromForDeposit(Long userId, TransferRequestDTO request, Long balanceAfter) {
 		return new TransactionVO(
-				null,
-				userId,
-				request.toAccountId(),
-				TransactionType.DEPOSIT,
-				request.amount(),
-				request.title(),
-				TransactionCategory.INCOME,
-				null,
-				null,
-				balanceAfter,
-				TransactionStatus.SUCCESS,
-				request.currencyCode()
+			null,
+			userId,
+			request.toAccountId(),
+			TransactionType.DEPOSIT,
+			request.amount(),
+			request.title(),
+			TransactionCategory.INCOME,
+			null,
+			null,
+			balanceAfter,
+			TransactionStatus.SUCCESS,
+			request.currencyCode()
 		);
+	}
+
+	public static TransactionVO fromForGroupDeposit(GroupTransferRequestDTO request,
+		TransferMembersListRequestDTO member, Long balanceAfter) {
+		return TransactionVO.builder()
+			.userId(member.userId())
+			.accountId(member.mainAccountId())
+			.transactionType(TransactionType.DEPOSIT)
+			.amount(request.amount())
+			.title(request.fromAccountName() != null ? request.fromAccountName() + "계좌에서 입금" : "입금")
+			.category(TransactionCategory.INCOME)
+			.balanceAfter(balanceAfter)
+			.status(TransactionStatus.SUCCESS)
+			.currencyCode(request.currencyCode())
+			.build();
+
+	}
+
+	public static TransactionVO fromForGroupWithdraw(Long userId, GroupTransferRequestDTO request,
+		TransferMembersListRequestDTO member, Long balanceAfter) {
+		return TransactionVO.builder()
+			.userId(userId)
+			.accountId(request.fromAccountId())
+			.transactionType(TransactionType.WITHDRAW)
+			.amount(request.amount())
+			.title("모임원 " + member.userName() + " 계좌로 출금")
+			.category(TransactionCategory.OTHER)
+			.balanceAfter(balanceAfter)
+			.status(TransactionStatus.SUCCESS)
+			.currencyCode(request.currencyCode())
+			.build();
+
 	}
 }

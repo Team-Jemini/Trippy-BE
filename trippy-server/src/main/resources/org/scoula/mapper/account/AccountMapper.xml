@@ -36,14 +36,16 @@
     </select>
 
     <insert id="saveAccount">
-        INSERT INTO account (account_id, user_id, account_name, account_type, owner_id, balance, account_currency, is_deleted)
-        VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountCurrency}, #{isDeleted})
+        INSERT INTO account (account_id, user_id, account_name, account_type, owner_id, balance, account_currency,
+                             is_deleted)
+        VALUES (#{accountId}, #{userId}, #{accountName}, #{accountType}, #{ownerId}, #{balance}, #{accountCurrency},
+                #{isDeleted})
     </insert>
 
     <select id="existsByAccountId" resultType="boolean" parameterType="string">
-        SELECT EXISTS (
-            SELECT 1 FROM account WHERE account_id = #{accountId}
-        )
+        SELECT EXISTS (SELECT 1
+                       FROM account
+                       WHERE account_id = #{accountId})
     </select>
 
     <select id="findAllByUserIdOrderByUpdatedAt" resultMap="accountMap" parameterType="long">
@@ -58,10 +60,17 @@
         FROM account
         WHERE account_id = #{accountId}
     </select>
+    <select id="checkAccountDeletionStatus" resultType="java.lang.Boolean">
+        select count(*) > 0
+        from account
+        where account_id = #{accountId}
+          and is_deleted = 'N';
+    </select>
 
     <update id="updateBalance">
         UPDATE account
-        SET balance = #{balance}, updated_at = NOW()
+        SET balance    = #{balance},
+            updated_at = NOW()
         WHERE account_id = #{accountId}
     </update>
 

@@ -2,13 +2,21 @@ package org.scoula.service.transfer;
 
 import static org.scoula.common.exception.enums.ErrorCode.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.scoula.common.exception.model.BadRequestException;
 import org.scoula.controller.transfer.dto.request.GroupTransferRequestDTO;
+import org.scoula.controller.transfer.dto.request.TransferMembersListRequestDTO;
 import org.scoula.controller.transfer.dto.request.TransferRequestDTO;
 import org.scoula.controller.transfer.dto.response.GroupTransferResponseDTO;
+import org.scoula.controller.transfer.dto.response.TransferMembersListResponseDTO;
 import org.scoula.controller.transfer.dto.response.TransferResponseDTO;
+import org.scoula.domain.notification.NotificationVO;
 import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.mapper.account.AccountMapper;
+import org.scoula.mapper.notification.NotificationMapper;
 import org.scoula.mapper.transaction.TransactionMapper;
 import org.scoula.service.user.UserService;
 import org.springframework.stereotype.Service;
@@ -23,6 +31,7 @@ public class TransferService {
 	private final UserService userService;
 	private final AccountMapper accountMapper;
 	private final TransactionMapper transactionMapper;
+	private final NotificationMapper notificationMapper;
 
 	@Transactional
 	public TransferResponseDTO transfer(final Long userId, final TransferRequestDTO requestDTO) {
@@ -65,20 +74,101 @@ public class TransferService {
 		);
 	}
 
+	@Transactional
 	public GroupTransferResponseDTO groupTransfer(Long userId, GroupTransferRequestDTO request) {
 		// 1.  요청한는 사람이 있는 유저인지 조회
 		userService.validateUserExists(userId);
-		// 2.  요청하는 사람이 모임장인지 조회
+
+		// 2. 송금하는 계좌가 존재하는지 확인
+		validateAccountExists(request.fromAccountId());
+
+		// 3 송금하는 계좌가 해지돼어있는지 확인
+		checkAccountDeletionStatus(request.fromAccountId());
+
+		// 4.  요청하는 사람이 모임장인지 조회
 		userService.validateUserIsLeader(userId);
-		// 3.  총 요청 금액이 잔액보다 적거나 같은지 확인
-		// 4.  요청 받는 사람이 가입 된 유저인지 조회
-		// 5. 요청 받는 사람의 계좌가 존재하는지 조회
-		// 6. Vo 로 변환 후 입금
-		// 7. 입금받는 유저 거래 내역 추가
-		// 8. 돈 보내는 계좌 잔액 수정
-		// 9. 돈 보내는 계좌 거래 내역 추가
-		// 10. 입금받는 유저 알림 보내기
-		// 11. 3번 부터 반복(선택한 모임원 수 만큼)
-		// 12.  잔액 및 송금한 계좌 및 유저 아이디 유저 이름, 총 요청 금액 반환
+
+		// 5.  총 요청 금액이 잔액보다 적거나 같은지 확인
+		validateSufficientBalance(request.fromAccountId(), request.amount() * request.memberList().size());
+
+		//알림 저장소
+		List<NotificationVO> noticeList = new ArrayList<>();
+
+		// 선택된 유저 모임원 수만큼 반복
+		for (TransferMembersListRequestDTO member : request.memberList()) {
+			// 6.  요청 받는 사람이 가입 된 유저인지 조회
+			userService.validateUserExists(member.userId());
+			// 7. 요청 받는 사람의 계좌가 존재하는지 조회
+			validateAccountExists(member.mainAccountId());
+
+			// 8. 출금 계좌의 잔액 구하기
+			Long fromBalance = accountMapper.findBalanceByAccountId(request.fromAccountId());
+
+			// 9. 출금 계좌의 afterBalance 구하기
+			Long fromAfterBalance = fromBalance - request.amount();
+
+			// 10. 출금 계좌 잔액 수정
+			accountMapper.updateBalance(request.fromAccountId(), fromAfterBalance);
+
+			// 11.TransactionVO 로 변환후 출금 계좌 거래 내역 추가
+			TransactionVO withdrawVo = TransactionVO.fromForGroupWithdraw(userId, request, member, fromAfterBalance);
+			transactionMapper.saveTransaction(withdrawVo);
+
+			// 12. 입금 계좌의 잔액 구하기
+			Long toBalance = accountMapper.findBalanceByAccountId(member.mainAccountId());
+
+			// 13. 입금 계좌 afterBalance 구하기
+			Long toAfterBalance = accountMapper.findBalanceByAccountId(member.mainAccountId()) + request.amount();
+
+			// 14. 입금 계좌 잔액 수정
+			accountMapper.updateBalance(member.mainAccountId(), toAfterBalance);
+
+			// 15. TransactionVO 로 변환 후 입금  거래 내역 추가 (balanceAfter구하기)
+			TransactionVO depositVo = TransactionVO.fromForGroupDeposit(request, member, toAfterBalance);
+			transactionMapper.saveTransaction(depositVo);
+
+			//16. 알림 내용 저장
+			noticeList.add(
+				NotificationVO.DepositNotification(member.userId(), request.fromAccountName(), request.amount()));
+		}
+		// 17. 입금받는 유저 알림 저장
+		for (NotificationVO notice : noticeList) {
+			notificationMapper.saveNotification(notice);
+		}
+
+		Long totalAmount = request.amount() * request.memberList().size();
+		Long fromBalance = accountMapper.findBalanceByAccountId(request.fromAccountId());
+
+		List<TransferMembersListResponseDTO> memberList = new ArrayList<>();
+		for (TransferMembersListRequestDTO member : request.memberList()) {
+			memberList.add(
+				new TransferMembersListResponseDTO(member.mainAccountId(), member.userId(), member.userName()));
+		}
+
+		LocalDateTime now = notificationMapper.selectNow();
+
+		// 15.  잔액 및 송금한 계좌 및 유저 아이디 유저 이름, 총 요청 금액 반환
+		return new GroupTransferResponseDTO(request.fromAccountId(), request.fromAccountName(), totalAmount,
+			fromBalance, request.currencyCode(),
+			now, memberList);
+
+	}
+
+	public void validateSufficientBalance(String fromAccountId, Long amount) {
+		if (accountMapper.findBalanceByAccountId(fromAccountId) < amount) {
+			throw new BadRequestException(LACK_BALANCE_EXCEPTION);
+		}
+	}
+
+	public void validateAccountExists(String accountId) {
+		if (!accountMapper.existsByAccountId(accountId)) {
+			throw new BadRequestException(ACCOUNT_NOT_FOUND);
+		}
+	}
+
+	public void checkAccountDeletionStatus(String accountId) {
+		if (!accountMapper.checkAccountDeletionStatus(accountId)) {
+			throw new BadRequestException(ACCOUNT_ALREADY_DELETED);
+		}
 	}
 }
