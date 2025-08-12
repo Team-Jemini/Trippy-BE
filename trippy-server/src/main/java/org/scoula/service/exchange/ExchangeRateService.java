@@ -32,7 +32,6 @@ public class ExchangeRateService {
 
 	private final ExchangeRateMapper exchangeRateMapper;
 	private final UserService userService;
-	private static final Set<String> HUNDRED_UNIT_CURRENCIES = Set.of("JPY(100)", "IDR(100)");
 
 	/***
 	 * 환율 리스트 조회
@@ -45,6 +44,7 @@ public class ExchangeRateService {
 		List<ExchangeRateVO> recentTwoDaysExchangeRateList = exchangeRateMapper.getRecentTwoDaysExchangeRates();
 
 		Map<String, List<ExchangeRateVO>> groupedByCurrency = recentTwoDaysExchangeRateList.stream()
+			.filter(vo -> !"KRW".equals(vo.getCurrencyCode()))
 			.collect(Collectors.groupingBy(
 				ExchangeRateVO::getCurrencyCode,
 				LinkedHashMap::new,
@@ -128,20 +128,15 @@ public class ExchangeRateService {
 	private ExchangeChangeRateDTO calculateExchangeRateComparison(ExchangeRateVO todayData,
 		ExchangeRateVO yesterdayData) {
 
-		String currencyCode = todayData.getCurrencyCode();
 		Double todayRate = todayData.getBaseExchangeRate();
 		Double yesterdayRate = yesterdayData.getBaseExchangeRate();
 
-		// JPY(100), IDR(100)은 100단위 기준이므로 실제 환율로 변환
-		if (HUNDRED_UNIT_CURRENCIES.contains(currencyCode)) {
-			todayRate = todayRate / 100.0;
-			yesterdayRate = yesterdayRate / 100.0;
-		}
-
+		// 모든 통화 동일하게 처리 (DB 값 그대로)
 		Double changeAmount = todayRate - yesterdayRate;
 		Double changePercentage = (changeAmount / yesterdayRate) * 100;
 		String upOrDown = changeAmount >= 0 ? "+" : "-";
 
+		// 소수점 2자리까지 반올림
 		Double roundedChangeAmount = Math.round(Math.abs(changeAmount) * 100.0) / 100.0;
 		Double roundedChangePercentage = Math.round(Math.abs(changePercentage) * 100.0) / 100.0;
 
