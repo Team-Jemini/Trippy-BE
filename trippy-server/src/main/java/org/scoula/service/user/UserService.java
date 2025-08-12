@@ -10,7 +10,7 @@ import org.scoula.common.exception.model.BadRequestException;
 import org.scoula.common.exception.model.NotFoundException;
 import org.scoula.common.exception.model.UnAuthorizedException;
 import org.scoula.config.jwt.JwtService;
-import org.scoula.controller.user.dto.request.AllUsersTokenDTO;
+import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;

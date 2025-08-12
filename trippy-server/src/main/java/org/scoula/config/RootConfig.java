@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -21,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @PropertySource({"classpath:/application.properties"})
 @MapperScan("org.scoula.mapper")
 @ComponentScan(basePackages = {"org.scoula"})
+@EnableTransactionManagement
 public class RootConfig {
 	@Value("${jdbc.driver}")
 	String driver;
@@ -61,5 +63,6 @@ public class RootConfig {
 
 		return manager;
 	}
+
 
 }

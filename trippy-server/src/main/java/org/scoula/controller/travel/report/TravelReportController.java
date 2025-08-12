@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.*;
 
-@Api(tags = "Travel")
+@Api(tags = "Travel", description = "여행 소비 리포트를 관리합니다.")
 @RestController
 @RequestMapping("/travel-report")
 @RequiredArgsConstructor

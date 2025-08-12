@@ -13,7 +13,7 @@ public record PassportDTO(
         LocalDate birthDate,
         Gender gender,
         String countryCode,
-        LocalDateTime expireDate
+        LocalDate expireDate
 ) {
 
     public static PassportDTO from(PassportVO vo){

@@ -7,10 +7,11 @@ import org.scoula.common.exception.enums.SuccessCode;
 import org.scoula.service.card.CardCommandService;
 import org.springframework.web.bind.annotation.*;
 
+
+@Api(tags = "Payment", description = "카드, 결제 기능을 관리합니다.")
 @RestController
 @RequestMapping("/cards")
 @RequiredArgsConstructor
-@Api(tags = "Payment")
 public class CardCommandController {
 
 	private final CardCommandService cardCommandService;
@@ -36,8 +37,8 @@ public class CardCommandController {
 	})
 	@PutMapping("/{cardId}/nickname")
 	public SuccessNonDataResponse updateCardNickname(
-		@ApiParam(value = "카드 ID", required = true) @PathVariable Long cardId,
-		@ApiParam(value = "새 카드 별명", required = true) @RequestParam String cardNickname
+		@ApiParam(value = "카드 ID", required = true, example = "10") @PathVariable Long cardId,
+		@ApiParam(value = "새 카드 별명", required = true, example = "강병현의 포인트카드") @RequestParam String cardNickname
 	) {
 		cardCommandService.updateCardNickname(cardId, cardNickname);
 		return SuccessNonDataResponse.success(SuccessCode.UPDATE_CARD_NICKNAME_SUCCESS);
@@ -51,7 +52,7 @@ public class CardCommandController {
 	})
 	@PutMapping("/{cardId}/main")
 	public SuccessNonDataResponse setMainCard(
-		@ApiParam(value = "주카드로 설정할 카드 ID", required = true)
+		@ApiParam(value = "주카드로 설정할 카드 ID", required = true, example = "10")
 		@PathVariable Long cardId
 	) {
 		cardCommandService.setMainCard(cardId);

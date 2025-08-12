@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.exception.enums.SuccessCode;
 
+@Api(tags = "Payment", description = "카드, 결제 기능을 관리합니다.")
 @RestController
 @RequestMapping("/cards")
-@Api(tags = "Payment")
 public class CodefTestController {
 
 	private final CodefCardService cardService;
@@ -29,7 +30,7 @@ public class CodefTestController {
 	@PostMapping(value = "/codef", produces = "application/json; charset=UTF-8")
 	public SuccessNonDataResponse getAllCardsAndSave(
 		@RequestParam Long userId,
-		@RequestParam String accountId
+		@ApiParam(value = "계좌번호", required = true, example = "3333-02-123456") @RequestParam String accountId
 	) {
 		cardService.getAllMyCardsAndSave(userId, accountId);
 		return SuccessNonDataResponse.success(SuccessCode.FIND_CODEF_CARD_SUCCESS);
