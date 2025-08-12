@@ -20,4 +20,6 @@ public interface TransactionMapper {
 	List<TransactionVO> findExpenseTransactionsByAccountId(@Param("userId") Long userId,
 		@Param("accountId") String accountId, @Param("startDate") LocalDateTime startDate,
 		@Param("endDate") LocalDateTime endDate);
+
+	TransactionVO findByTransactionId(Long transactionId);
 }
