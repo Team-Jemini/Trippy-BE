@@ -97,6 +97,23 @@ public class TransferService {
 		return buildGroupTransferResponseDTO(request);
 	}
 
+	private void processMemberTransfer(Long userId, GroupTransferRequestDTO request,
+		TransferMembersListRequestDTO member, List<NotificationVO> noticeList) {
+
+		// 송금 받는 사람 검증
+		validateTransferRecipient(member);
+
+		// 송금
+		validateAndProcessMemberWithdrawal(userId, request, member);
+
+		// 입금
+		processGroupDepositForMember(request, member);
+
+		// 알림 생성 및 리스트에 저장
+		noticeList.add(
+			NotificationVO.DepositNotification(member.userId(), request.fromAccountName(), request.amount()));
+	}
+
 	private void validateGroupTransferPreconditions(Long userId, GroupTransferRequestDTO request) {
 
 		// 1.  요청한는 사람이 있는 유저인지 조회
@@ -115,33 +132,17 @@ public class TransferService {
 		validateSufficientBalance(request.fromAccountId(), request.amount() * request.memberList().size());
 	}
 
-	private void processMemberTransfer(Long userId, GroupTransferRequestDTO request,
-		TransferMembersListRequestDTO member, List<NotificationVO> noticeList) {
-
-		// 송금 받는 사람 검증
-		validateTransferRecipient(member);
-
-		// 송금
-		validateAndProcessMemberWithdrawal(userId, request, member);
-
-		// 입금
-		processGroupDepositForMember(request, member);
-
-		// 알림 생성 및 리스트에 저장
-		noticeList.add(
-			NotificationVO.DepositNotification(member.userId(), request.fromAccountName(), request.amount()));
-	}
-
 	private void validateTransferRecipient(TransferMembersListRequestDTO member) {
+		// 6. 요청 받는 사람이 가입 된 유저인지 조회
 		userService.validateUserExists(member.userId());
 
-		// 6. 요청 받는 사람이 가입 된 유저인지 조회
+		// 7. 요청 받는 사람의 계좌가 존재하는지 조회
 		validateAccountExists(member.mainAccountId());
 
-		// 7. 요청 받는 사람의 계좌가 존재하는지 조회
+		// 8. 계좌가 해지돼어있는지 확인
 		checkAccountDeletionStatus(member.mainAccountId());
 
-		// 8. 입금 받는 사람의 대표계좌인지 조회
+		// 9. 입금 받는 사람의 대표계좌인지 조회
 		validateUserMainAccountExists(member.userId(), member.mainAccountId());
 
 	}
@@ -149,32 +150,32 @@ public class TransferService {
 	private void validateAndProcessMemberWithdrawal(Long userId, GroupTransferRequestDTO request,
 		TransferMembersListRequestDTO member) {
 
-		// 9. 출금 계좌의 잔액 구하기
+		// 910. 출금 계좌의 잔액 구하기
 		Long fromBalance = accountMapper.findBalanceByAccountId(request.fromAccountId());
 
-		// 10. 출금 계좌의 afterBalance 구하기10. 출금 계좌의 afterBalance 구하기
+		// 11. 출금 계좌의 afterBalance 구하기10. 출금 계좌의 afterBalance 구하기
 		Long fromAfterBalance = fromBalance - request.amount();
 
-		// 11. 출금 계좌 잔액 수정
+		// 12. 출금 계좌 잔액 수정
 		accountMapper.updateBalance(request.fromAccountId(), fromAfterBalance);
 
-		// 12. TransactionVO 로 변환, 출금 계좌 거래 내역 리스트에 추가
+		// 13. TransactionVO 로 변환, 출금 계좌 거래 내역 리스트에 추가
 		TransactionVO withdrawVo = TransactionVO.fromForGroupWithdraw(userId, request, member, fromAfterBalance);
 		transactionMapper.saveTransaction(withdrawVo);
 	}
 
 	private void processGroupDepositForMember(GroupTransferRequestDTO request, TransferMembersListRequestDTO member) {
 
-		// 13. 입금 계좌의 잔액 구하기
+		// 14. 입금 계좌의 잔액 구하기
 		Long toBalance = accountMapper.findBalanceByAccountId(member.mainAccountId());
 
-		// 14. 입금 계좌 afterBalance 구하기
+		// 15. 입금 계좌 afterBalance 구하기
 		Long toAfterBalance = toBalance + request.amount();
 
-		// 15. 입금 계좌 잔액 수정
+		// 16. 입금 계좌 잔액 수정
 		accountMapper.updateBalance(member.mainAccountId(), toAfterBalance);
 
-		//16. TransactionVO 로 변환후 입금 계좌 거래 내역 리스트에 추가
+		// 17. TransactionVO 로 변환후 입금 계좌 거래 내역 리스트에 추가
 		TransactionVO depositVo = TransactionVO.fromForGroupDeposit(request, member, toAfterBalance);
 		transactionMapper.saveTransaction(depositVo);
 	}
