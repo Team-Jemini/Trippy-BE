@@ -22,6 +22,9 @@ public enum ErrorCode {
 	INVALID_PASSWORD_EXCEPTION(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),
 	TRAVEL_ID_REQUIRED(HttpStatus.BAD_REQUEST, "travelId는 필수입니다."),
 	TRAVEL_LOG_ACCOUNT_ID_EMPTY(HttpStatus.BAD_REQUEST, "travel_log.account_id가 비어 있습니다. travelId={0}"),
+	TRAVEL_DATE_REQUIRED(HttpStatus.BAD_REQUEST, "begin/end는 필수입니다."),
+	INVALID_TRAVEL_DATE(HttpStatus.BAD_REQUEST, "end는 begin 이후여야 합니다."),
+
 
 	//401 UNAUTHORIZED _인증
 	TOKEN_NOT_CONTAINED_EXCEPTION(HttpStatus.UNAUTHORIZED, "Access Token이 필요합니다."),
