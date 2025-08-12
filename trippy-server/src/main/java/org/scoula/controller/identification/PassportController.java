@@ -6,9 +6,11 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.identification.dto.PassportDTO;
 import org.scoula.controller.identification.dto.req.PassportReq;
 import org.scoula.service.identification.PassportService;
@@ -30,7 +32,7 @@ public class PassportController {
 	})
 	@GetMapping()
 	public SuccessResponse<PassportDTO> getPassport(
-		@RequestParam Long userId
+		@ApiIgnore @UserId Long userId
 	) {
 		return SuccessResponse.success(SuccessCode.PASSPORT_GET_SUCCESS, passportService.getPassport(userId));
 	}
@@ -43,7 +45,7 @@ public class PassportController {
 	})
 	@PostMapping()
 	public SuccessResponse<Integer> addPassport(
-		@RequestParam Long userId,
+		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "여권 정보", required = true) @RequestBody PassportReq passportReq
 	) {
 		return SuccessResponse.success(SuccessCode.PASSPORT_ADD_SUCCESS,
