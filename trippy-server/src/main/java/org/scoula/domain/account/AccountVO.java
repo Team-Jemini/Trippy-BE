@@ -50,7 +50,7 @@ public class AccountVO extends BaseTime {
 
 		return new AccountVO(
 				userId,
-				(String) codefAccount.get("resAccount"),
+				(String) codefAccount.get("resAccountDisplay"),
 				(String) codefAccount.get("resAccountName"),
 				AccountType.person,
 				userId,
