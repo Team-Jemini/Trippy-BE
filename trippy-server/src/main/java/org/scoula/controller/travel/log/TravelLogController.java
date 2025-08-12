@@ -10,6 +10,7 @@ import org.scoula.common.dto.ErrorResponse;
 import org.scoula.common.dto.SuccessNonDataResponse;
 import org.scoula.common.dto.SuccessResponse;
 import org.scoula.common.exception.enums.SuccessCode;
+import org.scoula.config.resolver.UserId;
 import org.scoula.controller.travel.log.dto.req.TravelLogCreateDTO;
 import org.scoula.controller.travel.log.dto.req.TravelLogTransactionListDTO;
 import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,9 +75,7 @@ public class TravelLogController {
 	})
 	@GetMapping("/{travelId}")
 	public SuccessResponse<TravelLogTransactionListDTO> getTravelLogs(
-		//@ApiIgnore @UserId Long userId => 이걸로 바꿀 예정입니다... 그래서 userId 안 받아와도됨 travelId만!
-		@ApiParam(value = "유저 ID", required = true, example = "1")
-		@RequestParam Long userId,
+		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "여행 ID", required = true, example = "1")
 		@PathVariable Long travelId) {
 		return SuccessResponse.success(SuccessCode.FIND_TRAVEL_LOG_TRANSACTIONS_SUCCESS, travelLogService.getTravelTransactions(userId, travelId));
