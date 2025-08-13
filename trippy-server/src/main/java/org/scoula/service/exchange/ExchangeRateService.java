@@ -144,7 +144,8 @@ public class ExchangeRateService {
 			todayData.getBaseExchangeRate(),
 			upOrDown,
 			roundedChangeAmount,
-			roundedChangePercentage
+			roundedChangePercentage,
+			todayData.getCurrencyCode()
 		);
 	}
 }

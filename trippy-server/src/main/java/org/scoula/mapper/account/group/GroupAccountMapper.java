@@ -47,4 +47,6 @@ public interface GroupAccountMapper {
 	boolean isGroupAccountUser(@Param("userId") Long userId, @Param("accountId") String accountId);
 
 	List<GroupAccountVO> findAllByUserIdOrderByUpdatedAt(Long userId);
+
+	boolean existsByUserIdAndMainAccountId(@Param("userId") Long userId, @Param("accountId") String accountId);
 }

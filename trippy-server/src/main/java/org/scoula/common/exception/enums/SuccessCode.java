@@ -12,6 +12,8 @@ public enum SuccessCode {
 	SIGNUP_SUCCESS(HttpStatus.OK, "회원가입 성공"),
 	CHECK_PASSWORD_SUCCESS(HttpStatus.OK, "비밀번호 확인 성공"),
 	GET_ALL_USERS_SUCCESS(HttpStatus.OK, "유저 토큰 전체 조회 성공"),
+	SEND_VERIFICATION_CODE_SUCCESS(HttpStatus.OK, "전화번호 인증 요청 성공"),
+	VERIFICATION_CODE_MATCH_SUCCESS(HttpStatus.OK, "전화번호 인증 성공"),
 
 	//알림
 	GET_ALL_NOTIS_SUCCESS(HttpStatus.OK, "알림 전체 조회 성공"),
@@ -58,6 +60,7 @@ public enum SuccessCode {
 	JOIN_GROUP_ACCOUNT_SUCCESS(HttpStatus.OK, "모임계좌에 가입 성공"),
 	GET_GROUP_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "모임 계좌 상세 조회 성공입니다."),
 	FIND_GROUP_ACCOUNT_MEMBER_SUCCESS(HttpStatus.OK, "모임 계좌 멤버 조회 성공"),
+	GROUP_TRANSFER_SUCCESS(HttpStatus.OK, "모임계좌 송금하기 성공"),
 
 	//계좌
 	GET_PERSONAL_ACCOUNT_DETAIL_SUCCESS(HttpStatus.OK, "개인계좌 상세 조회 성공"),

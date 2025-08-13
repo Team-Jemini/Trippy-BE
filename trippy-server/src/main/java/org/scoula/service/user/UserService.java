@@ -1,5 +1,6 @@
 package org.scoula.service.user;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,11 +10,13 @@ import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.BadRequestException;
 import org.scoula.common.exception.model.NotFoundException;
 import org.scoula.common.exception.model.UnAuthorizedException;
+import org.scoula.common.util.SmsUtil;
+import org.scoula.common.util.VerificationCodeGenerator;
 import org.scoula.config.jwt.JwtService;
-import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;
+import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.domain.user.Gender;
 import org.scoula.domain.user.UserVO;
 import org.scoula.mapper.user.UserMapper;
@@ -32,6 +35,7 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
+	private final SmsUtil smsUtil;
 
 	/***
 	 * 회원가입
@@ -101,6 +105,37 @@ public class UserService {
 	}
 
 	/***
+	 * 전화번호 인증 코드 전송
+	 * @param phoneNumber
+	 * @throws IOException
+	 */
+	@Transactional
+	public void sendVerificationCodeMessage(final String phoneNumber) throws IOException {
+		final String verificationCode = VerificationCodeGenerator.generate();
+
+		if (!smsUtil.sendVerificationCode(phoneNumber, verificationCode))
+			throw new BadRequestException(ErrorCode.INVALID_PHONE_NUMBER_EXCEPTION);
+
+		smsUtil.saveVerificationCode(phoneNumber, verificationCode);
+	}
+
+	/***
+	 * 전화번호 인증 코드 확인
+	 * @param phoneNumber
+	 * @param verificationCode
+	 */
+	@Transactional
+	public void verifyCode(final String phoneNumber, final String verificationCode) {
+		if (!smsUtil.isVerificationCode(phoneNumber))
+			throw new NotFoundException(ErrorCode.NOT_FOUND_VERIFICATION_CODE_EXCEPTION);
+
+		if (!smsUtil.getVerificationCode(phoneNumber).equals(verificationCode))
+			throw new BadRequestException(ErrorCode.NOT_MATCH_VERIFICATION_CODE_EXCEPTION);
+
+		smsUtil.deleteVerificationCode(phoneNumber);
+	}
+
+	/***
 	 * AccessToken 갱신
 	 * [클라이언트]
 	 * 1. AccessToken이 만료되면, 해당 /user/refresh로 AccessToken 재발급 요청을 한다.
@@ -145,7 +180,7 @@ public class UserService {
 		return jwtService.generateTokenPair(userId);
 	}
 
-	public List<AllUsersTokenDTO> getAllUsersToken(){
+	public List<AllUsersTokenDTO> getAllUsersToken() {
 		List<UserVO> users = userMapper.findAll();
 
 		return users.stream()
@@ -204,4 +239,14 @@ public class UserService {
 		}
 	}
 
+	/***
+	 * 유저가 leader인지 확인
+	 * @param userId
+	 * @return void
+	 */
+	public void validateUserIsLeader(Long userId) {
+		if (!userMapper.existsLeaderInGroup(userId)) {
+			throw new NotFoundException(ErrorCode.NOT_GROUP_ACCOUNT_LEADER_EXCEPTION);
+		}
+	}
 }

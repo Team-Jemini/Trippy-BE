@@ -90,7 +90,8 @@
         from account
         where user_id = #{userId}
           and is_deleted = 'N'
-          and account_currency = 'KOR'
+          and account_currency = 'KRW'
+        and account_type = 'person'
     </select>
 
     <select id="findTodayRateByCurrencyCode" resultMap="exchangeRateMap">
