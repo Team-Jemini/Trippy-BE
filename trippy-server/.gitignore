@@ -4,6 +4,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 .DS_Store
+dump.rdb
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
