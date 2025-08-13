@@ -47,4 +47,11 @@
           and a.user_id = #{userId}
     </select>
 
+    <update id="updateTravelIdByAccountId">
+        UPDATE account_member
+        SET travel_id = #{travelId},
+            updated_at = NOW()
+        WHERE account_id = #{accountId}
+    </update>
+
 </mapper>

@@ -16,6 +16,7 @@ import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
 import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.domain.travel.TravelLogVO;
 import org.scoula.external.s3.S3Service;
+import org.scoula.mapper.account.member.AccountMemberMapper;
 import org.scoula.mapper.travel.TravelLogMapper;
 import org.scoula.service.transaction.TransactionService;
 import org.scoula.service.user.UserService;
@@ -30,6 +31,7 @@ public class TravelLogService {
 	private final UserService userService;
 	private final S3Service s3Service;
 	private final TransactionService transactionService;
+	private final AccountMemberMapper accountMemberMapper;
 
 	public List<TravelLogDTO> getTravelLogs(final Long userId) {
 		userService.validateUserExists(userId);
@@ -70,6 +72,8 @@ public class TravelLogService {
 			.build();
 
 		travelLogMapper.save(travelLog);
+		Long travelId = travelLogMapper.selectLastInsertId();
+		accountMemberMapper.updateTravelIdByAccountId(dto.accountId(), travelId);
 	}
 
 	/**

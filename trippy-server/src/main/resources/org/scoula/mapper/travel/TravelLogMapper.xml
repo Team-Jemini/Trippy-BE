@@ -52,7 +52,7 @@
         ]]>
   </select>
 
-    <insert id="save" parameterType="org.scoula.domain.travel.TravelLogVO">
+    <insert id="save" parameterType="org.scoula.domain.travel.TravelLogVO" useGeneratedKeys="true" keyProperty="travelId">
         INSERT INTO travel_log (
             user_id, account_id, title, travel_begin_date, travel_end_date,
             destination, is_generated, travel_img,
@@ -69,6 +69,10 @@
         SELECT *
         FROM travel_log
         WHERE travel_id = #{travelId}
+    </select>
+
+    <select id="selectLastInsertId" resultType="long">
+        SELECT LAST_INSERT_ID()
     </select>
 
 
