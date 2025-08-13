@@ -11,6 +11,10 @@ public enum ErrorCode {
 	INVALID_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰을 입력했습니다."),
 	INVALID_REFRESH_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 리프레시 토큰을 입력했습니다."),
 	INVALID_TOKEN_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 토큰 타입입니다. Access Token을 사용해주세요."),
+	INVALID_PHONE_NUMBER_EXCEPTION(HttpStatus.BAD_REQUEST, "전화번호가 잘못되었습니다."),
+	NOT_MATCH_VERIFICATION_CODE_EXCEPTION(HttpStatus.BAD_REQUEST, "전화번호 인증 코드가 일치하지 않습니다."),
+	INVALID_PASSWORD_EXCEPTION(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),
+
 	SIGHTSEEING_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "관광바우처 정보가 잘못되었습니다."),
 	INVALID_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 	INVALID_INVITE_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 초대 링크입니다."),
@@ -18,8 +22,8 @@ public enum ErrorCode {
 	NOT_GROUP_ACCOUNT(HttpStatus.BAD_REQUEST, "모임계좌가 아닌 계좌입니다."),
 	ACCOUNT_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "해지된 계좌입니다."),
 	NOT_GROUP_ACCOUNT_LEADER_EXCEPTION(HttpStatus.BAD_REQUEST, "모임계좌 모임주가 아닌 사용자입니다."),
+
 	INVALID_RESIDENT_NUMBER_EXCEPTION(HttpStatus.BAD_REQUEST, "주민번호가 잘못되었습니다."),
-	INVALID_PASSWORD_EXCEPTION(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),
 	TRAVEL_ID_REQUIRED(HttpStatus.BAD_REQUEST, "travelId는 필수입니다."),
 	TRAVEL_LOG_ACCOUNT_ID_EMPTY(HttpStatus.BAD_REQUEST, "travel_log.account_id가 비어 있습니다. travelId={0}"),
 
@@ -33,6 +37,7 @@ public enum ErrorCode {
 	CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카드입니다."),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
 	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
+	NOT_FOUND_VERIFICATION_CODE_EXCEPTION(HttpStatus.BAD_REQUEST, "존재하지 않는 전화번호 인증 코드입니다."),
 
 	CONNECTED_ID_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "connectedId를 찾을 수 없습니다."),
 

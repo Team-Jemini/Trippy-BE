@@ -73,7 +73,7 @@ public class DiscordNotificationService {
                 String method = parts[0];
                 String uri = parts[1];
                 message.append("**요청 메소드:** ").append(method).append("\n");
-                message.append("**요청 URI:** ").append(uri).append("\n");
+                message.append("**요청 URI:** ").append(uri).append("\n").append("========================================");
             }
         }
 
@@ -94,7 +94,7 @@ public class DiscordNotificationService {
                 String method = parts[0];
                 String uri = parts[1];
                 message.append("**요청 메소드:** ").append(method).append("\n");
-                message.append("**요청 URI:** ").append(uri).append("\n");
+                message.append("**요청 URI:** ").append(uri).append("\n").append("========================================");
             }
         }
 

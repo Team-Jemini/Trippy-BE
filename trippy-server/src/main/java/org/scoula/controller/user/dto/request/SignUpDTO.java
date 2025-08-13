@@ -15,7 +15,7 @@ public record SignUpDTO(
 	@ApiModelProperty(value = "주민등록번호 앞 6자리-성별코드", example = "001125-4")
 	@Pattern(regexp = "^[0-9]{6}-[1-4]$", message = "주민등록번호 형식이 올바르지 않습니다.")
 	String residentNum,
-	@ApiModelProperty(value = "휴대폰 번호", example = "010-2388-3936")
+	@ApiModelProperty(value = "휴대폰 번호", example = "010-1234-5678")
 	@NotBlank(message = "전화번호는 필수입니다.")
 	@Pattern(regexp = "^010-[0-9]{4}-[0-9]{4}$", message = "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)")
 	String phone,
