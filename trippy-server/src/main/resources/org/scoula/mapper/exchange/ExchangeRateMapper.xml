@@ -70,6 +70,22 @@
         select exchange_rate_id, currency_code, currency_name, base_exchange_rate, rate_buy, rate_sell, exchange_rate_date from exchange_rate
     </select>
 
+    <select id="getExchangeRateByCountries" parameterType="list" resultType="org.scoula.domain.exchange.ExchangeRateVO">
+        SELECT
+            exchange_rate_id,
+            currency_code,
+            currency_name,
+            base_exchange_rate,
+            rate_buy,
+            rate_sell,
+            exchange_rate_date
+        FROM exchange_rate
+        WHERE currency_code IN
+        <foreach item="code" collection="list" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </select>
+
     <select id="getRecentTwoDaysExchangeRates" resultType="org.scoula.domain.exchange.ExchangeRateVO">
         SELECT *
         FROM exchange_rate
