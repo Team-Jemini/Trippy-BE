@@ -29,6 +29,7 @@ public class PassportVO extends BaseTime {
 	private Gender gender;
 	private String countryCode;
 	private LocalDate expireDate;
+	private String imgUrl;
 
 	public static PassportVO from(Long userId, PassportReq req) {
 		return new PassportVO(
@@ -39,7 +40,8 @@ public class PassportVO extends BaseTime {
 				req.birthDate(),
 				req.gender(),
 				req.countryCode(),
-				req.expireDate()
+				req.expireDate(),
+				req.imgUrl()
 		);
 	}
 }

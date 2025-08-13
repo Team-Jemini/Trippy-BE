@@ -14,6 +14,7 @@ import org.scoula.external.codef.identification.OcrService;
 import org.scoula.service.identification.ResidentCardService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
 

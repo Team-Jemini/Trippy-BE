@@ -15,6 +15,7 @@ import org.scoula.controller.identification.dto.PassportDTO;
 import org.scoula.controller.identification.dto.req.PassportReq;
 import org.scoula.service.identification.PassportService;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Passport", description = "여권 조회 및 등록하기 기능을 관리합니다.")
 @RestController
