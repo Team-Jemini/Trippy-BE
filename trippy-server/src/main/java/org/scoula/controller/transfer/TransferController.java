@@ -42,9 +42,9 @@ public class TransferController {
 		return SuccessResponse.success(SuccessCode.TRANSFER_SUCCESS, transferService.transfer(userId, request));
 	}
 
-	@ApiOperation(value = "[JWT]모임계좌 송금하기", notes = "모임계좌 송금하기 API")
+	@ApiOperation(value = "[JWT]모임계좌 정산하기", notes = "모임계좌 정산하기 API")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "모임계좌 송금하기 성공", response = SuccessResponse.class),
+		@ApiResponse(code = 200, message = "모임계좌 정산하기 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 404, message = "잘못된 계좌 번호가 요청되었습니다.", response = ErrorResponse.class),
 		@ApiResponse(code = 500, message = "서버 내부 오류입니다.", response = ErrorResponse.class)
 	})
