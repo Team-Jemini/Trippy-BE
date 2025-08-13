@@ -24,6 +24,7 @@ public enum ErrorCode {
 	NOT_GROUP_ACCOUNT_LEADER_EXCEPTION(HttpStatus.BAD_REQUEST, "모임계좌 모임주가 아닌 사용자입니다."),
 
 	INVALID_RESIDENT_NUMBER_EXCEPTION(HttpStatus.BAD_REQUEST, "주민번호가 잘못되었습니다."),
+	ACCOUNT_NOT_USER_MAIN_ACCOUNT(HttpStatus.BAD_REQUEST, "사용자의 대표계좌가 아닌 계좌입니다."),
 	TRAVEL_ID_REQUIRED(HttpStatus.BAD_REQUEST, "travelId는 필수입니다."),
 	TRAVEL_LOG_ACCOUNT_ID_EMPTY(HttpStatus.BAD_REQUEST, "travel_log.account_id가 비어 있습니다. travelId={0}"),
 

@@ -13,10 +13,10 @@ import org.scoula.common.exception.model.UnAuthorizedException;
 import org.scoula.common.util.SmsUtil;
 import org.scoula.common.util.VerificationCodeGenerator;
 import org.scoula.config.jwt.JwtService;
-import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
 import org.scoula.controller.user.dto.request.TokenRequestDto;
+import org.scoula.controller.user.dto.response.AllUsersTokenDTO;
 import org.scoula.domain.user.Gender;
 import org.scoula.domain.user.UserVO;
 import org.scoula.mapper.user.UserMapper;
@@ -239,4 +239,14 @@ public class UserService {
 		}
 	}
 
+	/***
+	 * 유저가 leader인지 확인
+	 * @param userId
+	 * @return void
+	 */
+	public void validateUserIsLeader(Long userId) {
+		if (!userMapper.existsLeaderInGroup(userId)) {
+			throw new NotFoundException(ErrorCode.NOT_GROUP_ACCOUNT_LEADER_EXCEPTION);
+		}
+	}
 }

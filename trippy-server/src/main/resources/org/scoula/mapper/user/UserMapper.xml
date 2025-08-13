@@ -40,6 +40,12 @@
         FROM users
         WHERE user_id = #{userId}
     </select>
+    <select id="existsLeaderInGroup" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0
+        FROM account_member
+        WHERE user_id = #{userId}
+          AND role = 'leader'
+    </select>
 
     <insert id="save" parameterType="org.scoula.domain.user.UserVO"
             useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
