@@ -3,7 +3,6 @@ package org.scoula.service.exchange;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-import org.scoula.controller.exchange.dto.ExchangeRateDTO;
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeChangeRateDTO;
@@ -21,7 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
