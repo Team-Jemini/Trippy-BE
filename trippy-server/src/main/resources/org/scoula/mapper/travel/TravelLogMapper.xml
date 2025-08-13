@@ -40,6 +40,18 @@
         ORDER BY t.travel_begin_date DESC
     </select>
 
+    <select id="countOverlappingTravelLogs" resultType="int">
+    <![CDATA[
+        SELECT COUNT(1)
+        FROM travel_log tl
+        WHERE tl.user_id = #{userId}
+          AND NOT (
+            tl.travel_end_date   < #{begin}
+                OR  tl.travel_begin_date > #{end}
+            )
+        ]]>
+  </select>
+
     <insert id="save" parameterType="org.scoula.domain.travel.TravelLogVO">
         INSERT INTO travel_log (
             user_id, account_id, title, travel_begin_date, travel_end_date,
