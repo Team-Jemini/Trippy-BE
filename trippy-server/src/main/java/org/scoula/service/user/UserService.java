@@ -1,5 +1,6 @@
 package org.scoula.service.user;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,8 @@ import org.scoula.common.exception.enums.ErrorCode;
 import org.scoula.common.exception.model.BadRequestException;
 import org.scoula.common.exception.model.NotFoundException;
 import org.scoula.common.exception.model.UnAuthorizedException;
+import org.scoula.common.util.SmsUtil;
+import org.scoula.common.util.VerificationCodeGenerator;
 import org.scoula.config.jwt.JwtService;
 import org.scoula.controller.user.dto.request.CheckPasswordDTO;
 import org.scoula.controller.user.dto.request.SignUpDTO;
@@ -32,6 +35,7 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
+	private final SmsUtil smsUtil;
 
 	/***
 	 * 회원가입
@@ -98,6 +102,37 @@ public class UserService {
 	public String getUserName(Long userId) {
 		validateUserExists(userId);
 		return userMapper.findUserName(userId);
+	}
+
+	/***
+	 * 전화번호 인증 코드 전송
+	 * @param phoneNumber
+	 * @throws IOException
+	 */
+	@Transactional
+	public void sendVerificationCodeMessage(final String phoneNumber) throws IOException {
+		final String verificationCode = VerificationCodeGenerator.generate();
+
+		if (!smsUtil.sendVerificationCode(phoneNumber, verificationCode))
+			throw new BadRequestException(ErrorCode.INVALID_PHONE_NUMBER_EXCEPTION);
+
+		smsUtil.saveVerificationCode(phoneNumber, verificationCode);
+	}
+
+	/***
+	 * 전화번호 인증 코드 확인
+	 * @param phoneNumber
+	 * @param verificationCode
+	 */
+	@Transactional
+	public void verifyCode(final String phoneNumber, final String verificationCode) {
+		if (!smsUtil.isVerificationCode(phoneNumber))
+			throw new NotFoundException(ErrorCode.NOT_FOUND_VERIFICATION_CODE_EXCEPTION);
+
+		if (!smsUtil.getVerificationCode(phoneNumber).equals(verificationCode))
+			throw new BadRequestException(ErrorCode.NOT_MATCH_VERIFICATION_CODE_EXCEPTION);
+
+		smsUtil.deleteVerificationCode(phoneNumber);
 	}
 
 	/***

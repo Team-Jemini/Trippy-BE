@@ -5,10 +5,6 @@
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %c{1} - %m%n"/>
         </Console>
-
-        <File name="file" fileName="logs/app.log" append="true">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %c{1} - %m%n"/>
-        </File>
     </Appenders>
 
     <Loggers>
