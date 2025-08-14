@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.scoula.controller.transfer.dto.request.ExchangeRequestDTO;
 import springfox.documentation.annotations.ApiIgnore;
 
 import org.scoula.common.dto.ErrorResponse;
@@ -54,6 +55,17 @@ public class ExchangeController {
 	@GetMapping("/rates")
 	public SuccessResponse<List<ExchangeChangeRateDTO>> getExchangeRates() {
 		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, exchangeRateService.getExchangeRates());
+	}
+
+	@ApiOperation(value = "특정 국가 최신 환율 목록 조회", notes = "특정 국가의 최신 환율 목록을 반환하는 API")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "환율 정보 찾기 성공", response = SuccessResponse.class),
+			@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
+			@ApiResponse(code = 404, message = "환율 정보가 존재하지 않습니다.", response = ErrorResponse.class)
+	})
+	@GetMapping("/rates/by-countries")
+	public SuccessResponse<List<ExchangeRateDTO>> getExchangeRatesByCountries(@RequestBody List<ExchangeRequestDTO> currencyCodes) {
+		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, exchangeRateService.getExchangeRatesByCountries(currencyCodes));
 	}
 
 	@ApiOperation(value = "[JWT] 사용자의 계좌 목록 조회", notes = "사용자의 계좌 목록을 환전 뷰에 맞는 DTO로 반환 API")

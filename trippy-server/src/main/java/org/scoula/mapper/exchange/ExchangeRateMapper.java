@@ -3,6 +3,7 @@ package org.scoula.mapper.exchange;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
+import org.scoula.controller.transfer.dto.request.ExchangeRequestDTO;
 import org.scoula.domain.exchange.AccountListVO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface ExchangeRateMapper {
     List<ExchangeRateVO> getExchangeRateList();
 
-    List<ExchangeRateVO> getExchangeRateByCountries(@Param("codes") List<String> currencyCodes);
+    List<ExchangeRateVO> getExchangeRateByCountries(@Param("codes") List<ExchangeRequestDTO> currencyCodes);
 
     List<ExchangeRateVO> getRecentTwoDaysExchangeRates();
 
