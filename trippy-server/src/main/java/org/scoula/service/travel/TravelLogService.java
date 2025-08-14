@@ -8,6 +8,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.BadRequestException;
 import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.travel.log.dto.req.TravelLogCreateDTO;
 import org.scoula.controller.travel.log.dto.req.TravelLogTransactionDTO;
@@ -16,6 +17,7 @@ import org.scoula.controller.travel.log.dto.res.TravelLogDTO;
 import org.scoula.domain.transaction.TransactionVO;
 import org.scoula.domain.travel.TravelLogVO;
 import org.scoula.external.s3.S3Service;
+import org.scoula.mapper.account.member.AccountMemberMapper;
 import org.scoula.mapper.travel.TravelLogMapper;
 import org.scoula.service.transaction.TransactionService;
 import org.scoula.service.user.UserService;
@@ -30,6 +32,7 @@ public class TravelLogService {
 	private final UserService userService;
 	private final S3Service s3Service;
 	private final TransactionService transactionService;
+	private final AccountMemberMapper accountMemberMapper;
 
 	public List<TravelLogDTO> getTravelLogs(final Long userId) {
 		userService.validateUserExists(userId);
@@ -70,6 +73,8 @@ public class TravelLogService {
 			.build();
 
 		travelLogMapper.save(travelLog);
+		Long travelId = travelLogMapper.selectLastInsertId();
+		accountMemberMapper.updateTravelIdByAccountId(dto.accountId(), travelId);
 	}
 
 	/**
@@ -81,10 +86,10 @@ public class TravelLogService {
 		userService.validateUserExists(userId);
 
 		if (begin == null || end == null) {
-			throw new TrippyException(ErrorCode.TRAVEL_DATE_REQUIRED);
+			throw new BadRequestException(ErrorCode.TRAVEL_DATE_REQUIRED);
 		}
 		if (end.isBefore(begin)) {
-			throw new TrippyException(ErrorCode.INVALID_TRAVEL_DATE);
+			throw new BadRequestException(ErrorCode.INVALID_TRAVEL_DATE);
 		}
 
 		// 겹치지 않는 조건: (existing_end < begin) OR (existing_begin > end)

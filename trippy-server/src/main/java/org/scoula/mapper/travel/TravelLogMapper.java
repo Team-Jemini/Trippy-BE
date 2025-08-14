@@ -18,4 +18,5 @@ public interface TravelLogMapper {
     void save(TravelLogVO travelLogVO);
 
     TravelLogVO findByTravelId(@Param("travelId") Long travelId);
+    Long selectLastInsertId();
 }

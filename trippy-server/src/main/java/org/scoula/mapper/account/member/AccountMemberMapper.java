@@ -13,4 +13,7 @@ public interface AccountMemberMapper {
 	boolean isGroupAccountLeader(Long userId);
 
 	AccountMemberVO selectMemberInfo(@Param("userId") Long userId, @Param("accountId") String accountId);
+
+	int updateTravelIdByAccountId(@Param("accountId") String accountId,
+								  @Param("travelId") Long travelId);
 }
