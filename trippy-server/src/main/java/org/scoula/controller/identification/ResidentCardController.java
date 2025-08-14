@@ -2,6 +2,8 @@ package org.scoula.controller.identification;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.scoula.external.naver.identification.NaverOcrService;
+import org.scoula.external.naver.identification.dto.IdCardDTO;
 import springfox.documentation.annotations.ApiIgnore;
 
 import org.scoula.common.dto.SuccessResponse;
@@ -23,7 +25,7 @@ import java.io.IOException;
 @Api(tags = "Resident Card", description = "주민등록증 추가, 조회, OCR 기능을 관리합니다.")
 public class ResidentCardController {
 
-	private final OcrService ocrService;
+	private final NaverOcrService naverOcrService;
 	private final ResidentCardService residentCardService;
 
 	@ApiOperation(value = "[JWT] 주민등록증 OCR", notes = "주민등록증 OCR을 하는 API")
@@ -32,13 +34,13 @@ public class ResidentCardController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다."),
 		@ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
 	})
-	@PostMapping("/ocr")
-	public SuccessResponse<ResidentCardOcrDTO> extractResidentCardOcrInfo(
+	@GetMapping("/ocr")
+	public SuccessResponse<IdCardDTO> extractResidentCardOcrInfo(
 		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "주민등록증", required = true)
-		@RequestParam("file") MultipartFile file) throws IOException {
-
-		return SuccessResponse.success(SuccessCode.RESIDENT_CARD_OCR_SUCCESS, ocrService.callOCRApi(file));
+		@RequestParam("file") MultipartFile file) {
+		// TODO: userId 검증
+		return SuccessResponse.success(SuccessCode.RESIDENT_CARD_OCR_SUCCESS, naverOcrService.callOCRApi(file));
 	}
 
 	@ApiOperation(value = "[JWT] 주민등록증 조회", notes = "주민등록증 조회하는 API")
