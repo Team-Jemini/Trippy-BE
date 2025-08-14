@@ -4,14 +4,16 @@ public record ExchangeBalanceDTO(
 	String currencyCode,
 	Double rate,
 	Long krwBalance,
-	Double foreignBalance
+	Double foreignBalance,
+	String currencyName
 ) {
 	public static ExchangeBalanceDTO from(
 		String currencyCode,
 		Double rate,
 		Long krwBalance,
-		Double foreignBalance
+		Double foreignBalance,
+		String currencyName
 	) {
-		return new ExchangeBalanceDTO(currencyCode, rate, krwBalance, foreignBalance);
+		return new ExchangeBalanceDTO(currencyCode, rate, krwBalance, foreignBalance, currencyName);
 	}
 }

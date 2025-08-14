@@ -108,13 +108,14 @@ public class ExchangeRateService {
 	public ExchangeBalanceDTO getRatesAndBalance(Long userId, String currencyCode, String accountId) {
 		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
 		Double rate = exchangeRateVO.getBaseExchangeRate();
+		String currencyName = exchangeRateVO.getCurrencyName();
 
 		AccountListVO accountListVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
 		Long krwBalance = accountListVo.getBalance();
 
 		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(userId, currencyCode);
 
-		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
+		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance, currencyName);
 	}
 
 	@Transactional
