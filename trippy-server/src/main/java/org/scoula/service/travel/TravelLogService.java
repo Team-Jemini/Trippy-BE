@@ -8,6 +8,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.scoula.common.exception.enums.ErrorCode;
+import org.scoula.common.exception.model.BadRequestException;
 import org.scoula.common.exception.model.TrippyException;
 import org.scoula.controller.travel.log.dto.req.TravelLogCreateDTO;
 import org.scoula.controller.travel.log.dto.req.TravelLogTransactionDTO;
@@ -85,10 +86,10 @@ public class TravelLogService {
 		userService.validateUserExists(userId);
 
 		if (begin == null || end == null) {
-			throw new TrippyException(ErrorCode.TRAVEL_DATE_REQUIRED);
+			throw new BadRequestException(ErrorCode.TRAVEL_DATE_REQUIRED);
 		}
 		if (end.isBefore(begin)) {
-			throw new TrippyException(ErrorCode.INVALID_TRAVEL_DATE);
+			throw new BadRequestException(ErrorCode.INVALID_TRAVEL_DATE);
 		}
 
 		// 겹치지 않는 조건: (existing_end < begin) OR (existing_begin > end)
