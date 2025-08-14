@@ -26,7 +26,7 @@ public class TravelReportController {
 		@ApiResponse(code = 200, message = "여행 소비 리포트 조회 성공"),
 		@ApiResponse(code = 404, message = "해당 여행이 존재하지 않습니다.")
 	})
-	@GetMapping("/{travelId}/travel-report")
+	@GetMapping("/{travelId}")
 	public SuccessResponse<TravelReportDTO> getTravelReport(
 		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "여행 ID", required = true, example = "5")
