@@ -74,7 +74,7 @@ public class TransactionVO extends BaseTime {
 			.transactionType(TransactionType.DEPOSIT)
 			.amount(request.amount())
 			.title(request.fromAccountName() != null ? request.fromAccountName() + "계좌에서 입금" : "입금")
-			.category(TransactionCategory.OTHER)
+			.category(TransactionCategory.INCOME)
 			.balanceAfter(balanceAfter)
 			.status(TransactionStatus.SUCCESS)
 			.currencyCode(request.currencyCode())
