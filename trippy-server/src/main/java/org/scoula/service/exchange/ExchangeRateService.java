@@ -3,10 +3,13 @@ package org.scoula.service.exchange;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import static org.scoula.common.exception.enums.ErrorCode.*;
+import org.scoula.common.exception.model.NotFoundException;
 import org.scoula.controller.exchange.dto.ExchangeRateDTO;
 import org.scoula.controller.exchange.dto.response.AccountListDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeBalanceDTO;
 import org.scoula.controller.exchange.dto.response.ExchangeChangeRateDTO;
+import org.scoula.controller.transfer.dto.request.ExchangeRequestDTO;
 import org.scoula.domain.exchange.AccountListVO;
 import org.scoula.domain.exchange.ExchangeRateVO;
 import org.scoula.domain.exchange.ExchangeRequest;
@@ -21,7 +24,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,6 +68,19 @@ public class ExchangeRateService {
 		return result;
 	}
 
+	public List<ExchangeRateDTO> getExchangeRatesByCountries(ExchangeRequestDTO currencyCodes) {
+		List<ExchangeRateDTO> exchangeRateDTOList = exchangeRateMapper.getExchangeRateByCountries(currencyCodes.currencyCode())
+			.stream()
+			.map(ExchangeRateDTO::from)
+			.toList();
+
+		if (exchangeRateDTOList.isEmpty()) {
+			throw new NotFoundException(EXCHANGE_NOT_FOUNT_EXCEPTION);
+		}
+
+		return exchangeRateDTOList;
+	}
+
 	/***
 	 * 계좌 리스트 조회
 	 * @param userId
@@ -93,13 +108,14 @@ public class ExchangeRateService {
 	public ExchangeBalanceDTO getRatesAndBalance(Long userId, String currencyCode, String accountId) {
 		ExchangeRateVO exchangeRateVO = exchangeRateMapper.findTodayRateByCurrencyCode(currencyCode);
 		Double rate = exchangeRateVO.getBaseExchangeRate();
+		String currencyName = exchangeRateVO.getCurrencyName();
 
 		AccountListVO accountListVo = exchangeRateMapper.findKrwBalanceByAccountId(accountId);
 		Long krwBalance = accountListVo.getBalance();
 
 		Double foreignBalance = exchangeRateMapper.findForeignBalanceByAccountIdAndCurrency(userId, currencyCode);
 
-		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance);
+		return ExchangeBalanceDTO.from(currencyCode, rate, krwBalance, foreignBalance, currencyName);
 	}
 
 	@Transactional

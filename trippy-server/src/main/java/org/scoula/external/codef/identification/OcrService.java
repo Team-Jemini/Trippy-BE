@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static org.scoula.common.exception.enums.ErrorCode.*;
 
+// TODO: 예비 OCR
 @Log4j2
 @Service
 public class OcrService {
@@ -49,7 +50,8 @@ public class OcrService {
      * 6. 응답 디코딩
      * 7. DTO 생성
      */
-    public ResidentCardOcrDTO callOCRApi(MultipartFile file) {
+    public ResidentCardOcrDTO
+    callOCRApi(MultipartFile file) {
 
         String token = getAccessToken();
 
