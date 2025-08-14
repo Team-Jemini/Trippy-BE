@@ -172,7 +172,7 @@ public class GroupAccountController {
 		return SuccessNonDataResponse.success(SuccessCode.SETTLE_GROUP_ACCOUNT_SUCCESS);
 	}
 
-	@ApiOperation(value = "모암 계좌 목록 조회", notes = "모임 계좌 목록 조회")
+	@ApiOperation(value = "모임 계좌 목록 조회", notes = "모임 계좌 목록 조회")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "모임 계좌 목록 조회 성공", response = SuccessResponse.class),
 		@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),

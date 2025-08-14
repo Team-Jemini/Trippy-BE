@@ -11,6 +11,7 @@ import org.scoula.domain.account.member.AccountMemberVO;
 import org.scoula.mapper.account.group.GroupAccountMapper;
 import org.scoula.mapper.account.member.AccountMemberMapper;
 import org.scoula.service.user.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,8 @@ import lombok.extern.log4j.Log4j2;
 public class InviteService {
 
 	private final JwtTokenUtil jwtTokenUtil;
-	private final String BASE_URL = "http://localhost:5173/?token=";
+	@Value("${invite.base-url}")
+	private String BASE_URL;
 	private final GroupAccountMapper groupAccountmapper;
 	private final AccountMemberMapper memberMapper;
 	private final UserService userService;
@@ -71,7 +73,7 @@ public class InviteService {
 
 		groupAccountmapper.groupAccountJoin(
 			AccountConverter.toAccountMemberVO(response.accountId(), userId, request.mainAccountId()));
-		
+
 		AccountMemberVO memberVO = memberMapper.selectMemberInfo(userId, response.accountId());
 		return new GroupAccountJoinedResponseDTO(memberVO.getAccountId(), response.accountName(),
 			memberVO.getCreatedAt());
