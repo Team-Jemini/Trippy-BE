@@ -68,16 +68,17 @@ public class ExchangeRateService {
 		return result;
 	}
 
-	public List<ExchangeRateDTO> getExchangeRatesByCountries(List<ExchangeRequestDTO> currencyCodes) {
-		List<ExchangeRateDTO> exchangeChangeRateDTOList = exchangeRateMapper.getExchangeRateByCountries(currencyCodes).stream()
-				.map(vo -> ExchangeRateDTO.from(vo))
-				.toList();
+	public List<ExchangeRateDTO> getExchangeRatesByCountries(ExchangeRequestDTO currencyCodes) {
+		List<ExchangeRateDTO> exchangeRateDTOList = exchangeRateMapper.getExchangeRateByCountries(currencyCodes.currencyCode())
+			.stream()
+			.map(ExchangeRateDTO::from)
+			.toList();
 
-		if (exchangeChangeRateDTOList.isEmpty()) {
+		if (exchangeRateDTOList.isEmpty()) {
 			throw new NotFoundException(EXCHANGE_NOT_FOUNT_EXCEPTION);
 		}
 
-		return exchangeChangeRateDTOList;
+		return exchangeRateDTOList;
 	}
 
 	/***
