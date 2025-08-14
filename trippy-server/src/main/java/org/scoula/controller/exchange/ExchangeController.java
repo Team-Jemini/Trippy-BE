@@ -63,8 +63,8 @@ public class ExchangeController {
 			@ApiResponse(code = 404, message = "해당 유저가 존재하지 않습니다.", response = ErrorResponse.class),
 			@ApiResponse(code = 404, message = "환율 정보가 존재하지 않습니다.", response = ErrorResponse.class)
 	})
-	@GetMapping("/rates/by-countries")
-	public SuccessResponse<List<ExchangeRateDTO>> getExchangeRatesByCountries(@RequestBody List<ExchangeRequestDTO> currencyCodes) {
+	@PostMapping("/rates/by-countries")
+	public SuccessResponse<List<ExchangeRateDTO>> getExchangeRatesByCountries(@RequestBody ExchangeRequestDTO currencyCodes) {
 		return SuccessResponse.success(SuccessCode.FIND_EXCHANGE_RATE_SUCCESS, exchangeRateService.getExchangeRatesByCountries(currencyCodes));
 	}
 
