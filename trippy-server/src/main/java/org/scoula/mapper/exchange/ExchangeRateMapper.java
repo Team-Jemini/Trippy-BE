@@ -13,7 +13,7 @@ import java.util.List;
 public interface ExchangeRateMapper {
     List<ExchangeRateVO> getExchangeRateList();
 
-    List<ExchangeRateVO> getExchangeRateByCountries(@Param("codes") List<ExchangeRequestDTO> currencyCodes);
+    List<ExchangeRateVO> getExchangeRateByCountries(@Param("codes") List<String> currencyCodes);
 
     List<ExchangeRateVO> getRecentTwoDaysExchangeRates();
 

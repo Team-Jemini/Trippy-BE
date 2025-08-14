@@ -72,18 +72,30 @@
 
     <select id="getExchangeRateByCountries" parameterType="list" resultType="org.scoula.domain.exchange.ExchangeRateVO">
         SELECT
-            exchange_rate_id,
-            currency_code,
-            currency_name,
-            base_exchange_rate,
-            rate_buy,
-            rate_sell,
-            exchange_rate_date
+        exchange_rate_id,
+        currency_code,
+        currency_name,
+        base_exchange_rate,
+        rate_buy,
+        rate_sell,
+        exchange_rate_date
+        FROM (
+        SELECT
+        exchange_rate_id,
+        currency_code,
+        currency_name,
+        base_exchange_rate,
+        rate_buy,
+        rate_sell,
+        exchange_rate_date,
+        ROW_NUMBER() OVER (PARTITION BY currency_code ORDER BY exchange_rate_date DESC) as rn
         FROM exchange_rate
         WHERE currency_code IN
-        <foreach item="code" collection="list" open="(" separator="," close=")">
+        <foreach item="code" collection="codes" open="(" separator="," close=")">
             #{code}
         </foreach>
+        ) ranked
+        WHERE rn = 1
     </select>
 
     <select id="getRecentTwoDaysExchangeRates" resultType="org.scoula.domain.exchange.ExchangeRateVO">
