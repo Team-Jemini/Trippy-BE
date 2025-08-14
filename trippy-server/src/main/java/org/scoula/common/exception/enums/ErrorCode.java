@@ -41,6 +41,7 @@ public enum ErrorCode {
 	CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카드입니다."),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
 	USER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 유저가 존재하지 않습니다."),
+	EXCHANGE_NOT_FOUNT_EXCEPTION(HttpStatus.NOT_FOUND, "환율 정보가 없습니다."),
 	NOT_FOUND_VERIFICATION_CODE_EXCEPTION(HttpStatus.BAD_REQUEST, "존재하지 않는 전화번호 인증 코드입니다."),
 
 	CONNECTED_ID_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "connectedId를 찾을 수 없습니다."),
@@ -72,6 +73,7 @@ public enum ErrorCode {
 	CARD_2_PROCESS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "카드2 처리 실패"),
 	LACK_BALANCE_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "계좌 잔액이 부족합니다."),
 	QR_CODE_GENERATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "QR 코드 생성에 실패했습니다.");
+
 
 	private final HttpStatus httpStatus;
 	private final String message;
