@@ -66,8 +66,13 @@ public class GlobalExceptionHandler {
 			request.getMethod(),
 			request.getRequestURI());
 
+		// 클라이언트 정보 수집
+		String clientInfo = String.format("IP: %s, User-Agent: %s",
+			getClientIP(request),
+			request.getHeader("User-Agent"));
+
 		// 400대 에러 Discord 알림 발송
-		send400Notification(ex.getClass().getSimpleName() + ": " + ex.getMessage(), requestInfo);
+		send400Notification(ex.getClass().getSimpleName() + ": " + ex.getMessage(), requestInfo, clientInfo);
 
 		return ResponseEntity
 			.status(ex.getErrorCode().getHttpStatus())
@@ -88,13 +93,19 @@ public class GlobalExceptionHandler {
 		log.warn("=== 4XX 에러 상세 정보 ===");
 		log.warn("요청 URI: {}", request.getRequestURI());
 		log.warn("요청 Method: {}", request.getMethod());
+		log.warn("User-Agent: {}", request.getHeader("User-Agent"));
 		log.warn("Referer: {}", request.getHeader("Referer"));
+		log.warn("Remote IP: {}", getClientIP(request));
 		log.warn("Query String: {}", request.getQueryString());
 		log.warn("================================");
 
 		// 400대 에러 Discord 알림
 		String requestInfo = String.format("%s %s", request.getMethod(), request.getRequestURI());
-		send400Notification("404 Not Found: " + request.getRequestURI(), requestInfo);
+		String clientInfo = String.format("IP: %s, User-Agent: %s",
+			getClientIP(request),
+			request.getHeader("User-Agent"));
+
+		send400Notification("404 Not Found: " + request.getRequestURI(), requestInfo, clientInfo);
 
 		return ResponseEntity.notFound().build();
 	}
@@ -115,7 +126,10 @@ public class GlobalExceptionHandler {
 		log.warn("================================");
 
 		String requestInfo = String.format("%s %s", request.getMethod(), request.getRequestURI());
-		send400Notification(ex.getClass().getSimpleName() + ": " + ex.getMessage(), requestInfo);
+		String clientInfo = String.format("IP: %s, User-Agent: %s",
+			getClientIP(request),
+			request.getHeader("User-Agent"));
+		send400Notification(ex.getClass().getSimpleName() + ": " + ex.getMessage(), requestInfo, clientInfo);
 
 		return ResponseEntity
 			.badRequest()
@@ -159,12 +173,21 @@ public class GlobalExceptionHandler {
 	}
 
 	// 400대 에러 Discord 알림 전송
-	private void send400Notification(String errorMessage, String requestInfo) {
+	private void send400Notification(String errorMessage, String requestInfo, String clientInfo) {
 		try {
-			discordNotificationService.send4xxNotification(errorMessage, requestInfo); // @Async
+			discordNotificationService.send4xxNotification(errorMessage, requestInfo, clientInfo); // @Async
 		} catch (Exception discordEx) {
 			log.error("Discord 400 알림 전송 중 에러: {}", discordEx.getMessage());
 		}
+	}
+
+	// 클라이언트 IP 추출
+	private String getClientIP(HttpServletRequest request) {
+		String xfHeader = request.getHeader("X-Forwarded-For");
+		if (xfHeader == null) {
+			return request.getRemoteAddr();
+		}
+		return xfHeader.split(",")[0];
 	}
 
 }

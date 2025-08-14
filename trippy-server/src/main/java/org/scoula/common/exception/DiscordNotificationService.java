@@ -46,21 +46,21 @@ public class DiscordNotificationService {
 
     // 400대 에러용 (새로 추가)
     @Async("discordExecutor")
-    public void send4xxNotification(String errorMessage, String requestInfo) {
+    public void send4xxNotification(String errorMessage, String requestInfo, String clientInfo) {
         try {
             if (webhook4xxUrl == null || webhook4xxUrl.isEmpty()) {
                 log.debug("400대 에러 웹훅 URL이 설정되지 않음");
                 return;
             }
 
-            String message = create4xxMessage(errorMessage, requestInfo);
+            String message = create4xxMessage(errorMessage, requestInfo, clientInfo);
             sendToDiscordAsync(message, webhook4xxUrl, "👻 클라이언트 에러 발생 👻");
         } catch (Exception e) {
             log.error("Discord 4xx 알림 전송 실패: {}", e.getMessage(), e);
         }
     }
 
-    private String create4xxMessage(String errorMessage, String requestInfo) {
+    private String create4xxMessage(String errorMessage, String requestInfo, String clientInfo) {
         StringBuilder message = new StringBuilder();
         message.append("**에러 발생 시간:** ")
             .append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
@@ -73,8 +73,12 @@ public class DiscordNotificationService {
                 String method = parts[0];
                 String uri = parts[1];
                 message.append("**요청 메소드:** ").append(method).append("\n");
-                message.append("**요청 URI:** ").append(uri).append("\n").append("========================================");
+                message.append("**요청 URI:** ").append(uri).append("\n");
             }
+        }
+
+        if (clientInfo != null && !clientInfo.isEmpty()) {
+            message.append("**클라이언트 정보:** ").append(clientInfo).append("\n").append("========================================");
         }
 
         return message.toString();

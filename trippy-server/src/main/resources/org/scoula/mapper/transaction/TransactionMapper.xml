@@ -43,7 +43,8 @@
                updated_at
         FROM transaction
         WHERE account_id = #{accountId}
-        ORDER BY created_at DESC
+        ORDER BY created_at DESC,
+                 transaction_id DESC
     </select>
     <select id="filterAccountTransactions" resultType="org.scoula.domain.transaction.TransactionVO">
         SELECT account_id,
@@ -63,12 +64,15 @@
         FROM transaction
         WHERE account_id = #{accountId}
           and transaction_type = #{transactionType}
-        ORDER BY created_at DESC
+        ORDER BY created_at DESC,
+                 transaction_id DESC
     </select>
 
     <insert id="saveTransaction" useGeneratedKeys="true" keyProperty="transactionId">
-        INSERT INTO transaction (account_id, user_id, transaction_type, amount, title, category, latitude, longitude, balance_after, status, currency_code, created_at, updated_at)
-        VALUES (#{accountId}, #{userId}, #{transactionType}, #{amount}, #{title}, #{category}, #{latitude}, #{longitude}, #{balanceAfter}, #{status}, #{currencyCode}, NOW(), NOW())
+        INSERT INTO transaction (account_id, user_id, transaction_type, amount, title, category, latitude, longitude,
+                                 balance_after, status, currency_code, created_at, updated_at)
+        VALUES (#{accountId}, #{userId}, #{transactionType}, #{amount}, #{title}, #{category}, #{latitude},
+                #{longitude}, #{balanceAfter}, #{status}, #{currencyCode}, NOW(), NOW())
     </insert>
 
     <select id="findExpenseTransactionsByAccountId" resultMap="transactionMap">
@@ -77,8 +81,8 @@
         WHERE user_id = #{userId}
           AND account_id = #{accountId}
           AND created_at BETWEEN #{startDate} AND #{endDate}
-          AND transaction_type = 'WITHDRAW'  -- 지출만 조회
-          AND amount > 0  -- 양수 금액만 (지출)
+          AND transaction_type = 'WITHDRAW' -- 지출만 조회
+          AND amount > 0                    -- 양수 금액만 (지출)
         ORDER BY created_at DESC
     </select>
 

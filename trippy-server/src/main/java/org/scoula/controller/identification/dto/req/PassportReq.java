@@ -3,7 +3,6 @@ package org.scoula.controller.identification.dto.req;
 import org.scoula.domain.user.Gender;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,7 +22,9 @@ public record PassportReq(
 	@ApiModelProperty(value = "국가코드", example = "KOR")
 	String countryCode,
 	@ApiModelProperty(value = "만료일자", example = "2029-02-25")
-	LocalDate expireDate
+	LocalDate expireDate,
+	@ApiModelProperty(value = "여권 사진", example = "a.png")
+	String imgUrl
 ) {
 
 }
