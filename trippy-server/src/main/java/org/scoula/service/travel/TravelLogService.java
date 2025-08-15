@@ -143,6 +143,14 @@ public class TravelLogService {
 		return TravelLogTransactionDTO.from(transactionService.getTransaction(transactionId));
 	}
 
+	/***
+	 * 현재 가용 여행계좌가 있는지 판단
+	 * @param userId
+	 * @return
+	 */
+	public boolean hasAvailableGroupAccount(Long userId) {
+		return travelLogMapper.existsAvailableGroupAccount(userId) == 1;
+	}
 
 
 }
