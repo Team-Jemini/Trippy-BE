@@ -58,20 +58,13 @@ jobs:
   deploy:
     needs: build
     runs-on: self-hosted
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
     steps:
-      - name: Pull latest Docker image
-        run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/trippy
-  
-      - name: Stop and remove existing container (if any)
+      - name: Run deploy script
         run: |
-          if sudo docker ps -a --format '{{.Names}}' | grep -q trippy; then
-            sudo docker rm -f trippy || true
-          fi
-  
-      - name: Run new container
-        run: |
-          cd /home/ubuntu/trippy  # docker-compose.yml, .env 위치
-          sudo docker compose up -d
-  
-      - name: Prune unused Docker images
-        run: sudo docker system prune -f
+          cd ~/trippy
+          sudo DOCKERHUB_USERNAME="$DOCKERHUB_USERNAME" \
+               DOCKERHUB_PASSWORD="$DOCKERHUB_PASSWORD" \
+               ./deploy.sh
