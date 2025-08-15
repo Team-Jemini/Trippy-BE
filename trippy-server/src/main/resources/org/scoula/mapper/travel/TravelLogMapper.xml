@@ -75,5 +75,21 @@
         SELECT LAST_INSERT_ID()
     </select>
 
+    <select id="existsAvailableGroupAccount" parameterType="Long" resultType="int">
+        SELECT EXISTS (
+            SELECT 1
+            FROM account ga
+            WHERE ga.user_id = #{userId}
+              AND ga.account_type = 'group'
+              AND ga.is_deleted = 'N'
+              AND NOT EXISTS (
+                SELECT 1
+                FROM travel_log tl
+                WHERE tl.account_id = ga.account_id
+            )
+        ) AS exists_flag
+    </select>
+
+
 
 </mapper>

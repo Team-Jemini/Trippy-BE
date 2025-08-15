@@ -2,6 +2,7 @@ package org.scoula.controller.travel.log;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 
@@ -20,6 +21,7 @@ import org.scoula.service.travel.TravelLogService;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.*;
@@ -120,6 +122,23 @@ public class TravelLogController {
 		@ApiParam(value = "거래내역 ID", required = true, example = "23")
 		@PathVariable Long transactionId) {
 		return SuccessResponse.success(SuccessCode.FIND_TRAVEL_LOG_DETAIL_TRANSACTION_SUCCESS, travelLogService.getTravelLogDetailTransaction(transactionId));
+	}
+
+	@ApiOperation(
+			value = "[JWT] [그룹계좌 사용 가능 여부]",
+			notes = "삭제되지 않았고 travel_log에 아직 사용되지 않은 그룹 계좌가 1개 이상 존재하면 available=true를 반환합니다."
+	)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "그룹 계좌 사용 가능 여부 조회 성공", response = Map.class),
+			@ApiResponse(code = 401, message = "인증 실패(JWT 필요)"),
+			@ApiResponse(code = 500, message = "서버 내부 오류")
+	})
+	@GetMapping("/group-account/available")
+	public ResponseEntity<Map<String, Object>> available(
+			@ApiIgnore @UserId Long userId
+	) {
+		boolean available = travelLogService.hasAvailableGroupAccount(userId);
+		return ResponseEntity.ok(Map.of("available", available));
 	}
 
 }

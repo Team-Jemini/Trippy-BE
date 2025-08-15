@@ -19,4 +19,6 @@ public interface TravelLogMapper {
 
     TravelLogVO findByTravelId(@Param("travelId") Long travelId);
     Long selectLastInsertId();
+
+    int existsAvailableGroupAccount(Long userId);
 }
