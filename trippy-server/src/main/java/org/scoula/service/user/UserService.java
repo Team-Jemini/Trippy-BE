@@ -209,14 +209,17 @@ public class UserService {
 		} else if (genderCode.equals("3") || genderCode.equals("4")) {
 			year += 2000;
 		} else {
-			throw new BadRequestException(ErrorCode.INVALID_RESIDENT_NUMBER_EXCEPTION);
+			// throw new BadRequestException(ErrorCode.INVALID_RESIDENT_NUMBER_EXCEPTION);
 		}
 
-		try {
-			return LocalDate.of(year, month, day);
-		} catch (Exception e) {
-			throw new BadRequestException(ErrorCode.INVALID_RESIDENT_NUMBER_EXCEPTION);
-		}
+		//추가함
+		return LocalDate.of(year, month, day);
+
+		// try {
+		// 	return LocalDate.of(year, month, day);
+		// } catch (Exception e) {
+		// 	throw new BadRequestException(ErrorCode.INVALID_RESIDENT_NUMBER_EXCEPTION);
+		// }
 	}
 
 	/***
@@ -235,7 +238,8 @@ public class UserService {
 			case "4":
 				return Gender.F; // 여성
 			default:
-				throw new BadRequestException(ErrorCode.INVALID_RESIDENT_NUMBER_EXCEPTION);
+				return Gender.M;
+				// throw new BadRequestException(ErrorCode.INVALID_RESIDENT_NUMBER_EXCEPTION);
 		}
 	}
 
