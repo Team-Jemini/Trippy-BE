@@ -68,12 +68,12 @@
 
     <select id="selectExpenseSummary" resultType="map">
         SELECT
-            COALESCE(SUM(CASE WHEN LOWER(TRIM(t.transaction_type))='withdraw' THEN ABS(t.amount) ELSE 0 END), 0) AS totalExpense,
-            COALESCE(SUM(CASE WHEN LOWER(TRIM(t.transaction_type))='withdraw' AND LOWER(TRIM(t.category))='food'      THEN ABS(t.amount) ELSE 0 END), 0) AS totalFood,
-            COALESCE(SUM(CASE WHEN LOWER(TRIM(t.transaction_type))='withdraw' AND LOWER(TRIM(t.category))='activity'  THEN ABS(t.amount) ELSE 0 END), 0) AS totalActivity,
-            COALESCE(SUM(CASE WHEN LOWER(TRIM(t.transaction_type))='withdraw' AND LOWER(TRIM(t.category))='acc'       THEN ABS(t.amount) ELSE 0 END), 0) AS totalAcc,
-            COALESCE(SUM(CASE WHEN LOWER(TRIM(t.transaction_type))='withdraw' AND LOWER(TRIM(t.category))='transport' THEN ABS(t.amount) ELSE 0 END), 0) AS totalTransport,
-            COALESCE(SUM(CASE WHEN LOWER(TRIM(t.transaction_type))='withdraw' AND LOWER(TRIM(t.category))='shop'      THEN ABS(t.amount) ELSE 0 END), 0) AS totalShop
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(t.transaction_type))='WITHDRAW' THEN ABS(t.amount) ELSE 0 END), 0) AS totalExpense,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(t.transaction_type))='WITHDRAW' AND UPPER(TRIM(t.category))='FOOD'           THEN ABS(t.amount) ELSE 0 END), 0) AS totalFood,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(t.transaction_type))='WITHDRAW' AND UPPER(TRIM(t.category))='CULTURE'        THEN ABS(t.amount) ELSE 0 END), 0) AS totalActivity,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(t.transaction_type))='WITHDRAW' AND UPPER(TRIM(t.category))='ACCOMMODATION'  THEN ABS(t.amount) ELSE 0 END), 0) AS totalAcc,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(t.transaction_type))='WITHDRAW' AND UPPER(TRIM(t.category))='TRANSPORTATION' THEN ABS(t.amount) ELSE 0 END), 0) AS totalTransport,
+            COALESCE(SUM(CASE WHEN UPPER(TRIM(t.transaction_type))='WITHDRAW' AND UPPER(TRIM(t.category))='SHOPPING'       THEN ABS(t.amount) ELSE 0 END), 0) AS totalShop
         FROM `transaction` t
         WHERE t.account_id = #{param.accountId}
           AND t.user_id    = #{param.userId}
