@@ -34,11 +34,11 @@ public class ResidentCardController {
 		@ApiResponse(code = 400, message = "잘못된 요청입니다."),
 		@ApiResponse(code = 500, message = "서버에서 오류가 발생했습니다.")
 	})
-	@GetMapping("/ocr")
+	@PostMapping("/ocr")
 	public SuccessResponse<IdCardDTO> extractResidentCardOcrInfo(
 		@ApiIgnore @UserId Long userId,
 		@ApiParam(value = "주민등록증", required = true)
-		@RequestParam("file") MultipartFile file) {
+		@RequestPart("file") MultipartFile file) {
 		// TODO: userId 검증
 		return SuccessResponse.success(SuccessCode.RESIDENT_CARD_OCR_SUCCESS, naverOcrService.callOCRApi(file));
 	}
