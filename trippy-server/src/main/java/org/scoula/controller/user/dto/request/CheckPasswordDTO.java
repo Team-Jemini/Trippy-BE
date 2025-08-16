@@ -10,8 +10,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "비밀번호 확인 DTO")
 public record CheckPasswordDTO(
 	@ApiModelProperty(value = "비밀번호", example = "123456")
-	@NotBlank(message = "비밀번호는 필수입니다.")
-	@Size(min = 6, max = 6, message = "비밀번호는 정확히 6자리여야 합니다.")
+	// @NotBlank(message = "비밀번호는 필수입니다.")
+	// @Size(min = 6, max = 6, message = "비밀번호는 정확히 6자리여야 합니다.")
 	String password
 ) {
 }

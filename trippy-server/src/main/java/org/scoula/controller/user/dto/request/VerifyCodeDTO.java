@@ -10,8 +10,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "인증번호 인증 DTO")
 public record VerifyCodeDTO(
 	@ApiModelProperty(value = "휴대폰 번호", example = "010-1234-5678")
-	@NotBlank(message = "전화번호는 필수입니다.")
-	@Pattern(regexp = "^010-[0-9]{4}-[0-9]{4}$", message = "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)")
+	// @NotBlank(message = "전화번호는 필수입니다.")
+	// @Pattern(regexp = "^010-[0-9]{4}-[0-9]{4}$", message = "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)")
 	String phoneNumber,
 	@ApiModelProperty(value = "인증코드", example = "123456")
 	String verifyCode
