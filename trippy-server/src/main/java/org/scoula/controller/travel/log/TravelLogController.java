@@ -126,19 +126,19 @@ public class TravelLogController {
 
 	@ApiOperation(
 			value = "[JWT] [그룹계좌 사용 가능 여부]",
-			notes = "삭제되지 않았고 travel_log에 아직 사용되지 않은 그룹 계좌가 1개 이상 존재하면 available=true를 반환합니다."
+			notes = "삭제되지 않았고 travel_log에 아직 사용되지 않은 그룹 계좌가 1개 이상 존재하면 data=true를 반환합니다."
 	)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "그룹 계좌 사용 가능 여부 조회 성공", response = Map.class),
-			@ApiResponse(code = 401, message = "인증 실패(JWT 필요)"),
-			@ApiResponse(code = 500, message = "서버 내부 오류")
+			@ApiResponse(code = 200, message = "그룹 계좌 사용 가능 여부 조회 성공", response = SuccessResponse.class),
+			@ApiResponse(code = 401, message = "인증 정보가 없습니다.", response = ErrorResponse.class),
+			@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
 	})
 	@GetMapping("/group-account/available")
-	public ResponseEntity<Map<String, Object>> available(
+	public SuccessResponse<Boolean> available(
 			@ApiIgnore @UserId Long userId
 	) {
 		boolean available = travelLogService.hasAvailableGroupAccount(userId);
-		return ResponseEntity.ok(Map.of("available", available));
+		return SuccessResponse.success(SuccessCode.CHECK_GROUP_ACCOUNT_AVAILABLE_SUCCESS, available);
 	}
 
 }
