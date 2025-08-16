@@ -194,7 +194,7 @@ public class UserService {
 	/***
 	 * 주민등록번호에서 생년월일 추출
 	 * @param residentNum
-	 * @return LocalDate
+	 * @return LocalDate 
 	 */
 	private LocalDate extractBirthFromResidentNumber(String residentNum) {
 		String birthPart = residentNum.substring(0, 6);
