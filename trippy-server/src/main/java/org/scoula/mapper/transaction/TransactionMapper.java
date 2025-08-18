@@ -22,4 +22,8 @@ public interface TransactionMapper {
 		@Param("endDate") LocalDateTime endDate);
 
 	TransactionVO findByTransactionId(Long transactionId);
+
+	List<TransactionVO> findUncategorized(@Param("limit") int limit);
+	int updateCategoryById(@Param("transactionId") Long transactionId,
+		@Param("category") String category);
 }
