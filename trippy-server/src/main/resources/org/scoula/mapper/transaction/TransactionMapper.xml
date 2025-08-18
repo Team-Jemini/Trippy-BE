@@ -92,4 +92,32 @@
         WHERE transaction_id = #{transactionId}
     </select>
 
+    <select id="findUncategorized" resultMap="transactionMap">
+        SELECT
+        transaction_id,
+        account_id,
+        user_id,
+        transaction_type,
+        amount,
+        title,
+        NULLIF(TRIM(category), '') AS category,  <!-- ✅ 빈 문자열 -> NULL -->
+        latitude,
+        longitude,
+        balance_after,
+        status,
+        currency_code,
+        created_at,
+        updated_at
+        FROM transaction
+        WHERE (category IS NULL OR TRIM(category) = '')
+        ORDER BY created_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <update id="updateCategoryById">
+        UPDATE transaction
+        SET category = UPPER(#{category}), updated_at = NOW()
+        WHERE transaction_id = #{transactionId}
+    </update>
+
 </mapper>
